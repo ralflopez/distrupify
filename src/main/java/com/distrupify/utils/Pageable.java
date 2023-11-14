@@ -1,4 +1,4 @@
-package com.distrupify.util;
+package com.distrupify.utils;
 
 import io.quarkus.panache.common.Page;
 import lombok.AllArgsConstructor;

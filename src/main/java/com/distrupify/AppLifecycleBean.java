@@ -1,11 +1,10 @@
 package com.distrupify;
 
+import com.distrupify.auth.services.AuthService;
+import com.distrupify.auth.requests.SignupRequest;
 import com.distrupify.entities.Organization;
 import com.distrupify.entities.Product;
-import com.distrupify.inventory.transaction.deposit.InventoryDepositService;
-import com.distrupify.inventory.transaction.deposit.request.CreateInventoryDepositRequest;
-import com.distrupify.inventory.transaction.deposit.request.InventoryDepositSearchRequest;
-import com.distrupify.util.Pageable;
+import com.distrupify.services.InventoryDepositService;
 import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
@@ -13,7 +12,6 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.logging.Logger;
 
 @ApplicationScoped
@@ -23,6 +21,9 @@ public class AppLifecycleBean {
 
     @Inject
     InventoryDepositService inventoryDepositService;
+
+    @Inject
+    AuthService authService;
 
     @Transactional
     void onStart(@Observes StartupEvent ev) {
@@ -43,25 +44,33 @@ public class AppLifecycleBean {
                 .build();
         galaxyBuds2.persist();
 
-        final var deposit1 = CreateInventoryDepositRequest.builder()
-                .items(List.of(
-                        CreateInventoryDepositRequest.Item.builder()
-                                .price(3000.0)
-                                .productId(galaxyBuds2.getId())
-                                .quantity(100)
-                                .build()
-                ))
-                .build();
+        final var testUser1 = authService.signup(SignupRequest.builder()
+                .email("test-user@email.com")
+                .password("password")
+                .name("Test User 1")
+                .organizationId(testOrganization.getId())
+                .build());
+        LOGGER.info("Token: " + testUser1.token);
 
-        final var d = inventoryDepositService.deposit(testOrganization.getId(), deposit1);
-
-        inventoryDepositService.rollbackDeposit(testOrganization.getId(), d.getId());
-
-        final var searchRequest = InventoryDepositSearchRequest.builder()
-                .startDate(null)
-                .build();
-
-        System.out.println(inventoryDepositService.search(testOrganization.getId(), searchRequest, Pageable.of(1, 10)));
+//        final var deposit1 = CreateInventoryDepositRequest.builder()
+//                .items(List.of(
+//                        CreateInventoryDepositRequest.Item.builder()
+//                                .price(3000.0)
+//                                .productId(galaxyBuds2.getId())
+//                                .quantity(100)
+//                                .build()
+//                ))
+//                .build();
+//
+//        final var d = inventoryDepositService.deposit(testOrganization.getId(), deposit1);
+//
+//        inventoryDepositService.rollbackDeposit(testOrganization.getId(), d.getId());
+//
+//        final var searchRequest = InventoryDepositSearchRequest.builder()
+//                .startDate(null)
+//                .build();
+//
+//        System.out.println(inventoryDepositService.search(testOrganization.getId(), searchRequest, Pageable.of(1, 10)));
     }
 
 }

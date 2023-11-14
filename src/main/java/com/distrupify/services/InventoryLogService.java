@@ -1,8 +1,8 @@
-package com.distrupify.inventory.log;
+package com.distrupify.services;
 
 import com.distrupify.entities.InventoryLog;
 import com.distrupify.entities.InventoryTransaction;
-import com.distrupify.inventory.transaction.deposit.request.CreateInventoryDepositRequest;
+import com.distrupify.requests.InventoryDepositCreateRequest;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 
@@ -14,7 +14,7 @@ public class InventoryLogService {
     public InventoryLog createInventoryLog(Long organizationId,
                                                     InventoryLog.Type type,
                                                     InventoryTransaction inventoryTransaction,
-                                                    CreateInventoryDepositRequest.Item item) {
+                                                    InventoryDepositCreateRequest.Item item) {
         final var log =  InventoryLog.builder()
                 .organizationId(organizationId)
                 .inventoryLogType(type)

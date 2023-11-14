@@ -1,6 +1,5 @@
-package com.distrupify.inventory.transaction.deposit.request;
+package com.distrupify.requests;
 
-import com.distrupify.entities.InventoryDeposit;
 import lombok.Builder;
 
 import java.util.Date;

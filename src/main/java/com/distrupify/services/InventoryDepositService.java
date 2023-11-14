@@ -1,12 +1,10 @@
-package com.distrupify.inventory.transaction.deposit;
+package com.distrupify.services;
 
 import com.distrupify.entities.InventoryDeposit;
 import com.distrupify.entities.InventoryLog;
-import com.distrupify.inventory.log.InventoryLogService;
-import com.distrupify.inventory.transaction.InventoryTransactionService;
-import com.distrupify.inventory.transaction.deposit.request.CreateInventoryDepositRequest;
-import com.distrupify.inventory.transaction.deposit.request.InventoryDepositSearchRequest;
-import com.distrupify.util.Pageable;
+import com.distrupify.requests.InventoryDepositCreateRequest;
+import com.distrupify.requests.InventoryDepositSearchRequest;
+import com.distrupify.utils.Pageable;
 import com.speedment.jpastreamer.application.JPAStreamer;
 import io.quarkus.panache.common.Page;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -14,7 +12,6 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 import org.jboss.logging.Logger;
 
 import java.util.ArrayList;
@@ -88,8 +85,9 @@ public class InventoryDepositService {
                 .getResultList();
     }
 
+    // TODO: investigate if create request can be validated without using the token
     @Transactional
-    public InventoryDeposit deposit(Long organizationId, @Valid CreateInventoryDepositRequest inventoryDepositDTO) {
+    public InventoryDeposit deposit(Long organizationId, InventoryDepositCreateRequest inventoryDepositDTO) {
         final var inventoryTransaction = inventoryTransactionService.createTransaction(organizationId, DEPOSIT);
 
         inventoryDepositDTO.items

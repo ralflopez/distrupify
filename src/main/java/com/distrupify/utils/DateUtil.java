@@ -1,4 +1,4 @@
-package com.distrupify.util;
+package com.distrupify.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

@@ -20,23 +20,23 @@ public class Product extends PanacheEntityBase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public String sku;
+    private String sku;
 
-    public String brand;
+    private String brand;
 
-    public String name;
+    private String name;
 
-    public String description;
+    private String description;
 
-    public BigDecimal price;
+    private BigDecimal price;
 
     @Column(name = "organization_id", nullable = false)
-    public Long organizationId;
+    private Long organizationId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organization_id", updatable = false, insertable = false)
     @ToString.Exclude
-    public Organization organization;
+    private Organization organization;
 
     public ProductDTO intoDTO() {
         return ProductDTO.builder()

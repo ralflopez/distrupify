@@ -1,5 +1,6 @@
 package com.distrupify.entities;
 
+import com.distrupify.dto.OrganizationDTO;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,4 +23,11 @@ public class Organization extends PanacheEntityBase {
 
     @Column(name = "display_name")
     public String displayName;
+
+    public OrganizationDTO intoDTO() {
+        return OrganizationDTO.builder()
+                .id(id)
+                .displayName(displayName)
+                .build();
+    }
 }

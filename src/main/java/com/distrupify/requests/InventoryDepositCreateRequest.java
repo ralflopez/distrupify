@@ -1,17 +1,21 @@
-package com.distrupify.inventory.transaction.deposit.request;
+package com.distrupify.requests;
 
-import com.distrupify.validation.ExistingProductId;
+import com.distrupify.validations.ExistingProductId;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Builder
-public class CreateInventoryDepositRequest {
+@AllArgsConstructor
+@NoArgsConstructor
+public class InventoryDepositCreateRequest {
     @Builder
     public static class Item {
-        @ExistingProductId
+        @ExistingProductId(token = true)
         public Long productId;
 
         @Min(value = 1)

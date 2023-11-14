@@ -1,4 +1,4 @@
-package com.distrupify.validation;
+package com.distrupify.validations;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -13,4 +13,5 @@ public @interface ExistingProductId {
     String message() default "Product id invalid";
     Class<?>[] groups() default { };
     Class<? extends Payload>[] payload() default { };
+    boolean token() default false;
 }

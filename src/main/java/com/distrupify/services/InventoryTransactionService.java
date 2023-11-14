@@ -1,4 +1,4 @@
-package com.distrupify.inventory.transaction;
+package com.distrupify.services;
 
 import com.distrupify.entities.InventoryTransaction;
 import jakarta.enterprise.context.ApplicationScoped;
