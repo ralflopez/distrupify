@@ -2,8 +2,8 @@ package com.distrupify;
 
 import com.distrupify.auth.services.AuthService;
 import com.distrupify.auth.requests.SignupRequest;
-import com.distrupify.entities.Organization;
-import com.distrupify.entities.Product;
+import com.distrupify.entities.OrganizationEntity;
+import com.distrupify.entities.ProductEntity;
 import com.distrupify.services.InventoryDepositService;
 import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -28,13 +28,13 @@ public class AppLifecycleBean {
     @Transactional
     void onStart(@Observes StartupEvent ev) {
         LOGGER.info("The application is starting...");
-        final var testOrganization = Organization.builder()
+        final var testOrganization = OrganizationEntity.builder()
                 .name("test-organization")
                 .displayName("Test Organization")
                 .build();
         testOrganization.persist();
 
-        final var galaxyBuds2 = Product.builder()
+        final var galaxyBuds2 = ProductEntity.builder()
                 .organizationId(testOrganization.getId())
                 .sku("123456789")
                 .brand("Samsung")

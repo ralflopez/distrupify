@@ -1,6 +1,6 @@
 package com.distrupify.services;
 
-import com.distrupify.entities.Product;
+import com.distrupify.entities.ProductEntity;
 import com.speedment.jpastreamer.application.JPAStreamer;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -12,8 +12,8 @@ public class ProductService {
     @Inject
     JPAStreamer jpaStreamer;
 
-    public Optional<Product> findProductById(Long organizationId, Long id) {
-        return jpaStreamer.stream(Product.class)
+    public Optional<ProductEntity> findProductById(Long organizationId, Long id) {
+        return jpaStreamer.stream(ProductEntity.class)
                 .filter(p -> p.getOrganizationId().equals(organizationId))
                 .filter(p -> p.getId().equals(id))
                 .findFirst();

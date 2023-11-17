@@ -1,9 +1,11 @@
 package com.distrupify.services;
 
-import com.distrupify.entities.InventoryDeposit;
-import com.distrupify.entities.InventoryLog;
+import com.distrupify.entities.InventoryDepositEntity;
+import com.distrupify.repository.InventoryTransactionRepository;
 import com.distrupify.requests.InventoryDepositCreateRequest;
 import com.distrupify.requests.InventoryDepositSearchRequest;
+import com.distrupify.models.InventoryLogModel;
+import com.distrupify.models.InventoryTransactionModel;
 import com.distrupify.utils.Pageable;
 import com.speedment.jpastreamer.application.JPAStreamer;
 import io.quarkus.panache.common.Page;
@@ -17,25 +19,17 @@ import org.jboss.logging.Logger;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
-import static com.distrupify.entities.InventoryDeposit.INVENTORY_TRANSACTION;
-import static com.distrupify.entities.InventoryDeposit.ORGANIZATION_ID;
-import static com.distrupify.entities.InventoryLog.Type.INCOMING;
-import static com.distrupify.entities.InventoryLog.Type.OUTGOING;
-import static com.distrupify.entities.InventoryTransaction.TIMESTAMP;
-import static com.distrupify.entities.InventoryTransaction.Type.DEPOSIT;
-import static com.distrupify.entities.InventoryTransaction.Type.DEPOSIT_ROLLBACK;
+import static com.distrupify.entities.InventoryDepositEntity.INVENTORY_TRANSACTION;
+import static com.distrupify.entities.InventoryDepositEntity.ORGANIZATION_ID;
+import static com.distrupify.entities.InventoryTransactionEntity.TIMESTAMP;
 
 @ApplicationScoped
 public class InventoryDepositService {
     private static final Logger LOGGER = Logger.getLogger(InventoryDepositService.class);
 
     @Inject
-    InventoryTransactionService inventoryTransactionService;
-
-    @Inject
-    InventoryLogService inventoryLogService;
+    InventoryTransactionRepository inventoryTransactionRepository;
 
     @Inject
     JPAStreamer jpaStreamer;
@@ -43,9 +37,9 @@ public class InventoryDepositService {
     @Inject
     EntityManager em;
 
-    public List<InventoryDeposit> findAll(Long organizationId, Page page) {
+    public List<InventoryDepositEntity> findAll(Long organizationId, Page page) {
         final var pageable = Pageable.of(page);
-        return jpaStreamer.stream(InventoryDeposit.class)
+        return jpaStreamer.stream(InventoryDepositEntity.class)
                 .filter(d -> d.getOrganizationId().equals(organizationId))
                 .filter(d -> d.getInventoryTransaction() != null)
                 .filter(d -> d.getInventoryTransaction().getInventoryLogs() != null)
@@ -55,11 +49,11 @@ public class InventoryDepositService {
                 .toList();
     }
 
-    public List<InventoryDeposit> search(Long organizationId, InventoryDepositSearchRequest searchRequest, Pageable pageable) {
+    public List<InventoryDepositEntity> search(Long organizationId, InventoryDepositSearchRequest searchRequest, Pageable pageable) {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-        CriteriaQuery<InventoryDeposit> criteriaQuery = criteriaBuilder.createQuery(InventoryDeposit.class);
+        CriteriaQuery<InventoryDepositEntity> criteriaQuery = criteriaBuilder.createQuery(InventoryDepositEntity.class);
 
-        Root<InventoryDeposit> root = criteriaQuery.from(InventoryDeposit.class);
+        Root<InventoryDepositEntity> root = criteriaQuery.from(InventoryDepositEntity.class);
         root.fetch(INVENTORY_TRANSACTION, JoinType.LEFT);
 
         final var predicates = new ArrayList<>();
@@ -85,56 +79,41 @@ public class InventoryDepositService {
                 .getResultList();
     }
 
-    // TODO: investigate if create request can be validated without using the token
     @Transactional
-    public InventoryDeposit deposit(Long organizationId, InventoryDepositCreateRequest inventoryDepositDTO) {
-        final var inventoryTransaction = inventoryTransactionService.createTransaction(organizationId, DEPOSIT);
-
-        inventoryDepositDTO.items
-                .forEach(i -> inventoryLogService.createInventoryLog(organizationId,
-                        INCOMING,
-                        inventoryTransaction,
-                        i));
-
-        final var inventoryDeposit = InventoryDeposit.builder()
-                .organizationId(organizationId)
-                .inventoryTransactionId(inventoryTransaction.getId())
-                .build();
-        inventoryDeposit.persist();
-
-        return inventoryDeposit;
+    public void deposit(InventoryTransactionModel<InventoryTransactionModel.Type.InventoryDeposit> model) {
+        inventoryTransactionRepository.persist(model);
     }
 
-    @Transactional
-    public Optional<InventoryDeposit> rollbackDeposit(Long organizationId, Long depositId) {
-        return jpaStreamer.stream(InventoryDeposit.class)
-                .filter(i -> i.getOrganizationId().equals(organizationId))
-                .filter(i -> i.getId().equals(depositId))
-                .filter(i -> i.getInventoryTransaction() != null)
-                .filter(i -> i.getInventoryTransaction().getInventoryLogs() != null)
-                .peek(i -> {
-                    final var inverseLogs = i.getInventoryTransaction().getInventoryLogs().stream().map(l ->
-                                    InventoryLog.builder()
-                                            .organizationId(organizationId)
-                                            .inventoryLogType(OUTGOING)
-                                            .productId(l.getProductId())
-                                            .price(l.getPrice())
-                                            .quantity(l.getQuantity())
-                                            .inventoryTransactionId(l.getInventoryTransactionId())
-                                            .build())
-                            .peek(l -> l.persist())
-                            .toList();
-
-                    final var inverseTransaction = inventoryTransactionService.createTransaction(organizationId, DEPOSIT_ROLLBACK);
-                    inverseTransaction.setInventoryLogs(inverseLogs);
-
-                    final var inverseDeposit = InventoryDeposit.builder()
-                            .organizationId(organizationId)
-                            .inventoryTransactionId(inverseTransaction.getId())
-                            .build();
-                    inverseDeposit.persist();
-                })
-                .findAny();
-    }
+//    @Transactional
+//    public Optional<InventoryDeposit> rollbackDeposit(Long organizationId, Long depositId) {
+//        return jpaStreamer.stream(InventoryDeposit.class)
+//                .filter(i -> i.getOrganizationId().equals(organizationId))
+//                .filter(i -> i.getId().equals(depositId))
+//                .filter(i -> i.getInventoryTransaction() != null)
+//                .filter(i -> i.getInventoryTransaction().getInventoryLogs() != null)
+//                .peek(i -> {
+//                    final var inverseLogs = i.getInventoryTransaction().getInventoryLogs().stream().map(l ->
+//                                    InventoryLog.builder()
+//                                            .organizationId(organizationId)
+//                                            .inventoryLogType(OUTGOING)
+//                                            .productId(l.getProductId())
+//                                            .price(l.getPrice())
+//                                            .quantity(l.getQuantity())
+//                                            .inventoryTransactionId(l.getInventoryTransactionId())
+//                                            .build())
+//                            .peek(l -> l.persist())
+//                            .toList();
+//
+//                    final var inverseTransaction = inventoryTransactionService.createTransaction(organizationId, DEPOSIT_ROLLBACK);
+//                    inverseTransaction.setInventoryLogs(inverseLogs);
+//
+//                    final var inverseDeposit = InventoryDeposit.builder()
+//                            .organizationId(organizationId)
+//                            .inventoryTransactionId(inverseTransaction.getId())
+//                            .build();
+//                    inverseDeposit.persist();
+//                })
+//                .findAny();
+//    }
 
 }

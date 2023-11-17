@@ -1,11 +1,10 @@
 package com.distrupify.auth.entities;
 
 import com.distrupify.auth.dtos.UserDTO;
-import com.distrupify.entities.Organization;
+import com.distrupify.entities.OrganizationEntity;
 import com.speedment.jpastreamer.streamconfiguration.StreamConfiguration;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.JoinType;
 import lombok.*;
 
 import static com.speedment.jpastreamer.streamconfiguration.StreamConfiguration.of;
@@ -39,7 +38,7 @@ public class User extends PanacheEntityBase {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organization_id", updatable = false, insertable = false)
     @ToString.Exclude
-    private Organization organization;
+    private OrganizationEntity organization;
 
     public UserDTO intoDTO() {
         final var organizationDTO = organization != null ? organization.intoDTO() : null;

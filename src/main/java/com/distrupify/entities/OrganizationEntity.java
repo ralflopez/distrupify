@@ -13,7 +13,7 @@ import lombok.*;
 @ToString
 @Entity
 @Table(name = "organizations")
-public class Organization extends PanacheEntityBase {
+public class OrganizationEntity extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

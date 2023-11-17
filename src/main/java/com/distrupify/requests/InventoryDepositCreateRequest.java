@@ -1,5 +1,7 @@
 package com.distrupify.requests;
 
+import com.distrupify.models.InventoryLogModel;
+import com.distrupify.models.InventoryTransactionModel;
 import com.distrupify.validations.ExistingProductId;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -27,4 +29,13 @@ public class InventoryDepositCreateRequest {
 
     @Valid
     public List<Item> items;
+
+    public InventoryTransactionModel<InventoryTransactionModel.Type.InventoryDeposit> intoModel(Long organizationId) {
+        final var transaction = InventoryTransactionModel.createInventoryDeposit(organizationId);
+        items.forEach(i -> transaction.addLog(InventoryLogModel.Type.INCOMING,
+                        i.quantity,
+                        i.price,
+                        i.productId));
+        return transaction;
+    }
 }

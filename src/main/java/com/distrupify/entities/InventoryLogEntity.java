@@ -16,7 +16,7 @@ import java.util.Date;
 @ToString
 @Entity
 @Table(name = "inventory_logs")
-public class InventoryLog extends PanacheEntityBase {
+public class InventoryLogEntity extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,7 +32,7 @@ public class InventoryLog extends PanacheEntityBase {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id", updatable = false, insertable = false)
-    private Product product;
+    private ProductEntity product;
 
     @Column(name = "organization_id", nullable = false)
     private Long organizationId;
@@ -40,7 +40,7 @@ public class InventoryLog extends PanacheEntityBase {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organization_id", updatable = false, insertable = false)
     @ToString.Exclude
-    private Organization organization;
+    private OrganizationEntity organization;
 
     @Column(name = "inventory_transaction_id", nullable = false)
     private Long inventoryTransactionId;
@@ -48,7 +48,7 @@ public class InventoryLog extends PanacheEntityBase {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "inventory_transaction_id", updatable = false, insertable = false)
     @ToString.Exclude
-    private InventoryTransaction inventoryTransaction;
+    private InventoryTransactionEntity inventoryTransaction;
 
     @Column(name = "inventory_log_type", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -56,7 +56,8 @@ public class InventoryLog extends PanacheEntityBase {
 
     public enum Type {
         INCOMING,
-        OUTGOING
+        OUTGOING,
+        PENDING
     }
 
     @PrePersist

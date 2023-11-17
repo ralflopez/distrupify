@@ -13,7 +13,7 @@ import lombok.*;
 @ToString
 @Entity
 @Table(name = "inventory_deposits")
-public class InventoryDeposit extends PanacheEntityBase {
+public class InventoryDepositEntity extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,7 +25,7 @@ public class InventoryDeposit extends PanacheEntityBase {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organization_id", updatable = false, insertable = false)
     @ToString.Exclude
-    private Organization organization;
+    private OrganizationEntity organization;
 
     @Column(name = "inventory_transaction_id", nullable = false)
     private Long inventoryTransactionId;
@@ -33,7 +33,7 @@ public class InventoryDeposit extends PanacheEntityBase {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "inventory_transaction_id", updatable = false, insertable = false)
     @ToString.Exclude
-    private InventoryTransaction inventoryTransaction;
+    private InventoryTransactionEntity inventoryTransaction;
     public static final String INVENTORY_TRANSACTION = "inventoryTransaction";
 
     public InventoryDepositDTO intoDTO() {

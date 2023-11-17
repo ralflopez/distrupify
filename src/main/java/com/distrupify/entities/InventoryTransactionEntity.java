@@ -16,14 +16,14 @@ import java.util.List;
 @ToString
 @Entity
 @Table(name = "inventory_transactions")
-public class InventoryTransaction extends PanacheEntityBase {
+public class InventoryTransactionEntity extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "inventory_transaction_type", nullable = false)
     @Enumerated(EnumType.STRING)
-    public InventoryTransaction.Type inventoryTransactionType;
+    public InventoryTransactionEntity.Type inventoryTransactionType;
 
     @Column(name = "timestamp", nullable = false)
     public Date timestamp;
@@ -35,15 +35,15 @@ public class InventoryTransaction extends PanacheEntityBase {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organization_id", updatable = false, insertable = false)
     @ToString.Exclude
-    public Organization organization;
+    public OrganizationEntity organization;
 
     @OneToMany(mappedBy = "inventoryTransaction", fetch = FetchType.LAZY)
     @ToString.Exclude
-    public List<InventoryLog> inventoryLogs;
+    public List<InventoryLogEntity> inventoryLogs;
 
     public enum Type {
         DEPOSIT,
-        DEPOSIT_ROLLBACK
+        PURCHASE_ORDER
     }
 
     @PrePersist
@@ -56,7 +56,7 @@ public class InventoryTransaction extends PanacheEntityBase {
     public InventoryTransactionDTO intoDTO() {
         return InventoryTransactionDTO.builder()
                 .id(id)
-                .inventoryTransactionLogs(inventoryLogs.stream().map(InventoryLog::intoDTO).toList())
+                .inventoryTransactionLogs(inventoryLogs.stream().map(InventoryLogEntity::intoDTO).toList())
                 .inventoryTransactionType(inventoryTransactionType.name())
                 .timestamp(timestamp.toString())
                 .build();

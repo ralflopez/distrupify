@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @ToString
 @Entity
 @Table(name = "products")
-public class Product extends PanacheEntityBase {
+public class ProductEntity extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,7 +36,7 @@ public class Product extends PanacheEntityBase {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organization_id", updatable = false, insertable = false)
     @ToString.Exclude
-    private Organization organization;
+    private OrganizationEntity organization;
 
     public ProductDTO intoDTO() {
         return ProductDTO.builder()
