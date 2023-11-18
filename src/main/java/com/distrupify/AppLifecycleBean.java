@@ -28,29 +28,29 @@ public class AppLifecycleBean {
     @Transactional
     void onStart(@Observes StartupEvent ev) {
         LOGGER.info("The application is starting...");
-        final var testOrganization = OrganizationEntity.builder()
-                .name("test-organization")
-                .displayName("Test Organization")
-                .build();
-        testOrganization.persist();
+//        final var testOrganization = OrganizationEntity.builder()
+//                .name("test-organization")
+//                .displayName("Test Organization")
+//                .build();
+//        testOrganization.persist();
 
-        final var galaxyBuds2 = ProductEntity.builder()
-                .organizationId(testOrganization.getId())
-                .sku("123456789")
-                .brand("Samsung")
-                .name("Galaxy Buds 2")
-                .description("")
-                .price(BigDecimal.valueOf(4000))
-                .build();
-        galaxyBuds2.persist();
-
-        final var testUser1 = authService.signup(SignupRequest.builder()
-                .email("test-user@email.com")
-                .password("password")
-                .name("Test User 1")
-                .organizationId(testOrganization.getId())
-                .build());
-        LOGGER.info("Token: " + testUser1.token);
+//        final var galaxyBuds2 = ProductEntity.builder()
+//                .organizationId(testOrganization.getId())
+//                .sku("123456789")
+//                .brand("Samsung")
+//                .name("Galaxy Buds 2")
+//                .description("")
+//                .price(BigDecimal.valueOf(4000))
+//                .build();
+//        galaxyBuds2.persist();
+//
+//        final var testUser1 = authService.signup(SignupRequest.builder()
+//                .email("test-user@email.com")
+//                .password("password")
+//                .name("Test User 1")
+//                .organizationId(testOrganization.getId())
+//                .build());
+//        LOGGER.info("Token: " + testUser1.token);
 
 //        final var deposit1 = CreateInventoryDepositRequest.builder()
 //                .items(List.of(

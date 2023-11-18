@@ -1,6 +1,6 @@
 package com.distrupify.auth.services;
 
-import com.distrupify.auth.entities.User;
+import com.distrupify.auth.entities.UserEntity;
 import com.speedment.jpastreamer.application.JPAStreamer;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -15,8 +15,8 @@ public class UserService {
     @Inject
     JPAStreamer jpaStreamer;
 
-    public Optional<User> findByEmail(Long organizationId, String email) {
-        return jpaStreamer.stream(User.Joins.USER_IJ_ORGANIZATION)
+    public Optional<UserEntity> findByEmail(Long organizationId, String email) {
+        return jpaStreamer.stream(UserEntity.Joins.USER_IJ_ORGANIZATION)
                 .filter(u -> u.getOrganizationId().equals(organizationId))
                 .filter(u -> u.getEmail().equals(email))
                 .findFirst();

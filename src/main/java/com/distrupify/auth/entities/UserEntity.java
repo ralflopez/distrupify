@@ -18,7 +18,7 @@ import static jakarta.persistence.criteria.JoinType.INNER;
 @ToString
 @Entity
 @Table(name = "users")
-public class User extends PanacheEntityBase {
+public class UserEntity extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -51,6 +51,6 @@ public class User extends PanacheEntityBase {
     }
 
     public static final class Joins {
-        public static final StreamConfiguration<User> USER_IJ_ORGANIZATION = of(User.class).joining(User$.organization, INNER);
+        public static final StreamConfiguration<UserEntity> USER_IJ_ORGANIZATION = of(UserEntity.class).joining(User$.organization, INNER);
     }
 }
