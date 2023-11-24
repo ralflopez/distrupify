@@ -12,12 +12,9 @@ import com.distrupify.entities.ProductEntity;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
-import io.restassured.config.MatcherConfig;
 import io.restassured.http.ContentType;
-import io.restassured.http.Headers;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import org.hamcrest.Matcher;
 import org.jboss.logging.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -67,8 +64,8 @@ class AuthResourceTest {
                 .sku("123456789")
                 .brand("Samsung")
                 .name("Galaxy Buds 2")
-                .description("")
-                .price(BigDecimal.valueOf(4000))
+                .description("Onyx")
+                .unitPrice(BigDecimal.valueOf(4000))
                 .build();
         galaxyBuds2.persist();
     }

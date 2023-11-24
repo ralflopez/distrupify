@@ -4,6 +4,8 @@ import com.distrupify.dto.InventoryDepositDTO;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @EqualsAndHashCode(callSuper = true)
 @Builder
@@ -35,12 +37,4 @@ public class InventoryDepositEntity extends PanacheEntityBase {
     @ToString.Exclude
     private InventoryTransactionEntity inventoryTransaction;
     public static final String INVENTORY_TRANSACTION = "inventoryTransaction";
-
-    public InventoryDepositDTO intoDTO() {
-        final var inventoryTransactionDTO = inventoryTransaction != null ? inventoryTransaction.intoDTO() : null;
-        return InventoryDepositDTO.builder()
-                .id(id)
-                .inventoryTransaction(inventoryTransactionDTO)
-                .build();
-    }
 }

@@ -1,9 +1,10 @@
 package com.distrupify.entities;
 
-import com.distrupify.dto.InventoryLogDTO;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -25,7 +26,8 @@ public class InventoryLogEntity extends PanacheEntityBase {
 
     private Integer quantity;
 
-    private BigDecimal price;
+    @Column(name = "unit_price")
+    private BigDecimal unitPrice;
 
     @Column(name = "product_id", nullable = false)
     private Long productId;
@@ -56,8 +58,7 @@ public class InventoryLogEntity extends PanacheEntityBase {
 
     public enum Type {
         INCOMING,
-        OUTGOING,
-        PENDING
+        OUTGOING
     }
 
     @PrePersist
@@ -65,17 +66,5 @@ public class InventoryLogEntity extends PanacheEntityBase {
         if (timestamp == null) {
             timestamp = new Date();
         }
-    }
-
-    public InventoryLogDTO intoDTO() {
-        final var productDTO = product != null ? product.intoDTO() : null;
-        return InventoryLogDTO.builder()
-                .id(id)
-                .inventoryLogType(inventoryLogType.name())
-                .price(price.floatValue())
-                .product(productDTO)
-                .quantity(quantity)
-                .timestamp(timestamp.toString())
-                .build();
     }
 }

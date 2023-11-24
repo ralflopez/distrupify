@@ -1,13 +1,11 @@
 package com.distrupify.dto;
 
-import lombok.Builder;
-
-@Builder
-public class ProductDTO {
-    public long id;
-    public String sku;
-    public String brand;
-    public String name;
-    public String description;
-    public double price;
-}
+public record ProductDTO(
+        long id,
+        String sku,
+        String brand,
+        String name,
+        String description,
+        double unitPrice,
+        int quantity
+) {}

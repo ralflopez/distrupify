@@ -51,6 +51,6 @@ public class UserEntity extends PanacheEntityBase {
     }
 
     public static final class Joins {
-        public static final StreamConfiguration<UserEntity> USER_IJ_ORGANIZATION = of(UserEntity.class).joining(User$.organization, INNER);
+        public static final StreamConfiguration<UserEntity> USER_IJ_ORGANIZATION = of(UserEntity.class).joining(UserEntity$.organization, INNER);
     }
 }

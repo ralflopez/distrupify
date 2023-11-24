@@ -1,9 +1,10 @@
 package com.distrupify.entities;
 
-import com.distrupify.dto.InventoryTransactionDTO;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Date;
 import java.util.List;
@@ -41,9 +42,17 @@ public class InventoryTransactionEntity extends PanacheEntityBase {
     @ToString.Exclude
     public List<InventoryLogEntity> inventoryLogs;
 
+    @Column(name = "pending", nullable = false)
+    public boolean pending;
+
     public enum Type {
         DEPOSIT,
-        PURCHASE_ORDER
+        PURCHASE_ORDER,
+        WITHDRAW
+    }
+
+    public boolean isIncoming() {
+        return this.inventoryTransactionType == Type.DEPOSIT || this.inventoryTransactionType == Type.PURCHASE_ORDER;
     }
 
     @PrePersist
@@ -51,14 +60,5 @@ public class InventoryTransactionEntity extends PanacheEntityBase {
         if (timestamp == null) {
             timestamp = new Date();
         }
-    }
-
-    public InventoryTransactionDTO intoDTO() {
-        return InventoryTransactionDTO.builder()
-                .id(id)
-                .inventoryTransactionLogs(inventoryLogs.stream().map(InventoryLogEntity::intoDTO).toList())
-                .inventoryTransactionType(inventoryTransactionType.name())
-                .timestamp(timestamp.toString())
-                .build();
     }
 }

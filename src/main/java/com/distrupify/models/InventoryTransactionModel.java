@@ -16,7 +16,8 @@ public record InventoryTransactionModel<T extends InventoryTransactionModel.Type
         @Nonnull Optional<Date> timestamp,
         long organizationId,
         @Nonnull Type details,
-        @Nonnull List<InventoryLogModel> inventoryLogs
+        @Nonnull List<InventoryLogModel> inventoryLogs,
+        boolean isPending
 ) {
 
     public sealed interface Type {
@@ -25,6 +26,8 @@ public record InventoryTransactionModel<T extends InventoryTransactionModel.Type
 
         record InventoryDeposit() implements Type {
         }
+
+        record InventoryWithdraw() implements Type {}
     }
 
     public static InventoryTransactionModel<Type.PurchaseOrder> createPurchaseOrder(Long organizationId) {
@@ -32,7 +35,17 @@ public record InventoryTransactionModel<T extends InventoryTransactionModel.Type
                 Optional.empty(),
                 organizationId,
                 new Type.PurchaseOrder(null),
-                new ArrayList<>());
+                new ArrayList<>(),
+                true);
+    }
+
+    public static InventoryTransactionModel<Type.PurchaseOrder> createCompletedPurchaseOrder(Long organizationId) {
+        return new InventoryTransactionModel<Type.PurchaseOrder>(Optional.empty(),
+                Optional.empty(),
+                organizationId,
+                new Type.PurchaseOrder(null),
+                new ArrayList<>(),
+                false);
     }
 
     public static InventoryTransactionModel<Type.InventoryDeposit> createInventoryDeposit(Long organizationId) {
@@ -40,7 +53,17 @@ public record InventoryTransactionModel<T extends InventoryTransactionModel.Type
                 Optional.empty(),
                 organizationId,
                 new Type.InventoryDeposit(),
-                new ArrayList<>());
+                new ArrayList<>(),
+                false);
+    }
+
+    public static InventoryTransactionModel<Type.InventoryDeposit> createInventoryWithdraw(Long organizationId) {
+        return new InventoryTransactionModel<Type.InventoryDeposit>(Optional.empty(),
+                Optional.empty(),
+                organizationId,
+                new Type.InventoryWithdraw(),
+                new ArrayList<>(),
+                false);
     }
 
     public void addLog(InventoryLogModel.Type type, int quantity, double price, long productId) {

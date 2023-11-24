@@ -97,7 +97,7 @@ public class InventoryDepositService {
 //                                            .organizationId(organizationId)
 //                                            .inventoryLogType(OUTGOING)
 //                                            .productId(l.getProductId())
-//                                            .price(l.getPrice())
+//                                            .unitPrice(l.getPrice())
 //                                            .quantity(l.getQuantity())
 //                                            .inventoryTransactionId(l.getInventoryTransactionId())
 //                                            .build())

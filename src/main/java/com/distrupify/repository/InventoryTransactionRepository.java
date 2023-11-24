@@ -1,21 +1,19 @@
 package com.distrupify.repository;
 
-import com.distrupify.entities.InventoryDepositEntity;
-import com.distrupify.entities.InventoryLogEntity;
-import com.distrupify.entities.InventoryTransactionEntity;
-import com.distrupify.entities.PurchaseOrderEntity;
+import com.distrupify.entities.*;
 import com.distrupify.models.InventoryLogModel;
 import com.distrupify.models.InventoryTransactionModel;
 import jakarta.annotation.Nonnull;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 
 import java.math.BigDecimal;
 
 import static com.distrupify.entities.InventoryLogEntity.Type.INCOMING;
 import static com.distrupify.entities.InventoryLogEntity.Type.OUTGOING;
-import static com.distrupify.entities.InventoryTransactionEntity.Type.DEPOSIT;
-import static com.distrupify.entities.InventoryTransactionEntity.Type.PURCHASE_ORDER;
+import static com.distrupify.entities.InventoryTransactionEntity.Type.*;
 
+@ApplicationScoped
 public class InventoryTransactionRepository {
 
     @Transactional
@@ -23,11 +21,13 @@ public class InventoryTransactionRepository {
         InventoryTransactionEntity.Type type = switch (inventoryTransactionModel.details()) {
             case InventoryTransactionModel.Type.InventoryDeposit ignored -> DEPOSIT;
             case InventoryTransactionModel.Type.PurchaseOrder ignored -> PURCHASE_ORDER;
+            case InventoryTransactionModel.Type.InventoryWithdraw ignored -> WITHDRAW;
         };
 
         final var inventoryTransaction = InventoryTransactionEntity.builder()
                 .organizationId(inventoryTransactionModel.organizationId())
                 .inventoryTransactionType(type)
+                .pending(inventoryTransactionModel.isPending())
                 .build();
         inventoryTransaction.persist();
 
@@ -42,6 +42,10 @@ public class InventoryTransactionRepository {
                     .organizationId(inventoryTransactionModel.organizationId())
                     .build();
             case PURCHASE_ORDER -> PurchaseOrderEntity.builder()
+                    .inventoryTransactionId(inventoryTransaction.getId())
+                    .organizationId(inventoryTransactionModel.organizationId())
+                    .build();
+            case WITHDRAW -> InventoryWithdrawEntity.builder()
                     .inventoryTransactionId(inventoryTransaction.getId())
                     .organizationId(inventoryTransactionModel.organizationId())
                     .build();
@@ -60,7 +64,7 @@ public class InventoryTransactionRepository {
                 .organizationId(inventoryLogModel.organizationId())
                 .inventoryLogType(type)
                 .inventoryTransactionId(inventoryTransactionId)
-                .price(BigDecimal.valueOf(inventoryLogModel.price()))
+                .unitPrice(BigDecimal.valueOf(inventoryLogModel.unitPrice()))
                 .quantity(inventoryLogModel.quantity())
                 .productId(inventoryLogModel.productId())
                 .build();

@@ -11,7 +11,7 @@ public record InventoryLogModel(
         Optional<Long> id,
         Optional<Date> timestamp,
         int quantity,
-        double price,
+        double unitPrice,
         long productId,
         long organizationId,
         @Nonnull Optional<Long> inventoryTransactionId,

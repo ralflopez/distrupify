@@ -1,7 +1,6 @@
-package com.distrupify.controllers;
+package com.distrupify.resources;
 
 import com.distrupify.auth.services.TokenService;
-import com.distrupify.repository.InventoryTransactionRepository;
 import com.distrupify.requests.InventoryDepositCreateRequest;
 import com.distrupify.services.InventoryTransactionService;
 import io.quarkus.security.Authenticated;
@@ -18,7 +17,7 @@ import org.eclipse.microprofile.jwt.JsonWebToken;
 
 @Path("/api/v1/inventory/deposit")
 @RequestScoped
-public class InventoryDepositRestController {
+public class InventoryDepositResource {
 
     @Inject
     InventoryTransactionService inventoryTransactionService;

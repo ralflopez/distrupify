@@ -40,7 +40,7 @@ public class AppLifecycleBean {
 //                .brand("Samsung")
 //                .name("Galaxy Buds 2")
 //                .description("")
-//                .price(BigDecimal.valueOf(4000))
+//                .unitPrice(BigDecimal.valueOf(4000))
 //                .build();
 //        galaxyBuds2.persist();
 //
@@ -55,7 +55,7 @@ public class AppLifecycleBean {
 //        final var deposit1 = CreateInventoryDepositRequest.builder()
 //                .items(List.of(
 //                        CreateInventoryDepositRequest.Item.builder()
-//                                .price(3000.0)
+//                                .unitPrice(3000.0)
 //                                .productId(galaxyBuds2.getId())
 //                                .quantity(100)
 //                                .build()
