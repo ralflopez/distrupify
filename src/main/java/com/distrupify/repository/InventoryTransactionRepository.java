@@ -21,7 +21,8 @@ public class InventoryTransactionRepository {
         InventoryTransactionEntity.Type type = switch (inventoryTransactionModel.details()) {
             case InventoryTransactionModel.Type.InventoryDeposit ignored -> DEPOSIT;
             case InventoryTransactionModel.Type.PurchaseOrder ignored -> PURCHASE_ORDER;
-            case InventoryTransactionModel.Type.InventoryWithdraw ignored -> WITHDRAW;
+            case InventoryTransactionModel.Type.InventoryWithdrawal ignored -> WITHDRAW;
+            case InventoryTransactionModel.Type.InventoryAdjustment ignored -> ADJUSTMENT;
         };
 
         final var inventoryTransaction = InventoryTransactionEntity.builder()
@@ -41,11 +42,12 @@ public class InventoryTransactionRepository {
                     .inventoryTransactionId(inventoryTransaction.getId())
                     .organizationId(inventoryTransactionModel.organizationId())
                     .build();
-            case PURCHASE_ORDER -> PurchaseOrderEntity.builder()
+            case PURCHASE_ORDER -> new PurchaseOrderEntity(inventoryTransactionModel.organizationId());
+            case WITHDRAW -> InventoryWithdrawEntity.builder()
                     .inventoryTransactionId(inventoryTransaction.getId())
                     .organizationId(inventoryTransactionModel.organizationId())
                     .build();
-            case WITHDRAW -> InventoryWithdrawEntity.builder()
+            case ADJUSTMENT -> InventoryAdjustment.builder()
                     .inventoryTransactionId(inventoryTransaction.getId())
                     .organizationId(inventoryTransactionModel.organizationId())
                     .build();

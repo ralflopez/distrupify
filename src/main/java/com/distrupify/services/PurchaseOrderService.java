@@ -2,8 +2,7 @@ package com.distrupify.services;
 
 import com.distrupify.entities.PurchaseOrderEntity;
 import com.distrupify.entities.PurchaseOrderEntity$;
-import com.distrupify.models.InventoryTransactionModel;
-import com.distrupify.models.InventoryTransactionModel.Type.PurchaseOrder;
+import com.distrupify.requests.PurchaseOrderCreateRequest;
 import com.speedment.jpastreamer.application.JPAStreamer;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -27,8 +26,11 @@ public class PurchaseOrderService {
     @Inject
     EntityManager em;
 
-    public void persist(InventoryTransactionModel<PurchaseOrder> purchaseOrder) {
-        inventoryTransactionService.persist(purchaseOrder);
+    @Transactional
+    public void createPurchaseOrder(Long organizationId, PurchaseOrderCreateRequest request) {
+        final var purchaseOrder = new PurchaseOrderEntity(organizationId);
+        request.items.forEach(i -> purchaseOrder.addLog(i.productId, i.quantity, i.unitPrice));
+        purchaseOrder.persist();
     }
 
     @Transactional

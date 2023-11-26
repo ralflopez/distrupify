@@ -1,6 +1,5 @@
 package com.distrupify.models;
 
-import com.distrupify.requests.InventoryDepositCreateRequest;
 import jakarta.annotation.Nonnull;
 
 import java.util.ArrayList;
@@ -13,7 +12,7 @@ import java.util.Optional;
  */
 public record InventoryTransactionModel<T extends InventoryTransactionModel.Type>(
         @Nonnull Optional<Long> id,
-        @Nonnull Optional<Date> timestamp,
+        @Nonnull Optional<Date> createdAt,
         long organizationId,
         @Nonnull Type details,
         @Nonnull List<InventoryLogModel> inventoryLogs,
@@ -27,7 +26,8 @@ public record InventoryTransactionModel<T extends InventoryTransactionModel.Type
         record InventoryDeposit() implements Type {
         }
 
-        record InventoryWithdraw() implements Type {}
+        record InventoryWithdrawal() implements Type {}
+        record InventoryAdjustment() implements Type {}
     }
 
     public static InventoryTransactionModel<Type.PurchaseOrder> createPurchaseOrder(Long organizationId) {
@@ -57,11 +57,20 @@ public record InventoryTransactionModel<T extends InventoryTransactionModel.Type
                 false);
     }
 
-    public static InventoryTransactionModel<Type.InventoryDeposit> createInventoryWithdraw(Long organizationId) {
+    public static InventoryTransactionModel<Type.InventoryDeposit> createInventoryWithdrawal(Long organizationId) {
         return new InventoryTransactionModel<Type.InventoryDeposit>(Optional.empty(),
                 Optional.empty(),
                 organizationId,
-                new Type.InventoryWithdraw(),
+                new Type.InventoryWithdrawal(),
+                new ArrayList<>(),
+                false);
+    }
+
+    public static InventoryTransactionModel<Type.InventoryDeposit> createInventoryAdjustment(Long organizationId) {
+        return new InventoryTransactionModel<Type.InventoryDeposit>(Optional.empty(),
+                Optional.empty(),
+                organizationId,
+                new Type.InventoryAdjustment(),
                 new ArrayList<>(),
                 false);
     }

@@ -35,7 +35,7 @@ public class PurchaseOrderResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createPurchaseOrder(@Valid PurchaseOrderCreateRequest request) {
         final var organizationId = tokenService.getOrganizationId(jwt);
-        purchaseOrderService.persist(request.intoModel(organizationId));
+        purchaseOrderService.createPurchaseOrder(organizationId, request);
         return Response.ok().build();
     }
 

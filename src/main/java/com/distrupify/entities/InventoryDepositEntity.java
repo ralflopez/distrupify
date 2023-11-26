@@ -1,11 +1,10 @@
 package com.distrupify.entities;
 
-import com.distrupify.dto.InventoryDepositDTO;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+
+import java.util.Date;
 
 @EqualsAndHashCode(callSuper = true)
 @Builder
@@ -19,6 +18,9 @@ public class InventoryDepositEntity extends PanacheEntityBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "created_at", nullable = false)
+    private Date createdAt;
 
     @Column(name = "organization_id", nullable = false)
     private Long organizationId;
@@ -37,4 +39,11 @@ public class InventoryDepositEntity extends PanacheEntityBase {
     @ToString.Exclude
     private InventoryTransactionEntity inventoryTransaction;
     public static final String INVENTORY_TRANSACTION = "inventoryTransaction";
+
+    @PrePersist
+    protected void onCreate() {
+        if (createdAt == null) {
+            createdAt = new Date();
+        }
+    }
 }

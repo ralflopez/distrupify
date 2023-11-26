@@ -2,15 +2,16 @@ package com.distrupify.entities;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.*;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 
 @EqualsAndHashCode(callSuper = true)
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
+@NoArgsConstructor
 @ToString
 @Entity
 @Table(name = "purchase_orders")
@@ -19,7 +20,8 @@ public class PurchaseOrderEntity extends PanacheEntityBase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Date timestamp;
+    @Column(name = "created_at", nullable = false)
+    private Date createdAt;
 
     @Column(name = "received_at", nullable = true)
     private Date receivedAt;
@@ -40,4 +42,52 @@ public class PurchaseOrderEntity extends PanacheEntityBase {
     @JoinColumn(name = "inventory_transaction_id", updatable = false, insertable = false)
     @ToString.Exclude
     private InventoryTransactionEntity inventoryTransaction;
+
+    @PrePersist
+    protected void onCreate() {
+        if (createdAt == null) {
+            createdAt = new Date();
+        }
+    }
+
+    public PurchaseOrderEntity(Long organizationId) {
+        this(organizationId, true);
+    }
+
+    public PurchaseOrderEntity(Long organizationId, boolean pending) {
+        inventoryTransaction = InventoryTransactionEntity.builder()
+                .inventoryTransactionType(InventoryTransactionEntity.Type.PURCHASE_ORDER)
+                .inventoryLogs(new ArrayList<>())
+                .organizationId(organizationId)
+                .pending(pending)
+                .build();
+
+        this.organizationId = organizationId;
+    }
+
+    public void addLog(long productId, int quantity, double unitPrice) {
+        final var log = InventoryLogEntity.builder()
+                .inventoryLogType(InventoryLogEntity.Type.INCOMING)
+                .unitPrice(BigDecimal.valueOf(unitPrice))
+                .organizationId(organizationId)
+                .productId(productId)
+                .quantity(quantity)
+                .build();
+
+        inventoryTransaction.getInventoryLogs().add(log);
+    }
+
+    @Override
+    @Transactional
+    public void persist() {
+        inventoryTransaction.persist();
+        inventoryTransactionId = inventoryTransaction.getId();
+
+        inventoryTransaction.getInventoryLogs()
+                .stream()
+                .peek(l -> l.setInventoryTransactionId(inventoryTransaction.getId()))
+                .forEach(l -> l.persist());
+
+        super.persist();
+    }
 }

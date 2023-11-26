@@ -48,7 +48,8 @@ public class InventoryTransactionEntity extends PanacheEntityBase {
     public enum Type {
         DEPOSIT,
         PURCHASE_ORDER,
-        WITHDRAW
+        WITHDRAW,
+        ADJUSTMENT
     }
 
     public boolean isIncoming() {

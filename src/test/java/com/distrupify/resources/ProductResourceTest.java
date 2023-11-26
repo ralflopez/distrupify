@@ -118,17 +118,17 @@ class ProductResourceTest {
         t1.addLog(InventoryLogModel.Type.INCOMING, 56, 0, galaxyBuds2.getId());
         inventoryTransactionRepository.persist(t1);
 
-        final var t2 = InventoryTransactionModel.createInventoryWithdraw(organizationId);
+        final var t2 = InventoryTransactionModel.createInventoryWithdrawal(organizationId);
         t2.addLog(InventoryLogModel.Type.OUTGOING, 5, 0, s22Ultra.getId());
         t2.addLog(InventoryLogModel.Type.OUTGOING, 4, 0, galaxyBuds2.getId());
         inventoryTransactionRepository.persist(t2);
 
-        final var t3 = InventoryTransactionModel.createPurchaseOrder(organizationId);
-        t3.addLog(InventoryLogModel.Type.INCOMING, 200, 0, s22Ultra.getId());
-        t3.addLog(InventoryLogModel.Type.INCOMING, 100, 0, galaxyBuds2.getId());
-        inventoryTransactionRepository.persist(t3);
+        final var t3 = new PurchaseOrderEntity(organizationId);
+        t3.addLog(s22Ultra.getId(), 200, 0);
+        t3.addLog(galaxyBuds2.getId(), 100, 0);
+        t3.persist();
 
-        final var t4 = InventoryTransactionModel.createInventoryWithdraw(organizationId);
+        final var t4 = InventoryTransactionModel.createInventoryWithdrawal(organizationId);
         t4.addLog(InventoryLogModel.Type.OUTGOING, 1, 0, s22Ultra.getId());
         t4.addLog(InventoryLogModel.Type.OUTGOING, 3, 0, galaxyBuds2.getId());
         inventoryTransactionRepository.persist(t4);
@@ -138,10 +138,10 @@ class ProductResourceTest {
         t5.addLog(InventoryLogModel.Type.INCOMING, 44, 0, galaxyBuds2.getId());
         inventoryTransactionRepository.persist(t5);
 
-        final var t6 = InventoryTransactionModel.createCompletedPurchaseOrder(organizationId);
-        t6.addLog(InventoryLogModel.Type.INCOMING, 5, 0, s22Ultra.getId());
-        t6.addLog(InventoryLogModel.Type.INCOMING, 26, 0, galaxyBuds2.getId());
-        inventoryTransactionRepository.persist(t6);
+        final var t6 = new PurchaseOrderEntity(organizationId, false);
+        t6.addLog(s22Ultra.getId(), 5, 0);
+        t6.addLog(galaxyBuds2.getId(), 26, 0);
+        t6.persist();
     }
 
 }
