@@ -43,7 +43,7 @@ public class InventoryTransactionRepository {
                     .organizationId(inventoryTransactionModel.organizationId())
                     .build();
             case PURCHASE_ORDER -> new PurchaseOrderEntity(inventoryTransactionModel.organizationId());
-            case WITHDRAW -> InventoryWithdrawEntity.builder()
+            case WITHDRAW -> InventoryWithdrawalEntity.builder()
                     .inventoryTransactionId(inventoryTransaction.getId())
                     .organizationId(inventoryTransactionModel.organizationId())
                     .build();

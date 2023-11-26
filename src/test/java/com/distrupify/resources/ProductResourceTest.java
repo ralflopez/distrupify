@@ -99,7 +99,7 @@ class ProductResourceTest {
     @Transactional
     public void afterEach() {
         PurchaseOrderEntity.deleteAll();
-        InventoryWithdrawEntity.deleteAll();
+        InventoryWithdrawalEntity.deleteAll();
         InventoryDepositEntity.deleteAll();
         InventoryLogEntity.deleteAll();
         InventoryTransactionEntity.deleteAll();
@@ -131,20 +131,20 @@ class ProductResourceTest {
         t1.addLog(InventoryLogModel.Type.INCOMING, 56, 0, galaxyBuds2.getId());
         inventoryTransactionRepository.persist(t1);
 
-        final var t2 = InventoryTransactionModel.createInventoryWithdrawal(organizationId);
-        t2.addLog(InventoryLogModel.Type.OUTGOING, 5, 0, s22Ultra.getId());
-        t2.addLog(InventoryLogModel.Type.OUTGOING, 4, 0, galaxyBuds2.getId());
-        inventoryTransactionRepository.persist(t2);
+        final var t2 = new InventoryWithdrawalEntity(organizationId);
+        t2.addLog(s22Ultra.getId(), 5, 0);
+        t2.addLog(galaxyBuds2.getId(), 4, 0);
+        t2.persist();
 
         final var t3 = new PurchaseOrderEntity(organizationId);
         t3.addLog(s22Ultra.getId(), 200, 0);
         t3.addLog(galaxyBuds2.getId(), 100, 0);
         t3.persist();
 
-        final var t4 = InventoryTransactionModel.createInventoryWithdrawal(organizationId);
-        t4.addLog(InventoryLogModel.Type.OUTGOING, 1, 0, s22Ultra.getId());
-        t4.addLog(InventoryLogModel.Type.OUTGOING, 3, 0, galaxyBuds2.getId());
-        inventoryTransactionRepository.persist(t4);
+        final var t4 = new InventoryWithdrawalEntity(organizationId);
+        t4.addLog(s22Ultra.getId(), 1, 0);
+        t4.addLog(galaxyBuds2.getId(), 3, 0);
+        t4.persist();
 
         final var t5 = InventoryTransactionModel.createInventoryDeposit(organizationId);
         t5.addLog(InventoryLogModel.Type.INCOMING, 20, 0, s22Ultra.getId());

@@ -5,8 +5,7 @@ import com.distrupify.auth.entities.UserEntity;
 import com.distrupify.auth.requests.SignupRequest;
 import com.distrupify.auth.services.AuthService;
 import com.distrupify.entities.*;
-import com.distrupify.repository.InventoryTransactionRepository;
-import com.distrupify.requests.PurchaseOrderCreateRequest;
+import com.distrupify.requests.InventoryWithdrawalCreateRequest;
 import com.distrupify.services.ProductService;
 import com.distrupify.utils.DependsOn;
 import io.quarkus.test.common.QuarkusTestResource;
@@ -22,14 +21,14 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static com.distrupify.entities.InventoryLogEntity.Type.INCOMING;
 import static io.restassured.RestAssured.given;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @QuarkusTest
-@TestHTTPEndpoint(PurchaseOrderResource.class)
+@TestHTTPEndpoint(InventoryWithdrawalResource.class)
 @QuarkusTestResource(PostgresResource.class)
-class PurchaseOrderResourceTest {
+class InventoryWithdrawalResourceTest {
     private static final String PASSWORD = "password";
 
     Long organizationId;
@@ -42,9 +41,6 @@ class PurchaseOrderResourceTest {
 
     @Inject
     AuthService authService;
-
-    @Inject
-    InventoryTransactionRepository inventoryTransactionRepository;
 
     @Inject
     ProductService productService;
@@ -92,9 +88,8 @@ class PurchaseOrderResourceTest {
     @AfterEach
     @Transactional
     public void afterEach() {
-        PurchaseOrderEntity.deleteAll();
         InventoryWithdrawalEntity.deleteAll();
-        InventoryDepositEntity.deleteAll();
+        InventoryAdjustmentEntity.deleteAll();
         InventoryLogEntity.deleteAll();
         InventoryTransactionEntity.deleteAll();
         ProductEntity.deleteAll();
@@ -102,57 +97,24 @@ class PurchaseOrderResourceTest {
         OrganizationEntity.deleteAll();
     }
 
-    @Test
-    public void shouldAddTheLogsAfterCreatingAPurchaseOrder() {
-        final var request = PurchaseOrderCreateRequest.builder()
-                .items(List.of(PurchaseOrderCreateRequest.Item.builder()
-                                .productId(galaxyBuds2.getId())
-                                .quantity(150)
-                                .unitPrice(0.0)
-                                .build(),
-                        PurchaseOrderCreateRequest.Item.builder()
-                                .productId(s22Ultra.getId())
-                                .quantity(80)
-                                .unitPrice(0.0)
-                                .build()))
-                .build();
-
-        given()
-                .contentType(ContentType.JSON)
-                .headers("Authorization", authHeader)
-                .body(request)
-                .when()
-                .post()
-                .then()
-                .log().all()
-                .statusCode(200);
-
-        final var logs = InventoryLogEntity.findAll()
-                .stream()
-                .map(e -> (InventoryLogEntity) e)
-                .toList();
-        assertEquals(2, logs.size());
-        assertTrue(logs.stream().allMatch(l -> l.getInventoryLogType().equals(INCOMING)));
+    @Transactional
+    public void _shouldUpdateTheProductQuantityData() {
+        final var t1 = new InventoryAdjustmentEntity(organizationId);
+        t1.addLog(InventoryLogEntity.Type.INCOMING, s22Ultra.getId(), 186);
+        t1.addLog(InventoryLogEntity.Type.INCOMING, galaxyBuds2.getId(), 250);
+        t1.persist();
     }
 
     @Test
     @DependsOn(value = {"ProductResourceTest.shouldGetTheCorrectProductQuantity"})
-    public void shouldOnlyUpdateProductCountAfterReceivingThePurchaseOrder() {
-        // Create
-        final var GALAXY_BUDS_2_COUNT = 150;
-        final var S22_ULTRA_COUNT = 80;
+    public void shouldUpdateTheProductQuantity() {
+        _shouldUpdateTheProductQuantityData();
 
-        final var request = PurchaseOrderCreateRequest.builder()
-                .items(List.of(PurchaseOrderCreateRequest.Item.builder()
-                                .productId(galaxyBuds2.getId())
-                                .quantity(GALAXY_BUDS_2_COUNT)
-                                .unitPrice(0.0)
-                                .build(),
-                        PurchaseOrderCreateRequest.Item.builder()
-                                .productId(s22Ultra.getId())
-                                .quantity(S22_ULTRA_COUNT)
-                                .unitPrice(0.0)
-                                .build()))
+        final var request = InventoryWithdrawalCreateRequest.builder()
+                .items(List.of(
+                        new InventoryWithdrawalCreateRequest.Item(s22Ultra.getId(), 100, 0.0),
+                        new InventoryWithdrawalCreateRequest.Item(galaxyBuds2.getId(), 200, 0.0)
+                ))
                 .build();
 
         given()
@@ -170,40 +132,54 @@ class PurchaseOrderResourceTest {
                 .filter(p -> p.id().orElse(-1L).equals(s22Ultra.getId()))
                 .findFirst();
         assertTrue(s22UltraEntry.isPresent());
-        assertEquals(0, s22UltraEntry.get().quantity());
+        assertEquals(86, s22UltraEntry.get().quantity());
 
         var galaxyBuds2Entry = products.stream()
                 .filter(p -> p.id().orElse(-1L).equals(galaxyBuds2.getId()))
                 .findFirst();
         assertTrue(galaxyBuds2Entry.isPresent());
-        assertEquals(0, galaxyBuds2Entry.get().quantity());
+        assertEquals(50, galaxyBuds2Entry.get().quantity());
+    }
 
-        // Receive
-        final var transactions = PurchaseOrderEntity.findAll().stream().toList();
-        assertEquals(1, transactions.size());
-        final var transaction = (PurchaseOrderEntity) transactions.get(0);
+    @Test
+    public void shouldFailWhenNotEnoughQuantity() {
+        _shouldUpdateTheProductQuantityData();
+
+        final var request = InventoryWithdrawalCreateRequest.builder()
+                .items(List.of(
+                        new InventoryWithdrawalCreateRequest.Item(s22Ultra.getId(), 9999, 0.0),
+                        new InventoryWithdrawalCreateRequest.Item(galaxyBuds2.getId(), 100, 0.0)
+                ))
+                .build();
 
         given()
                 .contentType(ContentType.JSON)
                 .headers("Authorization", authHeader)
                 .body(request)
                 .when()
-                .post("/" + transaction.getId())
+                .post()
                 .then()
                 .log().all()
-                .statusCode(200);
+                .statusCode(400);
+    }
 
-        products = productService.findAll(organizationId);
-        s22UltraEntry = products.stream()
-                .filter(p -> p.id().orElse(-1L).equals(s22Ultra.getId()))
-                .findFirst();
-        assertTrue(s22UltraEntry.isPresent());
-        assertEquals(S22_ULTRA_COUNT, s22UltraEntry.get().quantity());
+    @Test
+    public void shouldFailWhenProductIdIsInvalid() {
+        final var request = InventoryWithdrawalCreateRequest.builder()
+                .items(List.of(
+                        new InventoryWithdrawalCreateRequest.Item(0L, 100, 0.0),
+                        new InventoryWithdrawalCreateRequest.Item(galaxyBuds2.getId(), 100, 0.0)
+                ))
+                .build();
 
-        galaxyBuds2Entry = products.stream()
-                .filter(p -> p.id().orElse(-1L).equals(galaxyBuds2.getId()))
-                .findFirst();
-        assertTrue(galaxyBuds2Entry.isPresent());
-        assertEquals(GALAXY_BUDS_2_COUNT, galaxyBuds2Entry.get().quantity());
+        given()
+                .contentType(ContentType.JSON)
+                .headers("Authorization", authHeader)
+                .body(request)
+                .when()
+                .post()
+                .then()
+                .log().all()
+                .statusCode(400);
     }
 }
