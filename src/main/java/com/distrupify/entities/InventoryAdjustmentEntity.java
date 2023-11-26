@@ -9,6 +9,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static com.distrupify.entities.InventoryTransactionEntity.Type.ADJUSTMENT;
+
 @EqualsAndHashCode(callSuper = true)
 @Builder
 @NoArgsConstructor
@@ -18,6 +20,8 @@ import java.util.Date;
 @Entity
 @Table(name = "inventory_adjustments")
 public class InventoryAdjustmentEntity extends PanacheEntityBase {
+    private static InventoryTransactionEntity.Type INVENTORY_TRANSACTION_TYPE = ADJUSTMENT;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -52,7 +56,7 @@ public class InventoryAdjustmentEntity extends PanacheEntityBase {
 
     public InventoryAdjustmentEntity(Long organizationId) {
         inventoryTransaction = InventoryTransactionEntity.builder()
-                .inventoryTransactionType(InventoryTransactionEntity.Type.PURCHASE_ORDER)
+                .inventoryTransactionType(INVENTORY_TRANSACTION_TYPE)
                 .inventoryLogs(new ArrayList<>())
                 .organizationId(organizationId)
                 .pending(false)

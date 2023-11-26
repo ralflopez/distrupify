@@ -105,7 +105,7 @@ class ProductResourceTest {
 
     @Test
     public void shouldGetTheCorrectProductQuantity() {
-        shouldGetTheCorrectProductQuantityData();
+        _shouldGetTheCorrectProductQuantityData();
 
         given()
                 .headers("Authorization", authHeader)
@@ -120,7 +120,7 @@ class ProductResourceTest {
     }
 
     @Transactional
-    public void shouldGetTheCorrectProductQuantityData() {
+    public void _shouldGetTheCorrectProductQuantityData() {
         final var t1 = new InventoryAdjustmentEntity(organizationId);
         t1.addLog(InventoryLogEntity.Type.INCOMING, s22Ultra.getId(), 13);
         t1.addLog(InventoryLogEntity.Type.INCOMING, galaxyBuds2.getId(), 56);

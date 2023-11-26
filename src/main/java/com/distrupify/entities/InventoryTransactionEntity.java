@@ -3,8 +3,6 @@ package com.distrupify.entities;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Date;
 import java.util.List;
@@ -46,14 +44,9 @@ public class InventoryTransactionEntity extends PanacheEntityBase {
     public boolean pending;
 
     public enum Type {
-        DEPOSIT,
         PURCHASE_ORDER,
-        WITHDRAW,
+        WITHDRAWAL,
         ADJUSTMENT
-    }
-
-    public boolean isIncoming() {
-        return this.inventoryTransactionType == Type.DEPOSIT || this.inventoryTransactionType == Type.PURCHASE_ORDER;
     }
 
     @PrePersist

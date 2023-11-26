@@ -3,11 +3,16 @@ package com.distrupify.entities;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+
+import static com.distrupify.entities.InventoryTransactionEntity.Type.PURCHASE_ORDER;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -16,6 +21,8 @@ import java.util.Date;
 @Entity
 @Table(name = "purchase_orders")
 public class PurchaseOrderEntity extends PanacheEntityBase {
+    private static InventoryTransactionEntity.Type INVENTORY_TRANSACTION_TYPE = PURCHASE_ORDER;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -57,7 +64,7 @@ public class PurchaseOrderEntity extends PanacheEntityBase {
 
     public PurchaseOrderEntity(Long organizationId, boolean pending) {
         inventoryTransaction = InventoryTransactionEntity.builder()
-                .inventoryTransactionType(InventoryTransactionEntity.Type.PURCHASE_ORDER)
+                .inventoryTransactionType(INVENTORY_TRANSACTION_TYPE)
                 .inventoryLogs(new ArrayList<>())
                 .organizationId(organizationId)
                 .pending(pending)

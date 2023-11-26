@@ -8,6 +8,8 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
+import static com.distrupify.entities.InventoryTransactionEntity.Type.WITHDRAWAL;
+
 @EqualsAndHashCode(callSuper = true)
 @Builder
 @NoArgsConstructor
@@ -17,6 +19,8 @@ import java.util.ArrayList;
 @Entity
 @Table(name = "inventory_withdrawals")
 public class InventoryWithdrawalEntity extends PanacheEntityBase {
+    private static InventoryTransactionEntity.Type INVENTORY_TRANSACTION_TYPE = WITHDRAWAL;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -45,7 +49,7 @@ public class InventoryWithdrawalEntity extends PanacheEntityBase {
 
     public InventoryWithdrawalEntity(Long organizationId, boolean pending) {
         inventoryTransaction = InventoryTransactionEntity.builder()
-                .inventoryTransactionType(InventoryTransactionEntity.Type.PURCHASE_ORDER)
+                .inventoryTransactionType(INVENTORY_TRANSACTION_TYPE)
                 .inventoryLogs(new ArrayList<>())
                 .organizationId(organizationId)
                 .pending(pending)
