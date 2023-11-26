@@ -47,7 +47,7 @@ public class InventoryTransactionRepository {
                     .inventoryTransactionId(inventoryTransaction.getId())
                     .organizationId(inventoryTransactionModel.organizationId())
                     .build();
-            case ADJUSTMENT -> InventoryAdjustment.builder()
+            case ADJUSTMENT -> InventoryAdjustmentEntity.builder()
                     .inventoryTransactionId(inventoryTransaction.getId())
                     .organizationId(inventoryTransactionModel.organizationId())
                     .build();

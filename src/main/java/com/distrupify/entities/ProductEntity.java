@@ -45,6 +45,7 @@ public class ProductEntity extends PanacheEntityBase {
     private Set<InventoryLogEntity> inventoryLogs;
 
     @PrePersist
+    @SuppressWarnings("unused")
     protected void onCreate() {
         if (displayName == null) {
             displayName = brand + " " + name + " " + description;
