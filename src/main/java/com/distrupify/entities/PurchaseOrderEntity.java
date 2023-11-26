@@ -23,7 +23,7 @@ public class PurchaseOrderEntity extends PanacheEntityBase {
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
 
-    @Column(name = "received_at", nullable = true)
+    @Column(name = "received_at")
     private Date receivedAt;
 
     @Column(name = "organization_id", nullable = false)
@@ -44,6 +44,7 @@ public class PurchaseOrderEntity extends PanacheEntityBase {
     private InventoryTransactionEntity inventoryTransaction;
 
     @PrePersist
+    @SuppressWarnings("unused")
     protected void onCreate() {
         if (createdAt == null) {
             createdAt = new Date();

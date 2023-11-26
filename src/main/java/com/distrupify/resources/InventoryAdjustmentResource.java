@@ -26,6 +26,7 @@ public class InventoryAdjustmentResource {
 
     @POST
     @Authenticated
+    @SuppressWarnings("unused")
     public Response createInventoryAdjustment(@Valid InventoryAdjustmentCreateRequest request) {
         final var organizationId = tokenService.getOrganizationId(jwt);
         inventoryAdjustmentService.createInventoryAdjustment(organizationId, request);

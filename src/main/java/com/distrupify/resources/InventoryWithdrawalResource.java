@@ -1,9 +1,7 @@
 package com.distrupify.resources;
 
 import com.distrupify.auth.services.TokenService;
-import com.distrupify.requests.InventoryAdjustmentCreateRequest;
 import com.distrupify.requests.InventoryWithdrawalCreateRequest;
-import com.distrupify.services.InventoryAdjustmentService;
 import com.distrupify.services.InventoryWithdrawalService;
 import io.quarkus.security.Authenticated;
 import jakarta.enterprise.context.RequestScoped;
@@ -28,6 +26,7 @@ public class InventoryWithdrawalResource {
 
     @POST
     @Authenticated
+    @SuppressWarnings("unused")
     public Response createInventoryWithdrawal(@Valid InventoryWithdrawalCreateRequest request) {
         final var organizationId = tokenService.getOrganizationId(jwt);
         inventoryWithdrawalService.createInventoryWithdrawal(organizationId, request);

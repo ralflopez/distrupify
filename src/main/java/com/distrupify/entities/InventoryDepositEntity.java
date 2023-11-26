@@ -41,6 +41,7 @@ public class InventoryDepositEntity extends PanacheEntityBase {
     public static final String INVENTORY_TRANSACTION = "inventoryTransaction";
 
     @PrePersist
+    @SuppressWarnings("unused")
     protected void onCreate() {
         if (createdAt == null) {
             createdAt = new Date();

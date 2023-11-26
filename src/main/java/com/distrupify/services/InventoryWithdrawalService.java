@@ -1,10 +1,7 @@
 package com.distrupify.services;
 
-import com.distrupify.entities.InventoryAdjustmentEntity;
-import com.distrupify.entities.InventoryLogEntity;
 import com.distrupify.entities.InventoryWithdrawalEntity;
 import com.distrupify.models.ProductModel;
-import com.distrupify.requests.InventoryAdjustmentCreateRequest;
 import com.distrupify.requests.InventoryWithdrawalCreateRequest;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

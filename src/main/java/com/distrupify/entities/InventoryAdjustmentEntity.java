@@ -43,6 +43,7 @@ public class InventoryAdjustmentEntity extends PanacheEntityBase {
     private InventoryTransactionEntity inventoryTransaction;
 
     @PrePersist
+    @SuppressWarnings("unused")
     protected void onCreate() {
         if (createdAt == null) {
             createdAt = new Date();

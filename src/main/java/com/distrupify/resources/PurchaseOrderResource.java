@@ -30,6 +30,7 @@ public class PurchaseOrderResource {
     @POST
     @Authenticated
     @Consumes(MediaType.APPLICATION_JSON)
+    @SuppressWarnings("unused")
     public Response createPurchaseOrder(@Valid PurchaseOrderCreateRequest request) {
         final var organizationId = tokenService.getOrganizationId(jwt);
         purchaseOrderService.createPurchaseOrder(organizationId, request);
@@ -39,6 +40,7 @@ public class PurchaseOrderResource {
     @POST
     @Path("/{id}")
     @Authenticated
+    @SuppressWarnings("unused")
     public Response receivePurchaseOrder(@PathParam("id") Long id) {
         final var organizationId = tokenService.getOrganizationId(jwt);
         purchaseOrderService.receive(organizationId, id);

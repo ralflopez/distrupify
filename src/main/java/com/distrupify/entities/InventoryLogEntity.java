@@ -62,6 +62,7 @@ public class InventoryLogEntity extends PanacheEntityBase {
     }
 
     @PrePersist
+    @SuppressWarnings("unused")
     protected void onCreate() {
         if (timestamp == null) {
             timestamp = new Date();
