@@ -5,7 +5,6 @@ import com.distrupify.auth.entities.UserEntity;
 import com.distrupify.auth.requests.SignupRequest;
 import com.distrupify.auth.services.AuthService;
 import com.distrupify.entities.*;
-import com.distrupify.repository.InventoryTransactionRepository;
 import com.distrupify.requests.InventoryAdjustmentCreateRequest;
 import com.distrupify.services.ProductService;
 import com.distrupify.utils.DependsOn;
@@ -44,9 +43,6 @@ class InventoryAdjustmentResourceTest {
 
     @Inject
     AuthService authService;
-
-    @Inject
-    InventoryTransactionRepository inventoryTransactionRepository;
 
     @Inject
     ProductService productService;

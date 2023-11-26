@@ -5,9 +5,6 @@ import com.distrupify.auth.entities.UserEntity;
 import com.distrupify.auth.requests.SignupRequest;
 import com.distrupify.auth.services.AuthService;
 import com.distrupify.entities.*;
-import com.distrupify.models.InventoryLogModel;
-import com.distrupify.models.InventoryTransactionModel;
-import com.distrupify.repository.InventoryTransactionRepository;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
@@ -41,9 +38,6 @@ class ProductResourceTest {
 
     @Inject
     AuthService authService;
-
-    @Inject
-    InventoryTransactionRepository inventoryTransactionRepository;
 
     @BeforeEach
     @Transactional
@@ -99,6 +93,7 @@ class ProductResourceTest {
     @Transactional
     public void afterEach() {
         PurchaseOrderEntity.deleteAll();
+        InventoryAdjustmentEntity.deleteAll();
         InventoryWithdrawalEntity.deleteAll();
         InventoryDepositEntity.deleteAll();
         InventoryLogEntity.deleteAll();
@@ -126,10 +121,10 @@ class ProductResourceTest {
 
     @Transactional
     public void shouldGetTheCorrectProductQuantityData() {
-        final var t1 = InventoryTransactionModel.createInventoryDeposit(organizationId);
-        t1.addLog(InventoryLogModel.Type.INCOMING, 13, 0, s22Ultra.getId());
-        t1.addLog(InventoryLogModel.Type.INCOMING, 56, 0, galaxyBuds2.getId());
-        inventoryTransactionRepository.persist(t1);
+        final var t1 = new InventoryAdjustmentEntity(organizationId);
+        t1.addLog(InventoryLogEntity.Type.INCOMING, s22Ultra.getId(), 13);
+        t1.addLog(InventoryLogEntity.Type.INCOMING, galaxyBuds2.getId(), 56);
+        t1.persist();
 
         final var t2 = new InventoryWithdrawalEntity(organizationId);
         t2.addLog(s22Ultra.getId(), 5, 0);
@@ -146,10 +141,10 @@ class ProductResourceTest {
         t4.addLog(galaxyBuds2.getId(), 3, 0);
         t4.persist();
 
-        final var t5 = InventoryTransactionModel.createInventoryDeposit(organizationId);
-        t5.addLog(InventoryLogModel.Type.INCOMING, 20, 0, s22Ultra.getId());
-        t5.addLog(InventoryLogModel.Type.INCOMING, 44, 0, galaxyBuds2.getId());
-        inventoryTransactionRepository.persist(t5);
+        final var t5 = new InventoryAdjustmentEntity(organizationId);
+        t5.addLog(InventoryLogEntity.Type.INCOMING, s22Ultra.getId(), 20);
+        t5.addLog(InventoryLogEntity.Type.INCOMING, galaxyBuds2.getId(), 44);
+        t5.persist();
 
         final var t6 = new PurchaseOrderEntity(organizationId, false);
         t6.addLog(s22Ultra.getId(), 5, 0);

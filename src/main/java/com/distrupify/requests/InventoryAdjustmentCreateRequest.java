@@ -27,13 +27,4 @@ public class InventoryAdjustmentCreateRequest {
 
     @Valid
     public List<Item> items;
-
-//    public InventoryTransactionModel<InventoryTransactionModel.Type.InventoryAdjustment> intoModel(Long organizationId) {
-//        final var transaction = InventoryTransactionModel.createInventoryAdjustment(organizationId);
-//        items.forEach(i -> transaction.addLog(,
-//                        i.quantity,
-//                        i.unitPrice,
-//                        i.productId));
-//        return transaction;
-//    }
 }

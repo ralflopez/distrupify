@@ -1,11 +1,7 @@
 package com.distrupify.services;
 
 import com.distrupify.entities.InventoryDepositEntity;
-import com.distrupify.repository.InventoryTransactionRepository;
-import com.distrupify.requests.InventoryDepositCreateRequest;
 import com.distrupify.requests.InventoryDepositSearchRequest;
-import com.distrupify.models.InventoryLogModel;
-import com.distrupify.models.InventoryTransactionModel;
 import com.distrupify.utils.Pageable;
 import com.speedment.jpastreamer.application.JPAStreamer;
 import io.quarkus.panache.common.Page;
@@ -27,9 +23,6 @@ import static com.distrupify.entities.InventoryTransactionEntity.TIMESTAMP;
 @ApplicationScoped
 public class InventoryDepositService {
     private static final Logger LOGGER = Logger.getLogger(InventoryDepositService.class);
-
-    @Inject
-    InventoryTransactionRepository inventoryTransactionRepository;
 
     @Inject
     JPAStreamer jpaStreamer;
@@ -77,11 +70,6 @@ public class InventoryDepositService {
                 .setFirstResult(pageable.offset())
                 .setMaxResults(pageable.limit())
                 .getResultList();
-    }
-
-    @Transactional
-    public void deposit(InventoryTransactionModel<InventoryTransactionModel.Type.InventoryDeposit> model) {
-        inventoryTransactionRepository.persist(model);
     }
 
 //    @Transactional

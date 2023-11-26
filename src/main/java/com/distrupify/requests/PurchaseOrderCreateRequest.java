@@ -1,7 +1,5 @@
 package com.distrupify.requests;
 
-import com.distrupify.models.InventoryLogModel;
-import com.distrupify.models.InventoryTransactionModel;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
@@ -29,13 +27,4 @@ public class PurchaseOrderCreateRequest {
 
     @Valid
     public List<Item> items;
-
-    public InventoryTransactionModel<InventoryTransactionModel.Type.PurchaseOrder> intoModel(Long organizationId) {
-        final var transaction = InventoryTransactionModel.createPurchaseOrder(organizationId);
-        items.forEach(i -> transaction.addLog(InventoryLogModel.Type.INCOMING,
-                        i.quantity,
-                        i.unitPrice,
-                        i.productId));
-        return transaction;
-    }
 }

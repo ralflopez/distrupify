@@ -18,9 +18,6 @@ import static com.speedment.jpastreamer.streamconfiguration.StreamConfiguration.
 public class PurchaseOrderService {
 
     @Inject
-    InventoryTransactionService inventoryTransactionService;
-
-    @Inject
     JPAStreamer jpaStreamer;
 
     @Inject

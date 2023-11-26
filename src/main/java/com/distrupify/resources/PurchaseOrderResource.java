@@ -2,7 +2,6 @@ package com.distrupify.resources;
 
 import com.distrupify.auth.services.TokenService;
 import com.distrupify.requests.PurchaseOrderCreateRequest;
-import com.distrupify.services.InventoryTransactionService;
 import com.distrupify.services.PurchaseOrderService;
 import io.quarkus.security.Authenticated;
 import jakarta.enterprise.context.RequestScoped;
@@ -15,8 +14,6 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.jwt.JsonWebToken;
-
-import java.util.logging.Logger;
 
 @Path("/api/v1/purchase-order")
 @RequestScoped
