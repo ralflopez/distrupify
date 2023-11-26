@@ -37,6 +37,8 @@ class ProductResourceTest {
 
     ProductEntity galaxyBuds2;
 
+    ProductEntity headRadicalMP;
+
     @Inject
     AuthService authService;
 
@@ -81,6 +83,16 @@ class ProductResourceTest {
                 .unitPrice(BigDecimal.valueOf(4000))
                 .build();
         galaxyBuds2.persist();
+
+        headRadicalMP = ProductEntity.builder()
+                .organizationId(organization.getId())
+                .sku("371836472")
+                .brand("Head")
+                .name("Radical MP")
+                .description("Flexpoint")
+                .unitPrice(BigDecimal.valueOf(15000))
+                .build();
+        headRadicalMP.persist();
     }
 
     @AfterEach
@@ -105,9 +117,10 @@ class ProductResourceTest {
                 .when()
                 .get()
                 .then()
-                .body("products", Matchers.hasSize(2))
-                .body("products[0].quantity", Matchers.equalTo(119)) // galaxy buds
-                .body("products[1].quantity", Matchers.equalTo(32)) // s22 ultra
+                .body("products", Matchers.hasSize(3))
+                .body("products[0].quantity", Matchers.equalTo(0)) // head radical mp
+                .body("products[1].quantity", Matchers.equalTo(119)) // galaxy buds
+                .body("products[2].quantity", Matchers.equalTo(32)) // s22 ultra
                 .statusCode(200);
     }
 

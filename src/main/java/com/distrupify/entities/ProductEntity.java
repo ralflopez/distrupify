@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
 @Builder
@@ -38,6 +39,10 @@ public class ProductEntity extends PanacheEntityBase {
     @JoinColumn(name = "organization_id", updatable = false, insertable = false)
     @ToString.Exclude
     private OrganizationEntity organization;
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private Set<InventoryLogEntity> inventoryLogs;
 
     @PrePersist
     protected void onCreate() {
