@@ -15,10 +15,10 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.util.logging.Logger;
 
 import static io.restassured.RestAssured.given;
 
@@ -33,11 +33,55 @@ class ProductResourceTest {
 
     String authHeader;
 
+    ProductEntity s22Ultra;
+
+    ProductEntity galaxyBuds2;
+
     @Inject
     AuthService authService;
 
     @Inject
     InventoryTransactionRepository inventoryTransactionRepository;
+
+    @BeforeEach
+    @Transactional
+    public void beforeEach() {
+        final var organization = OrganizationEntity.builder()
+                .name("products-test-organization")
+                .displayName("Products Organization")
+                .build();
+        organization.persist();
+        organizationId = organization.getId();
+
+        final var signUpRequest = SignupRequest.builder()
+                .email("new-user@email.com")
+                .name("new test user")
+                .password(PASSWORD)
+                .organizationId(organizationId)
+                .build();
+        final var tokenDTO = authService.signup(signUpRequest);
+        authHeader = "Bearer " + tokenDTO.token;
+
+        s22Ultra = ProductEntity.builder()
+                .organizationId(organization.getId())
+                .sku("1423333454124")
+                .brand("Samsung")
+                .name("Galaxy S22 Ultra")
+                .description("512GB Exclusive Gray")
+                .unitPrice(BigDecimal.valueOf(70000))
+                .build();
+        s22Ultra.persist();
+
+        galaxyBuds2 = ProductEntity.builder()
+                .organizationId(organization.getId())
+                .sku("123456789")
+                .brand("Samsung")
+                .name("Galaxy Buds 2")
+                .description("Onyx")
+                .unitPrice(BigDecimal.valueOf(4000))
+                .build();
+        galaxyBuds2.persist();
+    }
 
     @AfterEach
     @Transactional
@@ -61,7 +105,6 @@ class ProductResourceTest {
                 .when()
                 .get()
                 .then()
-                .log().body()
                 .body("products", Matchers.hasSize(2))
                 .body("products[0].quantity", Matchers.equalTo(119)) // galaxy buds
                 .body("products[1].quantity", Matchers.equalTo(32)) // s22 ultra
@@ -70,42 +113,6 @@ class ProductResourceTest {
 
     @Transactional
     public void shouldGetTheCorrectProductQuantityData() {
-        final var organization = OrganizationEntity.builder()
-                .name("products-test-organization")
-                .displayName("Products Organization")
-                .build();
-        organization.persist();
-        organizationId = organization.getId();
-
-        final var signUpRequest = SignupRequest.builder()
-                .email("new-user@email.com")
-                .name("new test user")
-                .password(PASSWORD)
-                .organizationId(organizationId)
-                .build();
-        final var tokenDTO = authService.signup(signUpRequest);
-        authHeader = "Bearer " + tokenDTO.token;
-
-        final var s22Ultra = ProductEntity.builder()
-                .organizationId(organization.getId())
-                .sku("1423333454124")
-                .brand("Samsung")
-                .name("Galaxy S22 Ultra")
-                .description("512GB Exclusive Gray")
-                .unitPrice(BigDecimal.valueOf(70000))
-                .build();
-        s22Ultra.persist();
-
-        final var galaxyBuds2 = ProductEntity.builder()
-                .organizationId(organization.getId())
-                .sku("123456789")
-                .brand("Samsung")
-                .name("Galaxy Buds 2")
-                .description("Onyx")
-                .unitPrice(BigDecimal.valueOf(4000))
-                .build();
-        galaxyBuds2.persist();
-
         final var t1 = InventoryTransactionModel.createInventoryDeposit(organizationId);
         t1.addLog(InventoryLogModel.Type.INCOMING, 13, 0, s22Ultra.getId());
         t1.addLog(InventoryLogModel.Type.INCOMING, 56, 0, galaxyBuds2.getId());

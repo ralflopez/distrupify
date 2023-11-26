@@ -43,7 +43,7 @@ public record InventoryTransactionModel<T extends InventoryTransactionModel.Type
         return new InventoryTransactionModel<Type.PurchaseOrder>(Optional.empty(),
                 Optional.empty(),
                 organizationId,
-                new Type.PurchaseOrder(null),
+                new Type.PurchaseOrder(new Date()),
                 new ArrayList<>(),
                 false);
     }

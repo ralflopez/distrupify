@@ -15,6 +15,8 @@ import java.util.List;
 @NoArgsConstructor
 public class PurchaseOrderCreateRequest {
     @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Item {
         public Long productId;
 

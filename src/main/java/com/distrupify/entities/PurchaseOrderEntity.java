@@ -21,7 +21,7 @@ public class PurchaseOrderEntity extends PanacheEntityBase {
 
     private Date timestamp;
 
-    @Column(name = "received_at")
+    @Column(name = "received_at", nullable = true)
     private Date receivedAt;
 
     @Column(name = "organization_id", nullable = false)
