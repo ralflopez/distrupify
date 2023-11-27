@@ -45,6 +45,8 @@ class InventoryTransactionResourceTest {
 
     SupplierEntity supplier;
 
+    CustomerEntity customer;
+
     @Inject
     AuthService authService;
 
@@ -65,6 +67,9 @@ class InventoryTransactionResourceTest {
                 .organizationId(organizationId)
                 .build();
         supplier.persist();
+
+        customer = new CustomerEntity(organizationId, "Customer", "Manila", "0917");
+        customer.persist();
 
         final var signUpRequest = SignupRequest.builder()
                 .email("new-user@email.com")
@@ -107,6 +112,7 @@ class InventoryTransactionResourceTest {
         ProductEntity.deleteAll();
         UserEntity.deleteAll();
         SupplierEntity.deleteAll();
+        CustomerEntity.deleteAll();
         OrganizationEntity.deleteAll();
     }
 
@@ -117,7 +123,7 @@ class InventoryTransactionResourceTest {
         t1.addLog(InventoryLogEntity.Type.INCOMING, galaxyBuds2.getId(), 100);
         t1.persist();
 
-        final var t2 = new InventoryWithdrawalEntity(organizationId);
+        final var t2 = new InventoryWithdrawalEntity(organizationId, customer.getId());
         t2.addLog(s22Ultra.getId(), 10, 100);
         t2.addLog(galaxyBuds2.getId(), 10, 50);
         t2.persist();

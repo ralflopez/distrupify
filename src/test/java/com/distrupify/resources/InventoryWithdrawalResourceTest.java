@@ -39,6 +39,8 @@ class InventoryWithdrawalResourceTest {
 
     ProductEntity galaxyBuds2;
 
+    CustomerEntity customer;
+
     @Inject
     AuthService authService;
 
@@ -49,11 +51,14 @@ class InventoryWithdrawalResourceTest {
     @Transactional
     public void beforeEach() {
         final var organization = OrganizationEntity.builder()
-                .name("purchase-order-test-organization")
-                .displayName("Purchase Order Organization")
+                .name("inventory-withdraw-test-organization")
+                .displayName("Inventory Withdraw Organization")
                 .build();
         organization.persist();
         organizationId = organization.getId();
+
+        customer = new CustomerEntity(organizationId, "Customer", "Manila", "0917");
+        customer.persist();
 
         final var signUpRequest = SignupRequest.builder()
                 .email("new-user@email.com")
@@ -94,6 +99,7 @@ class InventoryWithdrawalResourceTest {
         InventoryTransactionEntity.deleteAll();
         ProductEntity.deleteAll();
         UserEntity.deleteAll();
+        CustomerEntity.deleteAll();
         OrganizationEntity.deleteAll();
     }
 
@@ -115,6 +121,7 @@ class InventoryWithdrawalResourceTest {
                         new InventoryWithdrawalCreateRequest.Item(s22Ultra.getId(), 100, 0.0),
                         new InventoryWithdrawalCreateRequest.Item(galaxyBuds2.getId(), 200, 0.0)
                 ))
+                .customerId(customer.getId())
                 .build();
 
         given()

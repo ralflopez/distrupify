@@ -47,6 +47,14 @@ public class InventoryWithdrawalEntity extends PanacheEntityBase {
     private InventoryTransactionEntity inventoryTransaction;
     public static final String INVENTORY_TRANSACTION = "inventoryTransaction";
 
+    @Column(name = "customer_id", nullable = false)
+    private Long customerId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id", updatable = false, insertable = false)
+    @ToString.Exclude
+    private CustomerEntity customer;
+
     @PrePersist
     @SuppressWarnings("unused")
     protected void onCreate() {
@@ -55,11 +63,11 @@ public class InventoryWithdrawalEntity extends PanacheEntityBase {
         }
     }
 
-    public InventoryWithdrawalEntity(Long organizationId) {
-        this(organizationId, false);
+    public InventoryWithdrawalEntity(Long organizationId, Long customerId) {
+        this(organizationId, customerId, false);
     }
 
-    public InventoryWithdrawalEntity(Long organizationId, boolean pending) {
+    public InventoryWithdrawalEntity(Long organizationId, Long customerId, boolean pending) {
         inventoryTransaction = InventoryTransactionEntity.builder()
                 .inventoryTransactionType(INVENTORY_TRANSACTION_TYPE)
                 .inventoryLogs(new ArrayList<>())
@@ -67,6 +75,7 @@ public class InventoryWithdrawalEntity extends PanacheEntityBase {
                 .pending(pending)
                 .build();
 
+        this.customerId = customerId;
         this.organizationId = organizationId;
     }
 

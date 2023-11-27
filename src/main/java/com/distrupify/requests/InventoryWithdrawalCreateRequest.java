@@ -2,6 +2,7 @@ package com.distrupify.requests;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -27,4 +28,7 @@ public class InventoryWithdrawalCreateRequest {
 
     @Valid
     public List<Item> items;
+
+    @NotNull
+    public Long customerId;
 }

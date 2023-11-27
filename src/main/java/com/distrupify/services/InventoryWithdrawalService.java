@@ -44,7 +44,7 @@ public class InventoryWithdrawalService {
                     invalidProductQuantityOutgoingLog.get().productId);
         }
 
-        final var inventoryAdjustment = new InventoryWithdrawalEntity(organizationId);
+        final var inventoryAdjustment = new InventoryWithdrawalEntity(organizationId, request.customerId);
         request.items.forEach(i -> inventoryAdjustment.addLog(i.productId, i.quantity, i.unitPrice));
         inventoryAdjustment.persist();
     }

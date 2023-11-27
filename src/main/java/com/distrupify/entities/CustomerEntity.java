@@ -5,10 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @EqualsAndHashCode(callSuper = true)
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
+@NoArgsConstructor
 @ToString
 @Entity
 @Table(name = "customers")
@@ -30,4 +28,11 @@ public class CustomerEntity extends PanacheEntityBase {
     @JoinColumn(name = "organization_id", updatable = false, insertable = false)
     @ToString.Exclude
     private OrganizationEntity organization;
+
+    public CustomerEntity(Long organizationId, String name, String address, String contactNumber) {
+        this.name = name;
+        this.address = address;
+        this.contactNumber = contactNumber;
+        this.organizationId = organizationId;
+    }
 }

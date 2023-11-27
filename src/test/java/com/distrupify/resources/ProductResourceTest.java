@@ -38,6 +38,8 @@ class ProductResourceTest {
 
     SupplierEntity supplier;
 
+    CustomerEntity customer;
+
     @Inject
     AuthService authService;
 
@@ -67,6 +69,9 @@ class ProductResourceTest {
                 .organizationId(organizationId)
                 .build();
         supplier.persist();
+
+        customer = new CustomerEntity(organizationId, "Customer", "Manila", "0917");
+        customer.persist();
 
         s22Ultra = ProductEntity.builder()
                 .organizationId(organization.getId())
@@ -111,6 +116,7 @@ class ProductResourceTest {
         ProductEntity.deleteAll();
         UserEntity.deleteAll();
         SupplierEntity.deleteAll();
+        CustomerEntity.deleteAll();
         OrganizationEntity.deleteAll();
     }
 
@@ -137,7 +143,7 @@ class ProductResourceTest {
         t1.addLog(InventoryLogEntity.Type.INCOMING, galaxyBuds2.getId(), 56);
         t1.persist();
 
-        final var t2 = new InventoryWithdrawalEntity(organizationId);
+        final var t2 = new InventoryWithdrawalEntity(organizationId, customer.getId());
         t2.addLog(s22Ultra.getId(), 5, 0);
         t2.addLog(galaxyBuds2.getId(), 4, 0);
         t2.persist();
@@ -147,7 +153,7 @@ class ProductResourceTest {
         t3.addLog(galaxyBuds2.getId(), 100, 0);
         t3.persist();
 
-        final var t4 = new InventoryWithdrawalEntity(organizationId);
+        final var t4 = new InventoryWithdrawalEntity(organizationId, customer.getId());
         t4.addLog(s22Ultra.getId(), 1, 0);
         t4.addLog(galaxyBuds2.getId(), 3, 0);
         t4.persist();
