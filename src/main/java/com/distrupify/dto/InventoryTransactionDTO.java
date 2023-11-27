@@ -1,13 +1,23 @@
 package com.distrupify.dto;
 
-import lombok.Builder;
+import com.distrupify.entities.InventoryTransactionEntity;
+import lombok.AllArgsConstructor;
 
 import java.util.List;
 
-@Builder
+@AllArgsConstructor
 public class InventoryTransactionDTO {
     public long id;
     public String inventoryTransactionType;
     public String timestamp;
     public List<InventoryLogDTO> inventoryTransactionLogs;
+
+    public static InventoryTransactionDTO fromEntity(InventoryTransactionEntity entity) {
+        return new InventoryTransactionDTO(entity.getId(),
+                entity.getInventoryTransactionType().name(),
+                entity.getTimestamp().toString(),
+                entity.getInventoryLogs()
+                        .stream()
+                        .map(InventoryLogDTO::fromEntity).toList());
+    }
 }

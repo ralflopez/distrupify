@@ -12,7 +12,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
-@Path("/api/v1/inventory/withdrawal")
+@Path("/api/v1/inventory/withdrawals")
 @RequestScoped
 public class InventoryWithdrawalResource {
     @Inject

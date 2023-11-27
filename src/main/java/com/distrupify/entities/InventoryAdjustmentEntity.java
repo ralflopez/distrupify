@@ -80,6 +80,7 @@ public class InventoryAdjustmentEntity extends PanacheEntityBase {
     @Override
     @Transactional
     public void persist() {
+        inventoryTransaction.setTimestamp(createdAt);
         inventoryTransaction.persist();
         inventoryTransactionId = inventoryTransaction.getId();
 

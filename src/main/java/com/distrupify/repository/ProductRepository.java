@@ -48,6 +48,7 @@ public class ProductRepository {
         return products.stream().map(p -> {
             final var qty = nonZeroProductIdQuantityMap.get(p.getId());
             return new ProductModel(Optional.of(p.getId()),
+                    p.getSku(),
                     p.getBrand(),
                     p.getName(),
                     p.getDescription(),

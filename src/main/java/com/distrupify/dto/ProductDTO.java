@@ -1,11 +1,24 @@
 package com.distrupify.dto;
 
+import com.distrupify.entities.ProductEntity;
+import jakarta.annotation.Nonnull;
+
 public record ProductDTO(
         long id,
-        String sku,
-        String brand,
-        String name,
-        String description,
+        @Nonnull String sku,
+        @Nonnull String brand,
+        @Nonnull String name,
+        @Nonnull String description,
         double unitPrice,
-        int quantity
-) {}
+        Integer quantity
+) {
+    public static ProductDTO fromEntity(ProductEntity entity) {
+        return new ProductDTO(entity.getId(),
+                entity.getSku(),
+                entity.getBrand(),
+                entity.getName(),
+                entity.getDescription(),
+                entity.getUnitPrice().doubleValue(),
+                null);
+    }
+}

@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class Pageable {
+    public static int DEFAULT_PAGE_SIZE = 30;
+
     private int page;
     private int size;
 
@@ -14,6 +16,10 @@ public class Pageable {
 
     public static Pageable of(int pageNumber, int size) {
         return new Pageable(pageNumber, size);
+    }
+
+    public static Pageable of(Integer pageNumber, Integer size) {
+        return new Pageable(pageNumber == null ? 1 : pageNumber, size == null ? DEFAULT_PAGE_SIZE : size);
     }
 
     public int offset() {

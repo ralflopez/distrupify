@@ -15,7 +15,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
-@Path("/api/v1/purchase-order")
+@Path("/api/v1/purchase-orders")
 @RequestScoped
 public class PurchaseOrderResource {
     @Inject

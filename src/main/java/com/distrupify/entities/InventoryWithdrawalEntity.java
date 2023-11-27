@@ -7,6 +7,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 
 import static com.distrupify.entities.InventoryTransactionEntity.Type.WITHDRAWAL;
 
@@ -25,6 +26,9 @@ public class InventoryWithdrawalEntity extends PanacheEntityBase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "created_at", nullable = false)
+    private Date createdAt;
+
     @Column(name = "organization_id", nullable = false)
     private Long organizationId;
     public static final String ORGANIZATION_ID = "organizationId";
@@ -42,6 +46,14 @@ public class InventoryWithdrawalEntity extends PanacheEntityBase {
     @ToString.Exclude
     private InventoryTransactionEntity inventoryTransaction;
     public static final String INVENTORY_TRANSACTION = "inventoryTransaction";
+
+    @PrePersist
+    @SuppressWarnings("unused")
+    protected void onCreate() {
+        if (createdAt == null) {
+            createdAt = new Date();
+        }
+    }
 
     public InventoryWithdrawalEntity(Long organizationId) {
         this(organizationId, false);
@@ -73,6 +85,7 @@ public class InventoryWithdrawalEntity extends PanacheEntityBase {
     @Override
     @Transactional
     public void persist() {
+        inventoryTransaction.setTimestamp(createdAt);
         inventoryTransaction.persist();
         inventoryTransactionId = inventoryTransaction.getId();
 
