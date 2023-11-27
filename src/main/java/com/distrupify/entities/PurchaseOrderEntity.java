@@ -50,6 +50,14 @@ public class PurchaseOrderEntity extends PanacheEntityBase {
     @ToString.Exclude
     private InventoryTransactionEntity inventoryTransaction;
 
+    @Column(name = "supplier_id", nullable = false)
+    private Long supplierId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "supplier_id", updatable = false, insertable = false)
+    @ToString.Exclude
+    private SupplierEntity supplier;
+
     @PrePersist
     @SuppressWarnings("unused")
     protected void onCreate() {
@@ -58,11 +66,11 @@ public class PurchaseOrderEntity extends PanacheEntityBase {
         }
     }
 
-    public PurchaseOrderEntity(Long organizationId) {
-        this(organizationId, true);
+    public PurchaseOrderEntity(Long organizationId, Long supplierId) {
+        this(organizationId, supplierId, true);
     }
 
-    public PurchaseOrderEntity(Long organizationId, boolean pending) {
+    public PurchaseOrderEntity(Long organizationId, Long supplierId, boolean pending) {
         inventoryTransaction = InventoryTransactionEntity.builder()
                 .inventoryTransactionType(INVENTORY_TRANSACTION_TYPE)
                 .inventoryLogs(new ArrayList<>())
@@ -70,6 +78,7 @@ public class PurchaseOrderEntity extends PanacheEntityBase {
                 .pending(pending)
                 .build();
 
+        this.supplierId = supplierId;
         this.organizationId = organizationId;
     }
 

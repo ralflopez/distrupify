@@ -36,6 +36,8 @@ class ProductResourceTest {
 
     ProductEntity headRadicalMP;
 
+    SupplierEntity supplier;
+
     @Inject
     AuthService authService;
 
@@ -57,6 +59,14 @@ class ProductResourceTest {
                 .build();
         final var tokenDTO = authService.signup(signUpRequest);
         authHeader = "Bearer " + tokenDTO.token;
+
+        supplier = SupplierEntity.builder()
+                .address("Manila")
+                .contactNumber("0927")
+                .name("Default")
+                .organizationId(organizationId)
+                .build();
+        supplier.persist();
 
         s22Ultra = ProductEntity.builder()
                 .organizationId(organization.getId())
@@ -100,6 +110,7 @@ class ProductResourceTest {
         InventoryTransactionEntity.deleteAll();
         ProductEntity.deleteAll();
         UserEntity.deleteAll();
+        SupplierEntity.deleteAll();
         OrganizationEntity.deleteAll();
     }
 
@@ -131,7 +142,7 @@ class ProductResourceTest {
         t2.addLog(galaxyBuds2.getId(), 4, 0);
         t2.persist();
 
-        final var t3 = new PurchaseOrderEntity(organizationId);
+        final var t3 = new PurchaseOrderEntity(organizationId, supplier.getId());
         t3.addLog(s22Ultra.getId(), 200, 0);
         t3.addLog(galaxyBuds2.getId(), 100, 0);
         t3.persist();
@@ -146,7 +157,7 @@ class ProductResourceTest {
         t5.addLog(InventoryLogEntity.Type.INCOMING, galaxyBuds2.getId(), 44);
         t5.persist();
 
-        final var t6 = new PurchaseOrderEntity(organizationId, false);
+        final var t6 = new PurchaseOrderEntity(organizationId, supplier.getId(),false);
         t6.addLog(s22Ultra.getId(), 5, 0);
         t6.addLog(galaxyBuds2.getId(), 26, 0);
         t6.persist();

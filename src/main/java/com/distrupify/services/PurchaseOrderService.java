@@ -25,7 +25,7 @@ public class PurchaseOrderService {
 
     @Transactional
     public void createPurchaseOrder(Long organizationId, PurchaseOrderCreateRequest request) {
-        final var purchaseOrder = new PurchaseOrderEntity(organizationId);
+        final var purchaseOrder = new PurchaseOrderEntity(organizationId, request.supplierId);
         request.items.forEach(i -> purchaseOrder.addLog(i.productId, i.quantity, i.unitPrice));
         purchaseOrder.persist();
     }

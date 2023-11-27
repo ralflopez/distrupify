@@ -39,6 +39,8 @@ class PurchaseOrderResourceTest {
 
     ProductEntity galaxyBuds2;
 
+    SupplierEntity supplier;
+
     @Inject
     AuthService authService;
 
@@ -54,6 +56,14 @@ class PurchaseOrderResourceTest {
                 .build();
         organization.persist();
         organizationId = organization.getId();
+
+        supplier = SupplierEntity.builder()
+                .address("Manila")
+                .contactNumber("0927")
+                .name("Default")
+                .organizationId(organizationId)
+                .build();
+        supplier.persist();
 
         final var signUpRequest = SignupRequest.builder()
                 .email("new-user@email.com")
@@ -95,6 +105,7 @@ class PurchaseOrderResourceTest {
         InventoryTransactionEntity.deleteAll();
         ProductEntity.deleteAll();
         UserEntity.deleteAll();
+        SupplierEntity.deleteAll();
         OrganizationEntity.deleteAll();
     }
 
@@ -111,6 +122,7 @@ class PurchaseOrderResourceTest {
                                 .quantity(80)
                                 .unitPrice(0.0)
                                 .build()))
+                .supplierId(supplier.getId())
                 .build();
 
         given()
@@ -149,6 +161,7 @@ class PurchaseOrderResourceTest {
                                 .quantity(S22_ULTRA_COUNT)
                                 .unitPrice(0.0)
                                 .build()))
+                .supplierId(supplier.getId())
                 .build();
 
         given()

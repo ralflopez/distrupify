@@ -43,6 +43,8 @@ class InventoryTransactionResourceTest {
 
     ProductEntity galaxyBuds2;
 
+    SupplierEntity supplier;
+
     @Inject
     AuthService authService;
 
@@ -55,6 +57,14 @@ class InventoryTransactionResourceTest {
                 .build();
         organization.persist();
         organizationId = organization.getId();
+
+        supplier = SupplierEntity.builder()
+                .address("Manila")
+                .contactNumber("0927")
+                .name("Default")
+                .organizationId(organizationId)
+                .build();
+        supplier.persist();
 
         final var signUpRequest = SignupRequest.builder()
                 .email("new-user@email.com")
@@ -96,6 +106,7 @@ class InventoryTransactionResourceTest {
         InventoryTransactionEntity.deleteAll();
         ProductEntity.deleteAll();
         UserEntity.deleteAll();
+        SupplierEntity.deleteAll();
         OrganizationEntity.deleteAll();
     }
 
@@ -111,7 +122,7 @@ class InventoryTransactionResourceTest {
         t2.addLog(galaxyBuds2.getId(), 10, 50);
         t2.persist();
 
-        final var t3 = new PurchaseOrderEntity(organizationId);
+        final var t3 = new PurchaseOrderEntity(organizationId, supplier.getId());
         t3.addLog(s22Ultra.getId(), 50, 100);
         t3.addLog(galaxyBuds2.getId(), 50, 50);
         t3.persist();
@@ -150,42 +161,42 @@ class InventoryTransactionResourceTest {
 
     @Transactional
     public void _shouldSearchBetweenDatesData() throws ParseException {
-        final var t1 = new PurchaseOrderEntity(organizationId);
+        final var t1 = new PurchaseOrderEntity(organizationId, supplier.getId());
         t1.addLog(s22Ultra.getId(), 50, 100);
         t1.setCreatedAt(DateUtil.from("2012-11-22"));
         t1.persist();
 
-        final var t2 = new PurchaseOrderEntity(organizationId);
+        final var t2 = new PurchaseOrderEntity(organizationId, supplier.getId());
         t2.addLog(s22Ultra.getId(), 50, 100);
         t2.setCreatedAt(DateUtil.from("2012-12-22"));
         t2.persist();
 
-        final var t3 = new PurchaseOrderEntity(organizationId);
+        final var t3 = new PurchaseOrderEntity(organizationId, supplier.getId());
         t3.addLog(s22Ultra.getId(), 50, 100);
         t3.setCreatedAt(DateUtil.from("2012-12-25"));
         t3.persist();
 
-        final var t4 = new PurchaseOrderEntity(organizationId);
+        final var t4 = new PurchaseOrderEntity(organizationId, supplier.getId());
         t4.addLog(s22Ultra.getId(), 50, 100);
         t4.setCreatedAt(DateUtil.from("2013-01-01"));
         t4.persist();
 
-        final var t5 = new PurchaseOrderEntity(organizationId);
+        final var t5 = new PurchaseOrderEntity(organizationId, supplier.getId());
         t5.addLog(s22Ultra.getId(), 50, 100);
         t5.setCreatedAt(DateUtil.from("2013-02-24"));
         t5.persist();
 
-        final var t6 = new PurchaseOrderEntity(organizationId);
+        final var t6 = new PurchaseOrderEntity(organizationId, supplier.getId());
         t6.addLog(s22Ultra.getId(), 50, 100);
         t6.setCreatedAt(DateUtil.from("2013-03-24"));
         t6.persist();
 
-        final var t7 = new PurchaseOrderEntity(organizationId);
+        final var t7 = new PurchaseOrderEntity(organizationId, supplier.getId());
         t7.addLog(s22Ultra.getId(), 50, 100);
         t7.setCreatedAt(DateUtil.from("2013-04-24"));
         t7.persist();
 
-        final var t8 = new PurchaseOrderEntity(organizationId);
+        final var t8 = new PurchaseOrderEntity(organizationId, supplier.getId());
         t8.addLog(s22Ultra.getId(), 50, 100);
         t8.setCreatedAt(DateUtil.from("2013-05-24"));
         t8.persist();
