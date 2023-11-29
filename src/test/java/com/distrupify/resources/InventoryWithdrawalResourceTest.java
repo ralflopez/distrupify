@@ -157,6 +157,7 @@ class InventoryWithdrawalResourceTest {
                         new InventoryWithdrawalCreateRequest.Item(s22Ultra.getId(), 9999, 0.0),
                         new InventoryWithdrawalCreateRequest.Item(galaxyBuds2.getId(), 100, 0.0)
                 ))
+                .customerId(customer.getId())
                 .build();
 
         given()
@@ -177,6 +178,7 @@ class InventoryWithdrawalResourceTest {
                         new InventoryWithdrawalCreateRequest.Item(0L, 100, 0.0),
                         new InventoryWithdrawalCreateRequest.Item(galaxyBuds2.getId(), 100, 0.0)
                 ))
+                .customerId(customer.getId())
                 .build();
 
         given()

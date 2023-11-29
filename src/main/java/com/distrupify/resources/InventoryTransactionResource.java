@@ -33,7 +33,7 @@ public class InventoryTransactionResource {
     @GET
     @Authenticated
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findAll(@QueryParam("page") Integer page, @QueryParam("per_page") Integer perPage) {
+    public Response findAll(@QueryParam("page") int page, @QueryParam("per_page") int perPage) {
         final var organizationId = tokenService.getOrganizationId(jwt);
         final var pageable = Pageable.of(page, perPage);
         final var transactions = inventoryTransactionService.findAll(organizationId, pageable);
@@ -50,8 +50,8 @@ public class InventoryTransactionResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response search(InventoryTransactionSearchRequest request,
-                           @QueryParam("page") Integer page,
-                           @QueryParam("per_page") Integer perPage,
+                           @QueryParam("page") int page,
+                           @QueryParam("per_page") int perPage,
                            @QueryParam("asc") boolean asc) {
         final var organizationId = tokenService.getOrganizationId(jwt);
         final var pageable = Pageable.of(page, perPage);
