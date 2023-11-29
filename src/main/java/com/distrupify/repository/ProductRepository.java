@@ -5,6 +5,7 @@ import com.distrupify.entities.InventoryLogEntity$;
 import com.distrupify.entities.ProductEntity;
 import com.distrupify.entities.ProductEntity$;
 import com.distrupify.models.ProductModel;
+import com.distrupify.utils.Pageable;
 import com.speedment.jpastreamer.application.JPAStreamer;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -26,7 +27,13 @@ public class ProductRepository {
     @Inject
     JPAStreamer jpaStreamer;
 
-    public List<ProductModel> findAll(Long organizationId) {
+    public long getProductsCount(Long organizationId) {
+        return jpaStreamer.stream(ProductEntity.class)
+                .filter(ProductEntity$.organizationId.equal(organizationId))
+                .count();
+    }
+
+    public List<ProductModel> findAll(Long organizationId, Optional<Pageable> pageable) {
         final var products = jpaStreamer.stream(ProductEntity.class)
                 .filter(ProductEntity$.organizationId.equal(organizationId))
                 .sorted(ProductEntity$.displayName)
@@ -45,7 +52,7 @@ public class ProductRepository {
                 .stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().reduce(0, Integer::sum)));
 
-        return products.stream().map(p -> {
+        var stream = products.stream().map(p -> {
             final var qty = nonZeroProductIdQuantityMap.get(p.getId());
             return new ProductModel(Optional.of(p.getId()),
                     p.getSku(),
@@ -54,7 +61,14 @@ public class ProductRepository {
                     p.getDescription(),
                     p.getUnitPrice().doubleValue(),
                     qty == null ? 0 : qty);
-        }).toList();
+        });
+
+        if (pageable.isPresent()) {
+            stream = stream.skip(pageable.get().offset())
+                    .limit(pageable.get().limit());
+        }
+
+        return stream.toList();
     }
 
     private int getQuantityFromLog(InventoryLogEntity log) {

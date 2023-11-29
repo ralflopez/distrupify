@@ -15,11 +15,8 @@ public class Pageable {
     }
 
     public static Pageable of(int pageNumber, int size) {
-        return new Pageable(pageNumber, size);
-    }
-
-    public static Pageable of(Integer pageNumber, Integer size) {
-        return new Pageable(pageNumber == null ? 1 : pageNumber, size == null ? DEFAULT_PAGE_SIZE : size);
+        return new Pageable(pageNumber == 0 ? 1 : pageNumber,
+                size == 0 ? DEFAULT_PAGE_SIZE : size);
     }
 
     public int offset() {

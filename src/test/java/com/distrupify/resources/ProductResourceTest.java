@@ -133,6 +133,7 @@ class ProductResourceTest {
                 .body("products[0].quantity", Matchers.equalTo(0)) // head radical mp
                 .body("products[1].quantity", Matchers.equalTo(119)) // galaxy buds
                 .body("products[2].quantity", Matchers.equalTo(32)) // s22 ultra
+                .body("pageCount", Matchers.is(1))
                 .statusCode(200);
     }
 
