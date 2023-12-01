@@ -1,7 +1,7 @@
 package com.distrupify;
 
-import com.distrupify.auth.services.AuthService;
 import com.distrupify.auth.requests.SignupRequest;
+import com.distrupify.auth.services.AuthService;
 import com.distrupify.entities.OrganizationEntity;
 import com.distrupify.entities.ProductEntity;
 import com.distrupify.services.InventoryDepositService;
@@ -28,29 +28,69 @@ public class AppLifecycleBean {
     @Transactional
     void onStart(@Observes StartupEvent ev) {
         LOGGER.info("The application is starting...");
-//        final var testOrganization = OrganizationEntity.builder()
-//                .name("test-organization")
-//                .displayName("Test Organization")
-//                .build();
-//        testOrganization.persist();
+        final var testOrganization = OrganizationEntity.builder()
+                .name("test-organization")
+                .displayName("Test Organization")
+                .build();
+        testOrganization.persist();
 
-//        final var galaxyBuds2 = ProductEntity.builder()
-//                .organizationId(testOrganization.getId())
-//                .sku("123456789")
-//                .brand("Samsung")
-//                .name("Galaxy Buds 2")
-//                .description("")
-//                .unitPrice(BigDecimal.valueOf(4000))
-//                .build();
-//        galaxyBuds2.persist();
-//
-//        final var testUser1 = authService.signup(SignupRequest.builder()
-//                .email("test-user@email.com")
-//                .password("password")
-//                .name("Test User 1")
-//                .organizationId(testOrganization.getId())
-//                .build());
-//        LOGGER.info("Token: " + testUser1.token);
+        final var galaxyBuds2 = ProductEntity.builder()
+                .organizationId(testOrganization.getId())
+                .sku("123456789")
+                .brand("Samsung")
+                .name("Galaxy Buds 2")
+                .description("")
+                .unitPrice(BigDecimal.valueOf(4000))
+                .build();
+        galaxyBuds2.persist();
+
+        ProductEntity.builder()
+                .organizationId(testOrganization.getId())
+                .sku("123422378")
+                .brand("Samsung")
+                .name("Galaxy Buds 3")
+                .description("")
+                .unitPrice(BigDecimal.valueOf(4000))
+                .build()
+                .persist();
+
+        ProductEntity.builder()
+                .organizationId(testOrganization.getId())
+                .sku("523349087")
+                .brand("Samsung")
+                .name("Galaxy Buds 4")
+                .description("")
+                .unitPrice(BigDecimal.valueOf(4000))
+                .build()
+                .persist();
+
+        ProductEntity.builder()
+                .organizationId(testOrganization.getId())
+                .sku("768334123")
+                .brand("Samsung")
+                .name("Galaxy Buds 5")
+                .description("")
+                .unitPrice(BigDecimal.valueOf(4000))
+                .build()
+                .persist();
+
+        ProductEntity.builder()
+                .organizationId(testOrganization.getId())
+                .sku("244312345")
+                .brand("Samsung")
+                .name("Galaxy Buds 6")
+                .description("")
+                .unitPrice(BigDecimal.valueOf(4000))
+                .build()
+                .persist();
+
+        final var testUser1 = authService.signup(SignupRequest.builder()
+                .email("test-user@email.com")
+                .password("password")
+                .name("Test User 1")
+                .organizationId(testOrganization.getId())
+                .build());
+        LOGGER.info("Token: " + testUser1.token);
 
 //        final var deposit1 = CreateInventoryDepositRequest.builder()
 //                .items(List.of(

@@ -40,6 +40,7 @@ public class InventoryTransactionEntity extends PanacheEntityBase {
     @ToString.Exclude
     public List<InventoryLogEntity> inventoryLogs;
 
+    // TODO: investigate if state is would be better than a boolean
     @Column(name = "pending", nullable = false)
     public boolean pending;
 

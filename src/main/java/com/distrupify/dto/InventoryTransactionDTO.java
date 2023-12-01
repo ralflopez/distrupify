@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 
 import java.util.List;
 
+// TODO: convert response into records
 @AllArgsConstructor
 public class InventoryTransactionDTO {
     public long id;

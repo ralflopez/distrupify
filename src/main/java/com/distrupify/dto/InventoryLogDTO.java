@@ -3,6 +3,7 @@ package com.distrupify.dto;
 import com.distrupify.entities.InventoryLogEntity;
 import lombok.AllArgsConstructor;
 
+// TODO: convert response into records
 @AllArgsConstructor
 public class InventoryLogDTO {
     public long id;

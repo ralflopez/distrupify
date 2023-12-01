@@ -1,4 +1,7 @@
-import { useQuery } from "react-query";
+import { notifications } from "@mantine/notifications";
+import { useMutation, useQuery } from "react-query";
+import { queryClient } from "../main";
+import { InventoryAdjustmentCreateRequest } from "../types/requests";
 import { ProductsResponse, WebExceptionResponse } from "../types/response";
 
 export const useProductsRequest = (token: string, page: number) => {
@@ -18,24 +21,82 @@ export const useProductsRequest = (token: string, page: number) => {
       return _handleResponse(response);
     },
     {
+      onError: (e: Error) => {
+        notifications.show({
+          title: "Products",
+          message: e.message,
+          color: "red",
+        });
+      },
+
       keepPreviousData: true,
     }
   );
 };
 
-function _getAuthHeader(token: string): string {
+export const useInventoryAdjustmentRequest = (
+  token: string,
+  cleanUp: () => void
+) => {
+  return useMutation(
+    async (data: InventoryAdjustmentCreateRequest) => {
+      const response = await fetch(
+        "http://localhost:8080/api/v1/inventory/adjustments",
+        {
+          headers: {
+            Authorization: _getAuthHeader(token),
+            "Content-Type": "application/json",
+          },
+          method: "POST",
+          body: JSON.stringify(data),
+        }
+      );
+      return _handleResponse(response);
+    },
+    {
+      onError: (e: Error) => {
+        notifications.show({
+          title: "Inventory Adjustment",
+          message: e.message,
+          color: "red",
+        });
+      },
+      onSuccess: () => {
+        notifications.show({
+          title: "Inventory Adjustment",
+          message: "Successfully adjusted inventory items",
+        });
+        queryClient.invalidateQueries(["products"]);
+        queryClient.invalidateQueries(["inventoryAdjustments"]);
+        cleanUp();
+      },
+    }
+  );
+};
+
+export function _getAuthHeader(token: string): string {
   return `Bearer ${token}`;
 }
 
-async function _handleResponse(response: Response) {
+export async function _handleResponse(response: Response) {
+  console.log(response);
   if (!response.ok) {
-    if (response.status === 401) {
-      throw new Error(response.statusText);
+    let message = "";
+
+    try {
+      const body: WebExceptionResponse = await response.json();
+      message = body.message;
+    } catch (e) {
+      message = `There was an error: ${response.statusText} (${response.status})`;
     }
 
-    const body: WebExceptionResponse = await response.json();
-    throw new Error(body.message);
+    throw new Error(message);
   }
 
-  return response.json();
+  try {
+    const result = await response.json();
+    return result;
+  } catch (e) {
+    return "";
+  }
 }

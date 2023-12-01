@@ -22,6 +22,7 @@ public class TokenService {
     public TokenDTO generateToken(Long organizationId, String email) {
         final var token = Jwt.issuer(issuer) // mp.jwt.verify.issuer = valid
                 .upn(email) // preferred claim to use for the Principal seen via the container security APIs.
+                .expiresIn(86400000)
                 .groups(new HashSet<>())
                 .claim("organization_id", organizationId)
                 .sign();
