@@ -1,13 +1,17 @@
 import {
+  ActionIcon,
+  Box,
   Button,
+  Card,
+  Group,
   NumberInput,
   Select,
-  Space,
   Table,
   Text,
   Title,
 } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
+import { IconTrashX } from "@tabler/icons-react";
 import { useInventoryAdjustmentRequest } from "../../hooks/server";
 import {
   InventoryAdjustmentCreateRequest,
@@ -56,71 +60,85 @@ export const ItemsSection = ({ form }: Props) => {
   }
 
   return (
-    <>
-      <Title order={3}>Items</Title>
-      <Space h="lg" />
-      <form onSubmit={onSubmit()}>
-        <Table>
-          <Table.Thead>
-            <Table.Tr>
-              <Table.Th>Name</Table.Th>
-              <Table.Th>Operation</Table.Th>
-              <Table.Th>Quantity</Table.Th>
-              <Table.Th></Table.Th>
-            </Table.Tr>
-          </Table.Thead>
-          <Table.Tbody>
-            {form.values.items.map((item, index) => (
-              <Table.Tr key={item.product.id}>
-                <Table.Td>
-                  <Text>{getProductDisplayName(item.product)}</Text>
-                </Table.Td>
-                <Table.Td>
-                  <Select
-                    w={110}
-                    allowDeselect={false}
-                    data={[
-                      {
-                        label: "Add",
-                        value: "INCOMING",
-                      },
-                      {
-                        label: "Subtract",
-                        value: "OUTGOING",
-                      },
-                    ]}
-                    {...form.getInputProps(`items.${index}.inventoryLogType`)}
-                  />
-                </Table.Td>
-                <Table.Td>
-                  <NumberInput
-                    w={80}
-                    min={1}
-                    {...form.getInputProps(`items.${index}.quantity`)}
-                  />
-                </Table.Td>
-                <Table.Td>
-                  <Button
-                    color="red"
-                    variant="subtle"
-                    onClick={() => removeItem(item)}
-                  >
-                    Remove
-                  </Button>
-                </Table.Td>
+    <Card h="100%">
+      <form
+        style={{ display: "flex", flexDirection: "column", height: "100%" }}
+        onSubmit={onSubmit()}
+      >
+        <Title order={3}>Items</Title>
+        <Box style={{ flex: 1, overflow: "auto" }}>
+          <Table>
+            <Table.Thead>
+              <Table.Tr>
+                <Table.Th>Name</Table.Th>
+                <Table.Th>Operation</Table.Th>
+                <Table.Th>Quantity</Table.Th>
+                <Table.Th></Table.Th>
               </Table.Tr>
-            ))}
-          </Table.Tbody>
-        </Table>
-        <Button
-          loading={inventoryAdjustmentCreate.isLoading}
-          type="submit"
-          disabled={form.values.items.length < 1}
-          fullWidth
-        >
-          Submit
-        </Button>
+            </Table.Thead>
+            <Table.Tbody>
+              {form.values.items.map((item, index) => (
+                <Table.Tr key={item.product.id}>
+                  <Table.Td>
+                    <Text>{getProductDisplayName(item.product)}</Text>
+                  </Table.Td>
+                  <Table.Td>
+                    <Select
+                      w={110}
+                      allowDeselect={false}
+                      data={[
+                        {
+                          label: "Add",
+                          value: "INCOMING",
+                        },
+                        {
+                          label: "Subtract",
+                          value: "OUTGOING",
+                        },
+                      ]}
+                      {...form.getInputProps(`items.${index}.inventoryLogType`)}
+                    />
+                  </Table.Td>
+                  <Table.Td>
+                    <NumberInput
+                      w={80}
+                      min={1}
+                      {...form.getInputProps(`items.${index}.quantity`)}
+                    />
+                  </Table.Td>
+                  <Table.Td>
+                    {/* <Button
+                      color="red"
+                      variant="subtle"
+                      onClick={() => removeItem(item)}
+                    >
+                      Remove
+                    </Button> */}
+                    <ActionIcon
+                      variant="light"
+                      aria-label="Remove"
+                      color="red"
+                      onClick={() => removeItem(item)}
+                    >
+                      <IconTrashX />
+                    </ActionIcon>
+                  </Table.Td>
+                </Table.Tr>
+              ))}
+            </Table.Tbody>
+          </Table>
+        </Box>
+        <Group mt="sm">
+          <Button
+            loading={inventoryAdjustmentCreate.isLoading}
+            type="submit"
+            disabled={form.values.items.length < 1}
+            fullWidth
+          >
+            Submit
+          </Button>
+        </Group>
       </form>
-    </>
+    </Card>
   );
 };

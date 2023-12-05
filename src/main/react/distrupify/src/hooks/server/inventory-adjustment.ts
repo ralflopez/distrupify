@@ -20,23 +20,27 @@ export type InventoryTransactionDTO = {
   inventoryTransactionLogs: InventoryLogsDTO[] | null;
 };
 
-export type InventoryAdjustmentResponseItem = {
+export type InventoryAdjustmentDTO = {
   id: number;
-  createAt: string;
+  createdAt: string;
   inventoryTransaction: InventoryTransactionDTO;
 };
 
 export type InventoryAdjustmentResponse = {
-  inventoryAdjustments: InventoryAdjustmentResponseItem[];
+  inventoryAdjustments: InventoryAdjustmentDTO[];
   pageCount: number;
 };
 
-export const useInventoryAdjustments = (token: string, page: number) => {
+export const useInventoryAdjustments = (
+  token: string,
+  page: number,
+  pageSize: number
+) => {
   return useQuery<InventoryAdjustmentResponse, Error>(
     ["inventoryAdjustments", page],
     async () => {
       const response = await fetch(
-        `http://localhost:8080/api/v1/inventory/adjustments?page=${page}`,
+        `http://localhost:8080/api/v1/inventory/adjustments?page=${page}&pageSize=${pageSize}`,
         {
           method: "GET",
           headers: {

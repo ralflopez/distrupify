@@ -40,7 +40,7 @@ public class InventoryAdjustmentService {
                 .peek(a -> {
                     Hibernate.initialize(a.getInventoryTransaction().getInventoryLogs());
                 })
-                .sorted(InventoryAdjustmentEntity$.createdAt)
+                .sorted(InventoryAdjustmentEntity$.createdAt.reversed())
                 .skip(pageable.offset())
                 .limit(pageable.limit())
                 .toList();

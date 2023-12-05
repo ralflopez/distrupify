@@ -4,12 +4,16 @@ import { queryClient } from "../main";
 import { InventoryAdjustmentCreateRequest } from "../types/requests";
 import { ProductsResponse, WebExceptionResponse } from "../types/response";
 
-export const useProductsRequest = (token: string, page: number) => {
+export const useProductsRequest = (
+  token: string,
+  page: number,
+  pageSize: number
+) => {
   return useQuery<ProductsResponse, Error>(
     ["products", page],
     async () => {
       const response = await fetch(
-        `http://localhost:8080/api/v1/products?page=${page}`,
+        `http://localhost:8080/api/v1/products?page=${page}&page_size=${pageSize}`,
         {
           method: "GET",
           headers: {
@@ -65,6 +69,7 @@ export const useInventoryAdjustmentRequest = (
         notifications.show({
           title: "Inventory Adjustment",
           message: "Successfully adjusted inventory items",
+          color: "green",
         });
         queryClient.invalidateQueries(["products"]);
         queryClient.invalidateQueries(["inventoryAdjustments"]);

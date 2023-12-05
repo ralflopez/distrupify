@@ -84,6 +84,96 @@ public class AppLifecycleBean {
                 .build()
                 .persist();
 
+        ProductEntity.builder()
+                .organizationId(testOrganization.getId())
+                .sku("234223342")
+                .brand("Samsung")
+                .name("Galaxy Buds 7")
+                .description("")
+                .unitPrice(BigDecimal.valueOf(4000))
+                .build()
+                .persist();
+
+        ProductEntity.builder()
+                .organizationId(testOrganization.getId())
+                .sku("334231221")
+                .brand("Samsung")
+                .name("Galaxy Buds 8")
+                .description("")
+                .unitPrice(BigDecimal.valueOf(4000))
+                .build()
+                .persist();
+
+        ProductEntity.builder()
+                .organizationId(testOrganization.getId())
+                .sku("234458777")
+                .brand("Samsung")
+                .name("Galaxy Buds 9")
+                .description("")
+                .unitPrice(BigDecimal.valueOf(4000))
+                .build()
+                .persist();
+
+        ProductEntity.builder()
+                .organizationId(testOrganization.getId())
+                .sku("998678777")
+                .brand("Samsung")
+                .name("Galaxy Buds 10")
+                .description("")
+                .unitPrice(BigDecimal.valueOf(4000))
+                .build()
+                .persist();
+
+        ProductEntity.builder()
+                .organizationId(testOrganization.getId())
+                .sku("123452134")
+                .brand("Samsung")
+                .name("Galaxy Buds 11")
+                .description("")
+                .unitPrice(BigDecimal.valueOf(4000))
+                .build()
+                .persist();
+
+        ProductEntity.builder()
+                .organizationId(testOrganization.getId())
+                .sku("553234567")
+                .brand("Samsung")
+                .name("Galaxy Buds 12")
+                .description("")
+                .unitPrice(BigDecimal.valueOf(4000))
+                .build()
+                .persist();
+
+        ProductEntity.builder()
+                .organizationId(testOrganization.getId())
+                .sku("653455896")
+                .brand("Samsung")
+                .name("Galaxy Buds 13")
+                .description("")
+                .unitPrice(BigDecimal.valueOf(4000))
+                .build()
+                .persist();
+
+        ProductEntity.builder()
+                .organizationId(testOrganization.getId())
+                .sku("544673444")
+                .brand("Samsung")
+                .name("Galaxy Buds 14")
+                .description("")
+                .unitPrice(BigDecimal.valueOf(4000))
+                .build()
+                .persist();
+
+        ProductEntity.builder()
+                .organizationId(testOrganization.getId())
+                .sku("332344566")
+                .brand("Samsung")
+                .name("Galaxy Buds 15")
+                .description("")
+                .unitPrice(BigDecimal.valueOf(4000))
+                .build()
+                .persist();
+
         final var testUser1 = authService.signup(SignupRequest.builder()
                 .email("test-user@email.com")
                 .password("password")

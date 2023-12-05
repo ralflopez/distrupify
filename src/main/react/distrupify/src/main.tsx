@@ -16,7 +16,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <QueryClientProvider client={queryClient}>
       <MantineProvider
         defaultColorScheme="light"
-        theme={{ primaryColor: "lime" }}
+        theme={{ primaryColor: "dark" }}
       >
         <Notifications position="top-center" />
         <App />
