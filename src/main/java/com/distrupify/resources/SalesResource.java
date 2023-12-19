@@ -60,6 +60,6 @@ public class SalesResource {
     public Response createSales(@Valid SalesCreateRequest request) {
         final var organizationId = tokenService.getOrganizationId(jwt);
         salesService.create(organizationId, request);
-        return Response.ok().build();
+        return Response.accepted().build();
     }
 }

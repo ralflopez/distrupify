@@ -47,7 +47,7 @@ public class ProductResource {
                 request.name, request.description, request.unitPrice);
 
         productService.create(organizationId, request);
-        return Response.ok().build();
+        return Response.accepted().build();
     }
 
     // TODO: write test
@@ -58,7 +58,7 @@ public class ProductResource {
         final var organizationId = tokenService.getOrganizationId(jwt);
         LOGGER.infof("Deleting product for organization %d { productId: %d }", organizationId, id);
         productService.softDelete(organizationId, id);
-        return Response.ok().build();
+        return Response.accepted().build();
     }
 
     // TODO: write test
@@ -71,7 +71,7 @@ public class ProductResource {
         LOGGER.infof("Editing product for organization %d { productId=%d }", organizationId, id);
 
         productService.edit(organizationId, id, request);
-        return Response.ok().build();
+        return Response.accepted().build();
     }
 
     // TODO: write test

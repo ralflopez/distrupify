@@ -41,7 +41,7 @@ public class InventoryAdjustmentResource {
                 organizationId, request.toString());
 
         inventoryAdjustmentService.createInventoryAdjustment(organizationId, request);
-        return Response.ok().build();
+        return Response.accepted().build();
     }
 
     // TODO: write test
