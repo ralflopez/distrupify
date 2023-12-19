@@ -3,6 +3,7 @@ package com.distrupify.services;
 import com.distrupify.entities.InventoryWithdrawalEntity;
 import com.distrupify.models.ProductModel;
 import com.distrupify.requests.InventoryWithdrawalCreateRequest;
+import com.distrupify.utils.Pageable;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;

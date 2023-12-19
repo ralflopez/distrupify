@@ -7,13 +7,17 @@ import { ProductsResponse, WebExceptionResponse } from "../types/response";
 export const useProductsRequest = (
   token: string,
   page: number,
-  pageSize: number
+  pageSize: number,
+  searchString?: string,
+  filterBy?: "NAME" | "SKU"
 ) => {
   return useQuery<ProductsResponse, Error>(
-    ["products", page],
+    ["products", searchString, filterBy, page, pageSize],
     async () => {
       const response = await fetch(
-        `http://localhost:8080/api/v1/products?page=${page}&page_size=${pageSize}`,
+        `http://localhost:8080/api/v1/products?page=${page}&page_size=${pageSize}${
+          searchString ? `&search=${searchString}` : ""
+        }${searchString && filterBy ? `&filter_by=${filterBy}` : ""}`,
         {
           method: "GET",
           headers: {
@@ -90,7 +94,9 @@ export async function _handleResponse(response: Response) {
 
     try {
       const body: WebExceptionResponse = await response.json();
+
       message = body.message;
+      if (!message) throw new Error();
     } catch (e) {
       message = `There was an error: ${response.statusText} (${response.status})`;
     }

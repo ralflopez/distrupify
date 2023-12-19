@@ -2,8 +2,8 @@ import { Box, Flex, Tabs, Text, Title, rem } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconClock, IconPlusMinus } from "@tabler/icons-react";
 import { InventoryAdjustmentCreateRequestDomainItem } from "../../types/requests";
-import { ProductsTable } from "./ProductsTable";
-import { TransactionLogs } from "./TransactionLogs";
+import { InventoryAdjustmentProductsTable } from "./InventoryAdjustmentProductsTable";
+import { TransactionLogsTable } from "./TransactionLogsTable";
 
 export const InventoryAdjustment = () => {
   const iconStyle = { width: rem(12), height: rem(12) };
@@ -41,34 +41,17 @@ export const InventoryAdjustment = () => {
           </Tabs.Tab>
         </Tabs.List>
 
-        <Tabs.Panel value="adjustment" h="100%" style={{ overflow: "auto" }}>
-          <ProductsTable form={form} />
-          {/* <Grid
-            h="100%"
-            align="stretch"
-            styles={{
-              inner: { height: "100%" },
-            }}
-          >
-            <Grid.Col span={{ base: 12, xl: 8 }}>
-              <ProductsTable form={form} />
-            </Grid.Col>
-            <Grid.Col visibleFrom="xl" span={{ base: 0, xl: 4 }} py="md">
-              <ItemsSection form={form} />
-            </Grid.Col>
-          </Grid> */}
-          {/* <div
-            style={{
-              marginTop: "10px",
-              height: "2000px",
-              width: "50px",
-              backgroundColor: "coral",
-            }}
-          ></div> */}
+        <Tabs.Panel
+          value="adjustment"
+          h="100%"
+          style={{ overflow: "auto" }}
+          pb={65}
+        >
+          <InventoryAdjustmentProductsTable form={form} />
         </Tabs.Panel>
 
         <Tabs.Panel value="logs">
-          <TransactionLogs />
+          <TransactionLogsTable />
         </Tabs.Panel>
       </Tabs>
     </Flex>

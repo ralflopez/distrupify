@@ -20,16 +20,19 @@ public class ProductEntity extends PanacheEntityBase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "sku", unique = true)
     private String sku;
 
     private String brand;
 
     private String name;
 
+    @Column(name = "display_name")
     private String displayName;
 
     private String description;
 
+    @Column(name = "unit_price")
     private BigDecimal unitPrice;
 
     @Column(name = "organization_id", nullable = false)
@@ -44,11 +47,18 @@ public class ProductEntity extends PanacheEntityBase {
     @ToString.Exclude
     private Set<InventoryLogEntity> inventoryLogs;
 
+    @Column(name = "deleted", nullable = false)
+    private Boolean deleted;
+
     @PrePersist
     @SuppressWarnings("unused")
     protected void onCreate() {
         if (displayName == null) {
             displayName = brand + " " + name + " " + description;
+        }
+
+        if (deleted == null) {
+            deleted = false;
         }
     }
 }

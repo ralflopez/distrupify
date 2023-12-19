@@ -6,6 +6,7 @@ import App from "./App.tsx";
 
 import { MantineProvider } from "@mantine/core";
 
+import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
 import { QueryClient, QueryClientProvider } from "react-query";
 
@@ -18,8 +19,10 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         defaultColorScheme="light"
         theme={{ primaryColor: "dark" }}
       >
-        <Notifications position="top-center" />
-        <App />
+        <ModalsProvider>
+          <Notifications position="top-center" />
+          <App />
+        </ModalsProvider>
       </MantineProvider>
     </QueryClientProvider>
   </React.StrictMode>

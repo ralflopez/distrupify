@@ -1,6 +1,6 @@
 import { AppShell, Burger } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { InventoryAdjustment } from "./components/inventory-adjustment/InventoryAdjustment";
+import { Products } from "./components/products/Products";
 
 export function Demo() {
   const [opened, { toggle }] = useDisclosure();
@@ -23,22 +23,11 @@ export function Demo() {
 
         <AppShell.Navbar p="md">Navbar</AppShell.Navbar>
 
-        <AppShell.Main bg="gray.0">
-          <InventoryAdjustment />
+        <AppShell.Main bg="gray.0" pos="relative">
+          {/* <InventoryAdjustment /> */}
+          <Products />
         </AppShell.Main>
       </AppShell>
     </>
   );
 }
-// display="flex"
-//           bg="gray.0"
-//           h="100vh"
-//           mih={800}
-//           pr="sm"
-//           pb="sm"
-//           pt="calc(var(--mantine-spacing-sm) + 60px)"
-//           pl={{
-//             base: "sm",
-//             md: "calc(var(--mantine-spacing-sm) + 300px)",
-//           }}
-//           style={{ overflow: "auto" }}

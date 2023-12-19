@@ -107,13 +107,6 @@ export const ItemsSection = ({ form }: Props) => {
                     />
                   </Table.Td>
                   <Table.Td>
-                    {/* <Button
-                      color="red"
-                      variant="subtle"
-                      onClick={() => removeItem(item)}
-                    >
-                      Remove
-                    </Button> */}
                     <ActionIcon
                       variant="light"
                       aria-label="Remove"
