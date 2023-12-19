@@ -6,16 +6,19 @@ import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class InventoryAdjustmentCreateRequest {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
+    @ToString
     public static class Item {
         public Long productId;
 

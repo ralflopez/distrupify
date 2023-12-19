@@ -40,6 +40,7 @@ public class ProductResource {
     @Authenticated
     public Response createProduct(@Valid ProductCreateRequest request) {
         final var organizationId = tokenService.getOrganizationId(jwt);
+
         LOGGER.infof("Creating product for organization %d " +
                         "{ sku: %s, brand: %s, name: %s, description: %s, unitPrice: %.2f }",
                 organizationId, request.sku, request.brand,
@@ -67,7 +68,7 @@ public class ProductResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response editProduct(@PathParam("id") Long id, @Valid ProductEditRequest request) {
         final var organizationId = tokenService.getOrganizationId(jwt);
-        LOGGER.infof("Editing product for organization %d { productId: %d }", organizationId, id);
+        LOGGER.infof("Editing product for organization %d { productId=%d }", organizationId, id);
 
         productService.edit(organizationId, id, request);
         return Response.ok().build();
@@ -86,7 +87,7 @@ public class ProductResource {
         final var pageable = Pageable.of(page, pageSize);
 
         LOGGER.infof("Searching products for organization %d " +
-                        "{ searchString: %s, filterBy: %s, page: %d, pageSize: %s }",
+                        "{ searchString=%s, filterBy=%s, page=%d, pageSize=%s }",
                 organizationId,
                 searchString,
                 filterBy,

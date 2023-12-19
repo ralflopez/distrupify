@@ -30,23 +30,35 @@ public class InventoryAdjustmentResource {
     @Inject
     InventoryAdjustmentService inventoryAdjustmentService;
 
+    @SuppressWarnings("unused")
     @POST
     @Authenticated
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createInventoryAdjustment(@Valid InventoryAdjustmentCreateRequest request) {
         final var organizationId = tokenService.getOrganizationId(jwt);
+
+        LOGGER.infof("Creating inventory adjustment for organization %d { %s }",
+                organizationId, request.toString());
+
         inventoryAdjustmentService.createInventoryAdjustment(organizationId, request);
         return Response.ok().build();
     }
 
     // TODO: write test
-    // TODO: consistent naming convention for getAll / findAll
+    @SuppressWarnings("unused")
     @GET
     @Authenticated
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findAllInventoryAdjustment(@QueryParam("page") int page, @QueryParam("page_size") int pageSize) {
+    public Response findInventoryAdjustments(@QueryParam("page") int page, @QueryParam("page_size") int pageSize) {
         final var organizationId = tokenService.getOrganizationId(jwt);
         final var pageable = Pageable.of(page, pageSize);
+
+        LOGGER.infof("Searching inventory adjustments for organization %d " +
+                        "{ page=%d, pageSize=%s }",
+                organizationId,
+                pageable.getPage(),
+                pageable.getPageSize());
+
         final var inventoryAdjustments = inventoryAdjustmentService.findAll(organizationId, pageable);
         final var pageCount = inventoryAdjustmentService.getPageCount(organizationId, pageable.limit());
 
