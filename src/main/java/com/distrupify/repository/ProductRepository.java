@@ -36,9 +36,7 @@ public class ProductRepository {
     JPAStreamer jpaStreamer;
 
     public long getProductsCount(@Nonnull Long organizationId) {
-        return jpaStreamer.stream(ProductEntity.class)
-                .filter(ProductEntity$.organizationId.equal(organizationId))
-                .count();
+        return getProductStream(organizationId).count();
     }
 
     @Transactional
@@ -95,6 +93,10 @@ public class ProductRepository {
         return buildProductWithQuantity(organizationId, getProductStream(organizationId), pageable);
     }
 
+    public List<ProductModel> findAll(@Nonnull Long organizationId) {
+        return buildProductWithQuantity(organizationId, getProductStream(organizationId), Pageable.all());
+    }
+
     public List<ProductModel> findAll(@Nonnull Long organizationId, @Nonnull Pageable pageable,
                                       @Nonnull String searchString, @Nonnull ProductSearchFilterBy filterBy) {
         final var productStream = switch (filterBy) {
@@ -107,7 +109,7 @@ public class ProductRepository {
         return buildProductWithQuantity(organizationId, productStream, pageable);
     }
 
-    private Stream<ProductEntity> getProductStream(Long organizationId) {
+    private Stream<ProductEntity> getProductStream(@Nonnull Long organizationId) {
         return jpaStreamer.stream(ProductEntity.class)
                 .filter(ProductEntity$.organizationId.equal(organizationId))
                 .filter(ProductEntity$.deleted.notEqual(true))
@@ -150,15 +152,10 @@ public class ProductRepository {
     }
 
     private int getQuantityFromLog(InventoryLogEntity log) {
-        if (log.getInventoryTransaction().isPending()) {
-            return 0;
-        }
-
-        if (log.getInventoryLogType().equals(INCOMING)) {
-            return log.getQuantity();
-        }
-
-        return -log.getQuantity();
+        return switch (log.getInventoryTransaction().getStatus()) {
+            case PENDING, DELETED -> 0;
+            case VALID -> log.getInventoryLogType().equals(INCOMING) ? log.getQuantity() : -log.getQuantity();
+        };
     }
 
 }

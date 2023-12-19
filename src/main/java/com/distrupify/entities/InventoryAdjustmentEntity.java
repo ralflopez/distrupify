@@ -59,7 +59,7 @@ public class InventoryAdjustmentEntity extends PanacheEntityBase {
                 .inventoryTransactionType(INVENTORY_TRANSACTION_TYPE)
                 .inventoryLogs(new ArrayList<>())
                 .organizationId(organizationId)
-                .pending(false)
+                .status(InventoryTransactionEntity.Status.VALID)
                 .build();
 
         this.organizationId = organizationId;

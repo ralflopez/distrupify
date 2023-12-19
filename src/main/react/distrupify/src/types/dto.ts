@@ -5,5 +5,5 @@ export type ProductDTO = {
   name: string;
   description: string;
   unitPrice: number;
-  quantity: number | null;
+  quantity?: number;
 };

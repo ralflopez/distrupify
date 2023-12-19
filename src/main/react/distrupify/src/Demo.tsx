@@ -1,5 +1,6 @@
 import { AppShell, Burger } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { InventoryAdjustment } from "./components/inventory-adjustment/InventoryAdjustment";
 import { Products } from "./components/products/Products";
 
 export function Demo() {
@@ -24,7 +25,7 @@ export function Demo() {
         <AppShell.Navbar p="md">Navbar</AppShell.Navbar>
 
         <AppShell.Main bg="gray.0" pos="relative">
-          {/* <InventoryAdjustment /> */}
+          <InventoryAdjustment />
           <Products />
         </AppShell.Main>
       </AppShell>

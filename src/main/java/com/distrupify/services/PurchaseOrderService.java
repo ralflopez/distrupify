@@ -1,5 +1,6 @@
 package com.distrupify.services;
 
+import com.distrupify.entities.InventoryTransactionEntity;
 import com.distrupify.entities.PurchaseOrderEntity;
 import com.distrupify.entities.PurchaseOrderEntity$;
 import com.distrupify.requests.PurchaseOrderCreateRequest;
@@ -43,7 +44,7 @@ public class PurchaseOrderService {
         }
 
         transaction.get().setReceivedAt(new Date());
-        transaction.get().getInventoryTransaction().setPending(false);
+        transaction.get().getInventoryTransaction().setStatus(InventoryTransactionEntity.Status.VALID);
         em.merge(transaction.get());
     }
 }

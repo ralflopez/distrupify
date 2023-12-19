@@ -104,7 +104,7 @@ class InventoryTransactionResourceTest {
     @AfterEach
     @Transactional
     public void afterEach() {
-        InventoryWithdrawalEntity.deleteAll();
+        SalesEntity.deleteAll();
         PurchaseOrderEntity.deleteAll();
         InventoryAdjustmentEntity.deleteAll();
         InventoryLogEntity.deleteAll();
@@ -123,7 +123,7 @@ class InventoryTransactionResourceTest {
         t1.addLog(InventoryLogEntity.Type.INCOMING, galaxyBuds2.getId(), 100);
         t1.persist();
 
-        final var t2 = new InventoryWithdrawalEntity(organizationId, customer.getId());
+        final var t2 = new SalesEntity(organizationId, customer.getId());
         t2.addLog(s22Ultra.getId(), 10, 100);
         t2.addLog(galaxyBuds2.getId(), 10, 50);
         t2.persist();
@@ -153,7 +153,7 @@ class InventoryTransactionResourceTest {
                 .body("transactions", Matchers.hasSize(4))
                 .body("transactions[0].inventoryTransactionType", Matchers.is(ADJUSTMENT.name()))
                 .body("transactions[1].inventoryTransactionType", Matchers.is(PURCHASE_ORDER.name()))
-                .body("transactions[2].inventoryTransactionType", Matchers.is(WITHDRAWAL.name()))
+                .body("transactions[2].inventoryTransactionType", Matchers.is(SALES.name()))
                 .body("transactions[3].inventoryTransactionType", Matchers.is(ADJUSTMENT.name()));
     }
 

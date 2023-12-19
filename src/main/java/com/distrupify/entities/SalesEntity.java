@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.distrupify.entities.InventoryTransactionEntity.Type.WITHDRAWAL;
+import static com.distrupify.entities.InventoryTransactionEntity.Type.SALES;
 
 @EqualsAndHashCode(callSuper = true)
 @Builder
@@ -18,9 +18,9 @@ import static com.distrupify.entities.InventoryTransactionEntity.Type.WITHDRAWAL
 @Data
 @ToString
 @Entity
-@Table(name = "inventory_withdrawals")
-public class InventoryWithdrawalEntity extends PanacheEntityBase {
-    private static InventoryTransactionEntity.Type INVENTORY_TRANSACTION_TYPE = WITHDRAWAL;
+@Table(name = "sales")
+public class SalesEntity extends PanacheEntityBase {
+    private static InventoryTransactionEntity.Type INVENTORY_TRANSACTION_TYPE = SALES;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,7 +47,7 @@ public class InventoryWithdrawalEntity extends PanacheEntityBase {
     private InventoryTransactionEntity inventoryTransaction;
     public static final String INVENTORY_TRANSACTION = "inventoryTransaction";
 
-    @Column(name = "customer_id", nullable = false)
+    @Column(name = "customer_id")
     private Long customerId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -55,24 +55,24 @@ public class InventoryWithdrawalEntity extends PanacheEntityBase {
     @ToString.Exclude
     private CustomerEntity customer;
 
-    @PrePersist
     @SuppressWarnings("unused")
+    @PrePersist
     protected void onCreate() {
         if (createdAt == null) {
             createdAt = new Date();
         }
     }
 
-    public InventoryWithdrawalEntity(Long organizationId, Long customerId) {
+    public SalesEntity(Long organizationId, Long customerId) {
         this(organizationId, customerId, false);
     }
 
-    public InventoryWithdrawalEntity(Long organizationId, Long customerId, boolean pending) {
+    public SalesEntity(Long organizationId, Long customerId, boolean pending) {
         inventoryTransaction = InventoryTransactionEntity.builder()
                 .inventoryTransactionType(INVENTORY_TRANSACTION_TYPE)
                 .inventoryLogs(new ArrayList<>())
                 .organizationId(organizationId)
-                .pending(pending)
+                .status(pending ? InventoryTransactionEntity.Status.PENDING : InventoryTransactionEntity.Status.VALID)
                 .build();
 
         this.customerId = customerId;

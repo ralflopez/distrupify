@@ -14,10 +14,13 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.jwt.JsonWebToken;
+import org.jboss.logging.Logger;
 
 @Path("/api/v1/inventory/adjustments")
 @RequestScoped
 public class InventoryAdjustmentResource {
+    private static final Logger LOGGER = Logger.getLogger(InventoryAdjustmentResource.class);
+
     @Inject
     TokenService tokenService;
 

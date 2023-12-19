@@ -109,7 +109,7 @@ class ProductResourceTest {
     public void afterEach() {
         PurchaseOrderEntity.deleteAll();
         InventoryAdjustmentEntity.deleteAll();
-        InventoryWithdrawalEntity.deleteAll();
+        SalesEntity.deleteAll();
         InventoryDepositEntity.deleteAll();
         InventoryLogEntity.deleteAll();
         InventoryTransactionEntity.deleteAll();
@@ -144,7 +144,7 @@ class ProductResourceTest {
         t1.addLog(InventoryLogEntity.Type.INCOMING, galaxyBuds2.getId(), 56);
         t1.persist();
 
-        final var t2 = new InventoryWithdrawalEntity(organizationId, customer.getId());
+        final var t2 = new SalesEntity(organizationId, customer.getId());
         t2.addLog(s22Ultra.getId(), 5, 0);
         t2.addLog(galaxyBuds2.getId(), 4, 0);
         t2.persist();
@@ -154,7 +154,7 @@ class ProductResourceTest {
         t3.addLog(galaxyBuds2.getId(), 100, 0);
         t3.persist();
 
-        final var t4 = new InventoryWithdrawalEntity(organizationId, customer.getId());
+        final var t4 = new SalesEntity(organizationId, customer.getId());
         t4.addLog(s22Ultra.getId(), 1, 0);
         t4.addLog(galaxyBuds2.getId(), 3, 0);
         t4.persist();

@@ -8,6 +8,7 @@ import com.distrupify.models.ProductModel;
 import com.distrupify.requests.InventoryAdjustmentCreateRequest;
 import com.distrupify.utils.Pageable;
 import com.speedment.jpastreamer.application.JPAStreamer;
+import jakarta.annotation.Nonnull;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -33,7 +34,7 @@ public class InventoryAdjustmentService {
      * <a href="https://stackoverflow.com/questions/26507446/how-to-resolve-lazyinitializationexception-in-spring-data-jpa#:~:text=if%20you%20try%20to%20get%20the%20lazy%20collection%2C%20you%20will%20get%20that%20exception">Solution</a>
      */
     @Transactional
-    public List<InventoryAdjustmentEntity> findAll(Long organizationId, Pageable pageable) {
+    public List<InventoryAdjustmentEntity> findAll(@Nonnull Long organizationId, @Nonnull Pageable pageable) {
         return jpaStreamer.stream(of(InventoryAdjustmentEntity.class)
                         .joining(InventoryAdjustmentEntity$.inventoryTransaction))
                 .filter(InventoryAdjustmentEntity$.organizationId.equal(organizationId))
@@ -46,7 +47,7 @@ public class InventoryAdjustmentService {
                 .toList();
     }
 
-    public int getPageCount(Long organizationId, int pageSize) {
+    public int getPageCount(@Nonnull Long organizationId, int pageSize) {
         final var productCount = jpaStreamer.stream(InventoryAdjustmentEntity.class)
                 .filter(InventoryAdjustmentEntity$.organizationId.equal(organizationId))
                 .count();
@@ -54,7 +55,11 @@ public class InventoryAdjustmentService {
     }
 
     @Transactional
-    public void createInventoryAdjustment(Long organizationId, InventoryAdjustmentCreateRequest request) {
+    public void createInventoryAdjustment(@Nonnull Long organizationId, @Nonnull InventoryAdjustmentCreateRequest request) {
+        if (request.items.isEmpty()) {
+            throw new WebException.BadRequest("There should be at least 1 item");
+        }
+
         final var products = productService.findAll(organizationId);
 
         final var productIdQuantityMap = products.stream()

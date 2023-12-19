@@ -12,7 +12,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class InventoryWithdrawalCreateRequest {
+public class SalesCreateRequest {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
@@ -29,6 +29,5 @@ public class InventoryWithdrawalCreateRequest {
     @Valid
     public List<Item> items;
 
-    @NotNull
     public Long customerId;
 }

@@ -40,13 +40,19 @@ public class InventoryTransactionEntity extends PanacheEntityBase {
     @ToString.Exclude
     public List<InventoryLogEntity> inventoryLogs;
 
-    // TODO: investigate if state is would be better than a boolean
-    @Column(name = "pending", nullable = false)
-    public boolean pending;
+    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    public Status status;
+
+    public enum Status {
+        PENDING,
+        DELETED,
+        VALID,
+    }
 
     public enum Type {
         PURCHASE_ORDER,
-        WITHDRAWAL,
+        SALES,
         ADJUSTMENT
     }
 
@@ -55,6 +61,10 @@ public class InventoryTransactionEntity extends PanacheEntityBase {
     protected void onCreate() {
         if (timestamp == null) {
             timestamp = new Date();
+        }
+
+        if (status == null) {
+            status = Status.VALID;
         }
     }
 }

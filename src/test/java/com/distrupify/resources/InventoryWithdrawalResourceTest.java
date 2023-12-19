@@ -5,10 +5,9 @@ import com.distrupify.auth.entities.UserEntity;
 import com.distrupify.auth.requests.SignupRequest;
 import com.distrupify.auth.services.AuthService;
 import com.distrupify.entities.*;
-import com.distrupify.requests.InventoryWithdrawalCreateRequest;
+import com.distrupify.requests.SalesCreateRequest;
 import com.distrupify.services.ProductService;
 import com.distrupify.utils.DependsOn;
-import com.distrupify.utils.Pageable;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
@@ -27,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @QuarkusTest
-@TestHTTPEndpoint(InventoryWithdrawalResource.class)
+@TestHTTPEndpoint(SalesResource.class)
 @QuarkusTestResource(PostgresResource.class)
 class InventoryWithdrawalResourceTest {
     private static final String PASSWORD = "password";
@@ -94,7 +93,7 @@ class InventoryWithdrawalResourceTest {
     @AfterEach
     @Transactional
     public void afterEach() {
-        InventoryWithdrawalEntity.deleteAll();
+        SalesEntity.deleteAll();
         InventoryAdjustmentEntity.deleteAll();
         InventoryLogEntity.deleteAll();
         InventoryTransactionEntity.deleteAll();
@@ -117,10 +116,10 @@ class InventoryWithdrawalResourceTest {
     public void shouldUpdateTheProductQuantity() {
         _shouldUpdateTheProductQuantityData();
 
-        final var request = InventoryWithdrawalCreateRequest.builder()
+        final var request = SalesCreateRequest.builder()
                 .items(List.of(
-                        new InventoryWithdrawalCreateRequest.Item(s22Ultra.getId(), 100, 0.0),
-                        new InventoryWithdrawalCreateRequest.Item(galaxyBuds2.getId(), 200, 0.0)
+                        new SalesCreateRequest.Item(s22Ultra.getId(), 100, 0.0),
+                        new SalesCreateRequest.Item(galaxyBuds2.getId(), 200, 0.0)
                 ))
                 .customerId(customer.getId())
                 .build();
@@ -153,10 +152,10 @@ class InventoryWithdrawalResourceTest {
     public void shouldFailWhenNotEnoughQuantity() {
         _shouldUpdateTheProductQuantityData();
 
-        final var request = InventoryWithdrawalCreateRequest.builder()
+        final var request = SalesCreateRequest.builder()
                 .items(List.of(
-                        new InventoryWithdrawalCreateRequest.Item(s22Ultra.getId(), 9999, 0.0),
-                        new InventoryWithdrawalCreateRequest.Item(galaxyBuds2.getId(), 100, 0.0)
+                        new SalesCreateRequest.Item(s22Ultra.getId(), 9999, 0.0),
+                        new SalesCreateRequest.Item(galaxyBuds2.getId(), 100, 0.0)
                 ))
                 .customerId(customer.getId())
                 .build();
@@ -174,10 +173,10 @@ class InventoryWithdrawalResourceTest {
 
     @Test
     public void shouldFailWhenProductIdIsInvalid() {
-        final var request = InventoryWithdrawalCreateRequest.builder()
+        final var request = SalesCreateRequest.builder()
                 .items(List.of(
-                        new InventoryWithdrawalCreateRequest.Item(0L, 100, 0.0),
-                        new InventoryWithdrawalCreateRequest.Item(galaxyBuds2.getId(), 100, 0.0)
+                        new SalesCreateRequest.Item(0L, 100, 0.0),
+                        new SalesCreateRequest.Item(galaxyBuds2.getId(), 100, 0.0)
                 ))
                 .customerId(customer.getId())
                 .build();

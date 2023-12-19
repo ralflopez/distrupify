@@ -75,7 +75,7 @@ public class PurchaseOrderEntity extends PanacheEntityBase {
                 .inventoryTransactionType(INVENTORY_TRANSACTION_TYPE)
                 .inventoryLogs(new ArrayList<>())
                 .organizationId(organizationId)
-                .pending(pending)
+                .status(pending ? InventoryTransactionEntity.Status.PENDING : InventoryTransactionEntity.Status.VALID)
                 .build();
 
         this.supplierId = supplierId;
