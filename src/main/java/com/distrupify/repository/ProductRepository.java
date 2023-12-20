@@ -35,7 +35,7 @@ public class ProductRepository {
     @Inject
     JPAStreamer jpaStreamer;
 
-    public long getProductsCount(@Nonnull Long organizationId) {
+    public long getCount(@Nonnull Long organizationId) {
         return getProductStream(organizationId).count();
     }
 
@@ -76,10 +76,10 @@ public class ProductRepository {
         final var product = getProductStream(organizationId)
                 .filter(ProductEntity$.id.equal(productId))
                 .peek(p -> {
-                    p.setBrand(request.brand);
-                    p.setName(request.name);
-                    p.setDescription(request.description);
-                    p.setSku(request.sku);
+                    p.setBrand(request.brand.trim());
+                    p.setName(request.name.trim());
+                    p.setDescription(request.description.trim());
+                    p.setSku(request.sku.trim());
                     p.setUnitPrice(BigDecimal.valueOf(request.unitPrice));
                 })
                 .findAny();

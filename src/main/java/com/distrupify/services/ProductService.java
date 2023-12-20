@@ -31,7 +31,7 @@ public class ProductService {
     }
 
     public int getPageCount(@Nonnull Long organizationId, int pageSize) {
-        final var productCount = productRepository.getProductsCount(organizationId);
+        final var productCount = productRepository.getCount(organizationId);
         return (int) Math.ceilDiv(productCount, pageSize);
     }
 
