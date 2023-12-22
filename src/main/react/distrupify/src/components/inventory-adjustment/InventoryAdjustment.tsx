@@ -1,8 +1,9 @@
-import { Box, Flex, Tabs, Text, Title, rem } from "@mantine/core";
+import { Box, Card, Flex, Grid, Tabs, Text, Title, rem } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconClock, IconPlusMinus } from "@tabler/icons-react";
 import { InventoryAdjustmentCreateRequestDomainItem } from "../../types/requests";
 import { InventoryAdjustmentProductsTable } from "./InventoryAdjustmentProductsTable";
+import { ItemsSection } from "./ItemsSection";
 import { TransactionLogsTable } from "./TransactionLogsTable";
 
 export const InventoryAdjustment = () => {
@@ -41,13 +42,30 @@ export const InventoryAdjustment = () => {
           </Tabs.Tab>
         </Tabs.List>
 
-        <Tabs.Panel
-          value="adjustment"
-          h="100%"
-          style={{ overflow: "auto" }}
-          pb={65}
-        >
-          <InventoryAdjustmentProductsTable form={form} />
+        <Tabs.Panel value="adjustment" pos="relative" pb={{ base: 65, md: 0 }}>
+          <Grid style={{ overflow: "visible" }}>
+            <Grid.Col
+              span={{
+                base: 12,
+                xl: 8,
+              }}
+            >
+              <InventoryAdjustmentProductsTable form={form} />
+            </Grid.Col>
+            <Grid.Col span={{ lg: 4 }} display={{ base: "none", xl: "block" }}>
+              <Card
+                pos="sticky"
+                mt="sm"
+                p={0}
+                top="calc(var(--app-shell-header-height) + var(--mantine-spacing-md))"
+                h="calc(calc(100vh - calc(var(--mantine-spacing-md) * 2)) - var(--app-shell-header-height))"
+                w="100%"
+                withBorder
+              >
+                <ItemsSection form={form} />
+              </Card>
+            </Grid.Col>
+          </Grid>
         </Tabs.Panel>
 
         <Tabs.Panel value="logs">

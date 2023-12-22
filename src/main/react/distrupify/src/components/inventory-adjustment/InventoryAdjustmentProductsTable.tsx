@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Card,
   Drawer,
@@ -46,7 +47,7 @@ export const InventoryAdjustmentProductsTable = ({ form }: Props) => {
   return (
     <ProductsTable
       action={() => (
-        <>
+        <Box display={{ base: "block", xl: "none" }}>
           <Drawer
             opened={itemsDrawerOpened}
             onClose={closeItemsDrawer}
@@ -72,7 +73,7 @@ export const InventoryAdjustmentProductsTable = ({ form }: Props) => {
             p={{ base: "var(--app-shell-padding)", md: 0 }}
             bg="white"
             style={{
-              zIndex: 200,
+              zIndex: 50,
               borderRight: "0",
               borderLeft: 0,
               borderRadius: 0,
@@ -93,7 +94,7 @@ export const InventoryAdjustmentProductsTable = ({ form }: Props) => {
               </Button>
             </Indicator>
           </Card>
-        </>
+        </Box>
       )}
       thead={() => (
         <>

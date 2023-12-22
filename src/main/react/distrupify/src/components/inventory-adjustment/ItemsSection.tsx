@@ -9,9 +9,10 @@ import {
   Table,
   Text,
   Title,
+  rem,
 } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
-import { IconTrashX } from "@tabler/icons-react";
+import { IconX } from "@tabler/icons-react";
 import { useInventoryAdjustmentRequest } from "../../hooks/server";
 import {
   InventoryAdjustmentCreateRequest,
@@ -28,6 +29,8 @@ interface Props {
 }
 
 export const ItemsSection = ({ form }: Props) => {
+  const iconStyle = { width: rem(15), height: rem(15) };
+
   const inventoryAdjustmentCreate = useInventoryAdjustmentRequest(token, () => {
     form.setValues({
       items: [],
@@ -65,22 +68,24 @@ export const ItemsSection = ({ form }: Props) => {
         style={{ display: "flex", flexDirection: "column", height: "100%" }}
         onSubmit={onSubmit()}
       >
-        <Title order={3}>Items</Title>
+        <Title order={4} mb="sm">
+          Items
+        </Title>
         <Box style={{ flex: 1, overflow: "auto" }}>
           <Table>
             <Table.Thead>
               <Table.Tr>
-                <Table.Th>Name</Table.Th>
-                <Table.Th>Operation</Table.Th>
-                <Table.Th>Quantity</Table.Th>
-                <Table.Th></Table.Th>
+                <Table.Th fw="normal">Name</Table.Th>
+                <Table.Th fw="normal">Operation</Table.Th>
+                <Table.Th fw="normal">Quantity</Table.Th>
+                <Table.Th fw="normal"></Table.Th>
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>
               {form.values.items.map((item, index) => (
                 <Table.Tr key={item.product.id}>
                   <Table.Td>
-                    <Text>{getProductDisplayName(item.product)}</Text>
+                    <Text size="sm">{getProductDisplayName(item.product)}</Text>
                   </Table.Td>
                   <Table.Td>
                     <Select
@@ -113,7 +118,7 @@ export const ItemsSection = ({ form }: Props) => {
                       color="red"
                       onClick={() => removeItem(item)}
                     >
-                      <IconTrashX />
+                      <IconX style={iconStyle} />
                     </ActionIcon>
                   </Table.Td>
                 </Table.Tr>
