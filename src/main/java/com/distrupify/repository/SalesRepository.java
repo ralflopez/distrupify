@@ -1,6 +1,5 @@
 package com.distrupify.repository;
 
-import com.distrupify.entities.InventoryLogEntity;
 import com.distrupify.entities.InventoryTransactionEntity;
 import com.distrupify.entities.SalesEntity;
 import com.distrupify.entities.SalesEntity$;
@@ -13,6 +12,7 @@ import jakarta.annotation.Nonnull;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import org.hibernate.Hibernate;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,7 +41,12 @@ public class SalesRepository {
                     .toList();
         }
 
-        return getSalesStream(organizationId)
+        final var stream = getSalesStream(organizationId)
+                .peek(s -> {
+                    Hibernate.initialize(s.getInventoryTransaction().getInventoryLogs());
+                });
+
+        return stream
                 .skip(pageable.offset())
                 .limit(pageable.limit())
                 .toList();

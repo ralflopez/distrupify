@@ -9,6 +9,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @ApplicationScoped
@@ -33,5 +34,14 @@ public class SalesService {
 
     public void create(@Nonnull Long organizationId, @Nonnull SalesCreateRequest request) {
         salesRepository.create(organizationId, request);
+    }
+
+    public static BigDecimal computeTotalPrice(@Nonnull SalesEntity sales) {
+        final var logs = sales.getInventoryTransaction().getInventoryLogs();
+        return logs.stream().map(log -> {
+            final var price = log.getUnitPrice();
+            final var qty = BigDecimal.valueOf(log.getQuantity());
+            return price.multiply(qty);
+        }).reduce(BigDecimal.valueOf(0), BigDecimal::add);
     }
 }
