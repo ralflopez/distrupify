@@ -38,7 +38,7 @@ public class PurchaseOrderResource {
     }
 
     @POST
-    @Path("/{id}")
+    @Path("/{id}/receive")
     @Authenticated
     @SuppressWarnings("unused")
     public Response receivePurchaseOrder(@PathParam("id") Long id) {

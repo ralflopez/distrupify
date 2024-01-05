@@ -8,7 +8,6 @@ import com.distrupify.entities.*;
 import com.distrupify.requests.InventoryAdjustmentCreateRequest;
 import com.distrupify.services.ProductService;
 import com.distrupify.utils.DependsOn;
-import com.distrupify.utils.Pageable;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
@@ -104,8 +103,8 @@ class InventoryAdjustmentResourceTest {
     public void shouldUpdateTheProductQuantity() {
         final var request = InventoryAdjustmentCreateRequest.builder()
                 .items(List.of(
-                        new InventoryAdjustmentCreateRequest.Item(s22Ultra.getId(), 100, InventoryLogEntity.Type.INCOMING),
-                        new InventoryAdjustmentCreateRequest.Item(galaxyBuds2.getId(), 200, InventoryLogEntity.Type.INCOMING)
+                        new InventoryAdjustmentCreateRequest.InventoryAdjustmentCreateRequestItem(s22Ultra.getId(), 100, InventoryLogEntity.InventoryLogType.INCOMING),
+                        new InventoryAdjustmentCreateRequest.InventoryAdjustmentCreateRequestItem(galaxyBuds2.getId(), 200, InventoryLogEntity.InventoryLogType.INCOMING)
                 ))
                 .build();
 
@@ -137,8 +136,8 @@ class InventoryAdjustmentResourceTest {
     public void shouldFailIfNotEnoughProductQuantityForOutgoingLogs() {
         final var request = InventoryAdjustmentCreateRequest.builder()
                 .items(List.of(
-                        new InventoryAdjustmentCreateRequest.Item(s22Ultra.getId(), 100, InventoryLogEntity.Type.OUTGOING),
-                        new InventoryAdjustmentCreateRequest.Item(galaxyBuds2.getId(), 200, InventoryLogEntity.Type.OUTGOING)
+                        new InventoryAdjustmentCreateRequest.InventoryAdjustmentCreateRequestItem(s22Ultra.getId(), 100, InventoryLogEntity.InventoryLogType.OUTGOING),
+                        new InventoryAdjustmentCreateRequest.InventoryAdjustmentCreateRequestItem(galaxyBuds2.getId(), 200, InventoryLogEntity.InventoryLogType.OUTGOING)
                 ))
                 .build();
 
@@ -157,8 +156,8 @@ class InventoryAdjustmentResourceTest {
     public void shouldFailWhenProductIdIsInvalid() {
         final var request = InventoryAdjustmentCreateRequest.builder()
                 .items(List.of(
-                        new InventoryAdjustmentCreateRequest.Item(0L, 100, InventoryLogEntity.Type.OUTGOING),
-                        new InventoryAdjustmentCreateRequest.Item(galaxyBuds2.getId(), 200, InventoryLogEntity.Type.OUTGOING)
+                        new InventoryAdjustmentCreateRequest.InventoryAdjustmentCreateRequestItem(0L, 100, InventoryLogEntity.InventoryLogType.OUTGOING),
+                        new InventoryAdjustmentCreateRequest.InventoryAdjustmentCreateRequestItem(galaxyBuds2.getId(), 200, InventoryLogEntity.InventoryLogType.OUTGOING)
                 ))
                 .build();
 

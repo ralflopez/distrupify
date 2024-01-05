@@ -3,8 +3,6 @@ package com.distrupify.entities;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -54,9 +52,9 @@ public class InventoryLogEntity extends PanacheEntityBase {
 
     @Column(name = "inventory_log_type", nullable = false)
     @Enumerated(EnumType.STRING)
-    private Type inventoryLogType;
+    private InventoryLogType inventoryLogType;
 
-    public enum Type {
+    public enum InventoryLogType {
         INCOMING,
         OUTGOING
     }

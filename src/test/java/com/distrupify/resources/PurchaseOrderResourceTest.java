@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static com.distrupify.entities.InventoryLogEntity.Type.INCOMING;
+import static com.distrupify.entities.InventoryLogEntity.InventoryLogType.INCOMING;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -112,12 +112,12 @@ class PurchaseOrderResourceTest {
     @Test
     public void shouldAddTheLogsAfterCreatingAPurchaseOrder() {
         final var request = PurchaseOrderCreateRequest.builder()
-                .items(List.of(PurchaseOrderCreateRequest.Item.builder()
+                .items(List.of(PurchaseOrderCreateRequest.PurchaseOrderCreateRequestItem.builder()
                                 .productId(galaxyBuds2.getId())
                                 .quantity(150)
                                 .unitPrice(0.0)
                                 .build(),
-                        PurchaseOrderCreateRequest.Item.builder()
+                        PurchaseOrderCreateRequest.PurchaseOrderCreateRequestItem.builder()
                                 .productId(s22Ultra.getId())
                                 .quantity(80)
                                 .unitPrice(0.0)
@@ -151,12 +151,12 @@ class PurchaseOrderResourceTest {
         final var S22_ULTRA_COUNT = 80;
 
         final var request = PurchaseOrderCreateRequest.builder()
-                .items(List.of(PurchaseOrderCreateRequest.Item.builder()
+                .items(List.of(PurchaseOrderCreateRequest.PurchaseOrderCreateRequestItem.builder()
                                 .productId(galaxyBuds2.getId())
                                 .quantity(GALAXY_BUDS_2_COUNT)
                                 .unitPrice(0.0)
                                 .build(),
-                        PurchaseOrderCreateRequest.Item.builder()
+                        PurchaseOrderCreateRequest.PurchaseOrderCreateRequestItem.builder()
                                 .productId(s22Ultra.getId())
                                 .quantity(S22_ULTRA_COUNT)
                                 .unitPrice(0.0)

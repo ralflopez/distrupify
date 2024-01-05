@@ -1,7 +1,6 @@
 import { AppShell, Burger } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { InventoryAdjustment } from "./components/inventory-adjustment/InventoryAdjustment";
-import { Products } from "./components/products/Products";
+import { Sales } from "./components/sales/Sales";
 
 export function Demo() {
   const [opened, { toggle }] = useDisclosure();
@@ -25,8 +24,9 @@ export function Demo() {
         <AppShell.Navbar p="md">Navbar</AppShell.Navbar>
 
         <AppShell.Main bg="gray.0" pos="relative">
-          <InventoryAdjustment />
-          <Products />
+          {/* <InventoryAdjustment /> */}
+          {/* <Products /> */}
+          <Sales />
         </AppShell.Main>
       </AppShell>
     </>

@@ -10,15 +10,17 @@ import {
 import { UseFormReturnType } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { IconArrowNarrowRight } from "@tabler/icons-react";
-import { ProductDTO } from "../../types/dto";
-import { InventoryAdjustmentCreateRequestDomainItem } from "../../types/requests";
+import {
+  InventoryAdjustmentCreateRequestItemWithProduct,
+  ProductDTO,
+} from "../../types/api-alias";
 import { getProductDisplayName } from "../../utils/display";
 import { ProductsTable } from "../common/ProductsTable";
 import { ItemsSection } from "./ItemsSection";
 
 interface Props {
   form: UseFormReturnType<{
-    items: InventoryAdjustmentCreateRequestDomainItem[];
+    items: InventoryAdjustmentCreateRequestItemWithProduct[];
   }>;
 }
 
@@ -41,7 +43,7 @@ export const InventoryAdjustmentProductsTable = ({ form }: Props) => {
       inventoryLogType: "INCOMING",
       product,
       quantity: 1,
-    } as InventoryAdjustmentCreateRequestDomainItem);
+    } as InventoryAdjustmentCreateRequestItemWithProduct);
   }
 
   return (
@@ -82,6 +84,7 @@ export const InventoryAdjustmentProductsTable = ({ form }: Props) => {
           >
             <Indicator
               w="100%"
+              color="red"
               position="top-start"
               disabled={!form.values.items.length}
             >
@@ -121,6 +124,7 @@ export const InventoryAdjustmentProductsTable = ({ form }: Props) => {
           <Table.Td>{product.quantity}</Table.Td>
           <Table.Td>
             <Button
+              fullWidth
               disabled={isProductAdded(product)}
               variant="default"
               onClick={() => addItem(product)}

@@ -3,6 +3,7 @@ package com.distrupify.requests;
 import com.distrupify.entities.InventoryLogEntity;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -19,15 +20,19 @@ public class InventoryAdjustmentCreateRequest {
     @AllArgsConstructor
     @NoArgsConstructor
     @ToString
-    public static class Item {
+    public static class InventoryAdjustmentCreateRequestItem {
+        @NotNull
         public Long productId;
 
         @Min(value = 1)
+        @NotNull
         public Integer quantity;
 
-        public InventoryLogEntity.Type inventoryLogType;
+        @NotNull
+        public InventoryLogEntity.InventoryLogType inventoryLogType;
     }
 
     @Valid
-    public List<Item> items;
+    @NotNull
+    public List<InventoryAdjustmentCreateRequestItem> items;
 }

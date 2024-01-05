@@ -16,18 +16,22 @@ public class SalesCreateRequest {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Item {
+    public static class SalesCreateRequestItem {
+        @NotNull
         public Long productId;
 
         @Min(value = 1)
+        @NotNull
         public Integer quantity;
 
         @Min(value = 0)
+        @NotNull
         public Double unitPrice;
     }
 
     @Valid
-    public List<Item> items;
+    @NotNull
+    public List<SalesCreateRequestItem> items;
 
     public Long customerId;
 }

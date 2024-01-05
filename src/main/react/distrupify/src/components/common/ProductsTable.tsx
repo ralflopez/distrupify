@@ -14,8 +14,8 @@ import {
 import { IconSearch } from "@tabler/icons-react";
 import { useState } from "react";
 import { useDebounce } from "../../hooks/debounce";
-import { useProductsRequest } from "../../hooks/server";
-import { ProductDTO } from "../../types/dto";
+import { useProductsRequest } from "../../hooks/server/products";
+import { ProductDTO } from "../../types/api-alias";
 import { getItemNumber } from "../../utils/display";
 import { token } from "../../utils/token";
 

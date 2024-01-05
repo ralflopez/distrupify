@@ -57,7 +57,7 @@ public class SalesRepository {
         final var product = getSalesStream(organizationId)
                 .filter(SalesEntity$.id.equal(salesId))
                 .peek(p -> {
-                    p.getInventoryTransaction().setStatus(InventoryTransactionEntity.Status.DELETED);
+                    p.getInventoryTransaction().setStatus(InventoryTransactionEntity.InventoryTransactionStatus.DELETED);
                 })
                 .findAny();
 
@@ -108,6 +108,6 @@ public class SalesRepository {
                 .filter(SalesEntity$.organizationId.equal(organizationId))
                 .filter(s -> !s.getInventoryTransaction()
                         .getStatus()
-                        .equals(InventoryTransactionEntity.Status.DELETED));
+                        .equals(InventoryTransactionEntity.InventoryTransactionStatus.DELETED));
     }
 }

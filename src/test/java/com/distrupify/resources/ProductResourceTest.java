@@ -140,8 +140,8 @@ class ProductResourceTest {
     @Transactional
     public void _shouldGetTheCorrectProductQuantityData() {
         final var t1 = new InventoryAdjustmentEntity(organizationId);
-        t1.addLog(InventoryLogEntity.Type.INCOMING, s22Ultra.getId(), 13);
-        t1.addLog(InventoryLogEntity.Type.INCOMING, galaxyBuds2.getId(), 56);
+        t1.addLog(InventoryLogEntity.InventoryLogType.INCOMING, s22Ultra.getId(), 13);
+        t1.addLog(InventoryLogEntity.InventoryLogType.INCOMING, galaxyBuds2.getId(), 56);
         t1.persist();
 
         final var t2 = new SalesEntity(organizationId, customer.getId());
@@ -160,8 +160,8 @@ class ProductResourceTest {
         t4.persist();
 
         final var t5 = new InventoryAdjustmentEntity(organizationId);
-        t5.addLog(InventoryLogEntity.Type.INCOMING, s22Ultra.getId(), 20);
-        t5.addLog(InventoryLogEntity.Type.INCOMING, galaxyBuds2.getId(), 44);
+        t5.addLog(InventoryLogEntity.InventoryLogType.INCOMING, s22Ultra.getId(), 20);
+        t5.addLog(InventoryLogEntity.InventoryLogType.INCOMING, galaxyBuds2.getId(), 44);
         t5.persist();
 
         final var t6 = new PurchaseOrderEntity(organizationId, supplier.getId(),false);

@@ -25,7 +25,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.stream.Stream;
 
-import static com.distrupify.entities.InventoryTransactionEntity.Type.*;
+import static com.distrupify.entities.InventoryTransactionEntity.InventoryTransactionType.*;
 import static io.restassured.RestAssured.given;
 
 @QuarkusTest
@@ -119,8 +119,8 @@ class InventoryTransactionResourceTest {
     @Transactional
     public void _shouldGetAllTransactionTypesData() {
         final var t1 = new InventoryAdjustmentEntity(organizationId);
-        t1.addLog(InventoryLogEntity.Type.INCOMING, s22Ultra.getId(), 100);
-        t1.addLog(InventoryLogEntity.Type.INCOMING, galaxyBuds2.getId(), 100);
+        t1.addLog(InventoryLogEntity.InventoryLogType.INCOMING, s22Ultra.getId(), 100);
+        t1.addLog(InventoryLogEntity.InventoryLogType.INCOMING, galaxyBuds2.getId(), 100);
         t1.persist();
 
         final var t2 = new SalesEntity(organizationId, customer.getId());
@@ -134,8 +134,8 @@ class InventoryTransactionResourceTest {
         t3.persist();
 
         final var t4 = new InventoryAdjustmentEntity(organizationId);
-        t4.addLog(InventoryLogEntity.Type.OUTGOING, s22Ultra.getId(), 30);
-        t4.addLog(InventoryLogEntity.Type.OUTGOING, galaxyBuds2.getId(), 10);
+        t4.addLog(InventoryLogEntity.InventoryLogType.OUTGOING, s22Ultra.getId(), 30);
+        t4.addLog(InventoryLogEntity.InventoryLogType.OUTGOING, galaxyBuds2.getId(), 10);
         t4.persist();
     }
 

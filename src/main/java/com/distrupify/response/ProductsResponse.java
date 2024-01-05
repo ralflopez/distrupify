@@ -1,12 +1,13 @@
 package com.distrupify.response;
 
 import com.distrupify.dto.ProductDTO;
-import lombok.AllArgsConstructor;
+import jakarta.annotation.Nonnull;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-@AllArgsConstructor
-public class ProductsResponse {
-    public List<ProductDTO> products;
-    public int pageCount;
+public record ProductsResponse(
+        @Nonnull @NotNull List<ProductDTO> products,
+        @Nonnull @NotNull Integer pageCount
+) {
 }

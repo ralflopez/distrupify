@@ -13,31 +13,34 @@ import {
 } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
 import { IconX } from "@tabler/icons-react";
-import { useInventoryAdjustmentRequest } from "../../hooks/server";
+import { useInventoryAdjustmentCreateRequest } from "../../hooks/server/inventory-adjustment";
 import {
   InventoryAdjustmentCreateRequest,
-  InventoryAdjustmentCreateRequestDomainItem,
   InventoryAdjustmentCreateRequestItem,
-} from "../../types/requests";
+  InventoryAdjustmentCreateRequestItemWithProduct,
+} from "../../types/api-alias";
 import { getProductDisplayName } from "../../utils/display";
 import { token } from "../../utils/token";
 
 interface Props {
   form: UseFormReturnType<{
-    items: InventoryAdjustmentCreateRequestDomainItem[];
+    items: InventoryAdjustmentCreateRequestItemWithProduct[];
   }>;
 }
 
 export const ItemsSection = ({ form }: Props) => {
   const iconStyle = { width: rem(15), height: rem(15) };
 
-  const inventoryAdjustmentCreate = useInventoryAdjustmentRequest(token, () => {
-    form.setValues({
-      items: [],
-    });
-  });
+  const inventoryAdjustmentCreate = useInventoryAdjustmentCreateRequest(
+    token,
+    () => {
+      form.setValues({
+        items: [],
+      });
+    }
+  );
 
-  function removeItem(item: InventoryAdjustmentCreateRequestDomainItem) {
+  function removeItem(item: InventoryAdjustmentCreateRequestItemWithProduct) {
     const index = form.values.items.findIndex(
       (i) => i.product.id === item.product.id
     );
@@ -85,10 +88,11 @@ export const ItemsSection = ({ form }: Props) => {
               {form.values.items.map((item, index) => (
                 <Table.Tr key={item.product.id}>
                   <Table.Td>
-                    <Text size="sm">{getProductDisplayName(item.product)}</Text>
+                    <Text size="xs">{getProductDisplayName(item.product)}</Text>
                   </Table.Td>
                   <Table.Td>
                     <Select
+                      size="xs"
                       w={110}
                       allowDeselect={false}
                       data={[
@@ -106,6 +110,7 @@ export const ItemsSection = ({ form }: Props) => {
                   </Table.Td>
                   <Table.Td>
                     <NumberInput
+                      size="xs"
                       w={80}
                       min={1}
                       {...form.getInputProps(`items.${index}.quantity`)}

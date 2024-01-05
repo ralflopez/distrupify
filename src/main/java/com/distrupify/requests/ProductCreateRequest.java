@@ -21,5 +21,6 @@ public class ProductCreateRequest {
     public String description;
 
     @Min(value = 0)
+    @NotNull
     public Float unitPrice;
 }

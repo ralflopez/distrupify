@@ -22,7 +22,7 @@ public class InventoryTransactionEntity extends PanacheEntityBase {
 
     @Column(name = "inventory_transaction_type", nullable = false)
     @Enumerated(EnumType.STRING)
-    public InventoryTransactionEntity.Type inventoryTransactionType;
+    public InventoryTransactionType inventoryTransactionType;
 
     @Column(name = "timestamp", nullable = false)
     public Date timestamp;
@@ -42,15 +42,15 @@ public class InventoryTransactionEntity extends PanacheEntityBase {
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
-    public Status status;
+    public InventoryTransactionStatus status;
 
-    public enum Status {
+    public enum InventoryTransactionStatus {
         PENDING,
         DELETED,
         VALID,
     }
 
-    public enum Type {
+    public enum InventoryTransactionType {
         PURCHASE_ORDER,
         SALES,
         ADJUSTMENT
@@ -64,7 +64,7 @@ public class InventoryTransactionEntity extends PanacheEntityBase {
         }
 
         if (status == null) {
-            status = Status.VALID;
+            status = InventoryTransactionStatus.VALID;
         }
     }
 }

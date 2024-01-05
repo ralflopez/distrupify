@@ -24,10 +24,8 @@ public class OrganizationEntity extends PanacheEntityBase {
     @Column(name = "display_name")
     public String displayName;
 
+    // TODO: replace with from in DTO
     public OrganizationDTO intoDTO() {
-        return OrganizationDTO.builder()
-                .id(id)
-                .displayName(displayName)
-                .build();
+        return new OrganizationDTO(id, displayName);
     }
 }

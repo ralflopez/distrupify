@@ -1,34 +1,42 @@
-import { notifications } from "@mantine/notifications";
-import { useQuery } from "react-query";
-import { ProductDTO } from "../../types/dto";
-import { InventoryLogType } from "../../types/requests";
-import { _getAuthHeader, _handleResponse } from "../server";
+import { useMutation, useQuery } from "react-query";
+import { queryClient } from "../../main";
+import {
+  InventoryAdjustmentCreateRequest,
+  InventoryAdjustmentResponse,
+} from "../../types/api-alias";
+import { ApiNotification, handleResponse } from "./common";
 
-export type InventoryLogsDTO = {
-  id: number;
-  quantity: number;
-  price: number;
-  inventoryLogType: InventoryLogType;
-  timestamp: string;
-  product: ProductDTO | null;
-};
+const apiNotification = new ApiNotification("Stock Adjustment");
 
-export type InventoryTransactionDTO = {
-  id: number;
-  inventoryTransactionType: string;
-  timestamp: string;
-  inventoryTransactionLogs: InventoryLogsDTO[] | null;
-};
-
-export type InventoryAdjustmentDTO = {
-  id: number;
-  createdAt: string;
-  inventoryTransaction: InventoryTransactionDTO;
-};
-
-export type InventoryAdjustmentResponse = {
-  inventoryAdjustments: InventoryAdjustmentDTO[];
-  pageCount: number;
+export const useInventoryAdjustmentCreateRequest = (
+  token: string,
+  cleanUp: () => void
+) => {
+  return useMutation(
+    async (data: InventoryAdjustmentCreateRequest) => {
+      const response = await fetch(
+        "http://localhost:8080/api/v1/inventory/adjustments",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          method: "POST",
+          body: JSON.stringify(data),
+        }
+      );
+      return handleResponse(response);
+    },
+    {
+      onError: apiNotification.onError,
+      onSuccess: () => {
+        apiNotification.success("Successfully adjusted inventory items");
+        queryClient.invalidateQueries(["products"]);
+        queryClient.invalidateQueries(["inventoryAdjustments"]);
+        cleanUp();
+      },
+    }
+  );
 };
 
 export const useInventoryAdjustments = (
@@ -44,22 +52,15 @@ export const useInventoryAdjustments = (
         {
           method: "GET",
           headers: {
-            Authorization: _getAuthHeader(token),
+            Authorization: `Bearer ${token}`,
           },
         }
       );
 
-      return _handleResponse(response);
+      return handleResponse(response);
     },
     {
-      onError: (e: Error) => {
-        notifications.show({
-          title: "Inventory Adjustments",
-          message: e.message,
-          color: "red",
-        });
-      },
-
+      onError: apiNotification.onError,
       keepPreviousData: true,
     }
   );

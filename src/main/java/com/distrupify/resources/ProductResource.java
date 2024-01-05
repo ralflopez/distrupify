@@ -17,6 +17,9 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.jwt.JsonWebToken;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.jboss.logging.Logger;
 
 import java.util.List;
@@ -75,6 +78,10 @@ public class ProductResource {
     }
 
     // TODO: write test
+    @APIResponse(responseCode = "200",
+            description = "Successful operation",
+            content = @Content(mediaType = MediaType.APPLICATION_JSON,
+                    schema = @Schema(implementation = ProductsResponse.class)))
     @GET
     @Authenticated
     public Response findProducts(@QueryParam("search") String searchStringParam,

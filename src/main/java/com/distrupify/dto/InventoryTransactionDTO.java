@@ -1,24 +1,24 @@
 package com.distrupify.dto;
 
 import com.distrupify.entities.InventoryTransactionEntity;
-import lombok.AllArgsConstructor;
+import jakarta.annotation.Nonnull;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-// TODO: convert response into records
-@AllArgsConstructor
-public class InventoryTransactionDTO {
-    public long id;
-    public String inventoryTransactionType;
-    public String timestamp;
-    public List<InventoryLogDTO> inventoryTransactionLogs;
-
+public record InventoryTransactionDTO(
+        @Nonnull @NotNull Long id,
+        @Nonnull @NotNull String inventoryTransactionType,
+        @Nonnull @NotNull String timestamp,
+        @Nonnull @NotNull List<TransactionItemDTO> items,
+        @Nonnull @NotNull InventoryTransactionEntity.InventoryTransactionStatus status) {
     public static InventoryTransactionDTO fromEntity(InventoryTransactionEntity entity) {
         return new InventoryTransactionDTO(entity.getId(),
                 entity.getInventoryTransactionType().name(),
                 entity.getTimestamp().toString(),
                 entity.getInventoryLogs()
                         .stream()
-                        .map(InventoryLogDTO::fromEntity).toList());
+                        .map(TransactionItemDTO::fromEntity).toList(),
+                entity.getStatus());
     }
 }

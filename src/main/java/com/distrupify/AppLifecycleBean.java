@@ -174,6 +174,46 @@ public class AppLifecycleBean {
                 .build()
                 .persist();
 
+        ProductEntity.builder()
+                .organizationId(testOrganization.getId())
+                .sku("3223411234")
+                .brand("Samsung")
+                .name("Galaxy Buds 16")
+                .description("")
+                .unitPrice(BigDecimal.valueOf(4000))
+                .build()
+                .persist();
+
+        ProductEntity.builder()
+                .organizationId(testOrganization.getId())
+                .sku("223123453")
+                .brand("Samsung")
+                .name("Galaxy Buds 17")
+                .description("")
+                .unitPrice(BigDecimal.valueOf(4000))
+                .build()
+                .persist();
+
+        ProductEntity.builder()
+                .organizationId(testOrganization.getId())
+                .sku("333212345")
+                .brand("Samsung")
+                .name("Galaxy Buds 18")
+                .description("")
+                .unitPrice(BigDecimal.valueOf(4000))
+                .build()
+                .persist();
+
+        ProductEntity.builder()
+                .organizationId(testOrganization.getId())
+                .sku("332456523")
+                .brand("Samsung")
+                .name("Galaxy Buds 19")
+                .description("")
+                .unitPrice(BigDecimal.valueOf(4000))
+                .build()
+                .persist();
+
         final var testUser1 = authService.signup(SignupRequest.builder()
                 .email("test-user@email.com")
                 .password("password")

@@ -3,14 +3,15 @@ package com.distrupify.dto;
 import com.distrupify.entities.ProductEntity;
 import com.distrupify.models.ProductModel;
 import jakarta.annotation.Nonnull;
+import jakarta.validation.constraints.NotNull;
 
 public record ProductDTO(
-        long id,
-        @Nonnull String sku,
-        @Nonnull String brand,
-        @Nonnull String name,
-        @Nonnull String description,
-        double unitPrice,
+        @Nonnull @NotNull Long id,
+        @Nonnull @NotNull String sku,
+        @Nonnull @NotNull String brand,
+        @Nonnull @NotNull String name,
+        @Nonnull @NotNull String description,
+        @Nonnull @NotNull Double unitPrice,
         Integer quantity
 ) {
 

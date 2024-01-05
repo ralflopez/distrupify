@@ -1,15 +1,14 @@
 package com.distrupify.dto;
 
 import com.distrupify.entities.InventoryAdjustmentEntity;
+import jakarta.annotation.Nonnull;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 
-// TODO: convert dto into record
-@AllArgsConstructor
-public class InventoryAdjustmentDTO {
-    public Long id;
-    public String createdAt;
-    public InventoryTransactionDTO inventoryTransaction;
-
+public record InventoryAdjustmentDTO(
+    @Nonnull @NotNull Long id,
+    @Nonnull @NotNull String createdAt,
+    @Nonnull @NotNull InventoryTransactionDTO inventoryTransaction) {
     public static InventoryAdjustmentDTO fromEntity(InventoryAdjustmentEntity entity) {
         return new InventoryAdjustmentDTO(entity.getId(),
                 entity.getCreatedAt().toString(),

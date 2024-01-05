@@ -10,13 +10,11 @@ import {
 import { useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { IconCurrencyPeso, IconPlus } from "@tabler/icons-react";
-import {
-  ProductCreateRequest,
-  useProductCreateRequest,
-} from "../../hooks/server/products";
+import { useProductCreateRequest } from "../../hooks/server/products";
+import { ProductCreateRequest } from "../../types/api-alias";
 import { token } from "../../utils/token";
 
-export const ProductCreateButton = () => {
+export const ProductCreateModal = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const iconStyle = { width: rem(12), height: rem(12) };
 

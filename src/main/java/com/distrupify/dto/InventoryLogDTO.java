@@ -1,18 +1,17 @@
 package com.distrupify.dto;
 
 import com.distrupify.entities.InventoryLogEntity;
+import jakarta.annotation.Nonnull;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 
-// TODO: convert response into records
-@AllArgsConstructor
-public class InventoryLogDTO {
-    public long id;
-    public int quantity;
-    public double price;
-    public String inventoryLogType;
-    public String timestamp;
-    public ProductDTO product;
-
+public record InventoryLogDTO (
+        @Nonnull @NotNull Long id,
+        @Nonnull @NotNull Integer quantity,
+        @Nonnull @NotNull Double price,
+        @Nonnull @NotNull String inventoryLogType,
+        @Nonnull @NotNull String timestamp,
+        @Nonnull @NotNull ProductDTO product) {
     public static InventoryLogDTO fromEntity(InventoryLogEntity entity) {
         return new InventoryLogDTO(entity.getId(),
                 entity.getQuantity(),

@@ -106,8 +106,8 @@ class InventoryWithdrawalResourceTest {
     @Transactional
     public void _shouldUpdateTheProductQuantityData() {
         final var t1 = new InventoryAdjustmentEntity(organizationId);
-        t1.addLog(InventoryLogEntity.Type.INCOMING, s22Ultra.getId(), 186);
-        t1.addLog(InventoryLogEntity.Type.INCOMING, galaxyBuds2.getId(), 250);
+        t1.addLog(InventoryLogEntity.InventoryLogType.INCOMING, s22Ultra.getId(), 186);
+        t1.addLog(InventoryLogEntity.InventoryLogType.INCOMING, galaxyBuds2.getId(), 250);
         t1.persist();
     }
 
@@ -118,8 +118,8 @@ class InventoryWithdrawalResourceTest {
 
         final var request = SalesCreateRequest.builder()
                 .items(List.of(
-                        new SalesCreateRequest.Item(s22Ultra.getId(), 100, 0.0),
-                        new SalesCreateRequest.Item(galaxyBuds2.getId(), 200, 0.0)
+                        new SalesCreateRequest.SalesCreateRequestItem(s22Ultra.getId(), 100, 0.0),
+                        new SalesCreateRequest.SalesCreateRequestItem(galaxyBuds2.getId(), 200, 0.0)
                 ))
                 .customerId(customer.getId())
                 .build();
@@ -154,8 +154,8 @@ class InventoryWithdrawalResourceTest {
 
         final var request = SalesCreateRequest.builder()
                 .items(List.of(
-                        new SalesCreateRequest.Item(s22Ultra.getId(), 9999, 0.0),
-                        new SalesCreateRequest.Item(galaxyBuds2.getId(), 100, 0.0)
+                        new SalesCreateRequest.SalesCreateRequestItem(s22Ultra.getId(), 9999, 0.0),
+                        new SalesCreateRequest.SalesCreateRequestItem(galaxyBuds2.getId(), 100, 0.0)
                 ))
                 .customerId(customer.getId())
                 .build();
@@ -175,8 +175,8 @@ class InventoryWithdrawalResourceTest {
     public void shouldFailWhenProductIdIsInvalid() {
         final var request = SalesCreateRequest.builder()
                 .items(List.of(
-                        new SalesCreateRequest.Item(0L, 100, 0.0),
-                        new SalesCreateRequest.Item(galaxyBuds2.getId(), 100, 0.0)
+                        new SalesCreateRequest.SalesCreateRequestItem(0L, 100, 0.0),
+                        new SalesCreateRequest.SalesCreateRequestItem(galaxyBuds2.getId(), 100, 0.0)
                 ))
                 .customerId(customer.getId())
                 .build();

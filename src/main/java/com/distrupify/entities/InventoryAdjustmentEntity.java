@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.distrupify.entities.InventoryTransactionEntity.Type.ADJUSTMENT;
+import static com.distrupify.entities.InventoryTransactionEntity.InventoryTransactionType.ADJUSTMENT;
 
 @EqualsAndHashCode(callSuper = true)
 @Builder
@@ -20,7 +20,7 @@ import static com.distrupify.entities.InventoryTransactionEntity.Type.ADJUSTMENT
 @Entity
 @Table(name = "inventory_adjustments")
 public class InventoryAdjustmentEntity extends PanacheEntityBase {
-    private static InventoryTransactionEntity.Type INVENTORY_TRANSACTION_TYPE = ADJUSTMENT;
+    private static InventoryTransactionEntity.InventoryTransactionType INVENTORY_TRANSACTION_TYPE = ADJUSTMENT;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,13 +59,13 @@ public class InventoryAdjustmentEntity extends PanacheEntityBase {
                 .inventoryTransactionType(INVENTORY_TRANSACTION_TYPE)
                 .inventoryLogs(new ArrayList<>())
                 .organizationId(organizationId)
-                .status(InventoryTransactionEntity.Status.VALID)
+                .status(InventoryTransactionEntity.InventoryTransactionStatus.VALID)
                 .build();
 
         this.organizationId = organizationId;
     }
 
-    public void addLog(InventoryLogEntity.Type inventoryLogType, long productId, int quantity) {
+    public void addLog(InventoryLogEntity.InventoryLogType inventoryLogType, long productId, int quantity) {
         final var log = InventoryLogEntity.builder()
                 .inventoryLogType(inventoryLogType)
                 .unitPrice(BigDecimal.valueOf(0))

@@ -55,7 +55,7 @@ public class InventoryAdjustmentRepository {
 
         final var invalidProductQuantityOutgoingLog = request.items
                 .stream()
-                .filter(l -> l.inventoryLogType.equals(InventoryLogEntity.Type.OUTGOING))
+                .filter(l -> l.inventoryLogType.equals(InventoryLogEntity.InventoryLogType.OUTGOING))
                 .filter(l -> productIdQuantityMap.get(l.productId) < l.quantity)
                 .findAny();
 
@@ -92,6 +92,6 @@ public class InventoryAdjustmentRepository {
                 .filter(InventoryAdjustmentEntity$.organizationId.equal(organizationId))
                 .filter(adj -> !adj.getInventoryTransaction()
                         .getStatus()
-                        .equals(InventoryTransactionEntity.Status.DELETED));
+                        .equals(InventoryTransactionEntity.InventoryTransactionStatus.DELETED));
     }
 }

@@ -51,26 +51,24 @@ export const TransactionLogsTable = () => {
                   </Table.Td>
                   <Table.Td style={{ verticalAlign: "top" }}>
                     <List>
-                      {data.inventoryTransaction.inventoryTransactionLogs?.map(
-                        (l) => (
-                          <React.Fragment key={l.id}>
-                            <Text>
-                              {l.inventoryLogType === "INCOMING" ? (
-                                <Text span c="green" mr="sm">
-                                  +{l.quantity}
-                                </Text>
-                              ) : (
-                                <Text span c="red" mr="sm">
-                                  -{l.quantity}
-                                </Text>
-                              )}
-                              {l.product
-                                ? getProductDisplayName(l.product)
-                                : null}
-                            </Text>
-                          </React.Fragment>
-                        )
-                      )}
+                      {data.inventoryTransaction.items?.map((l, i) => (
+                        <React.Fragment key={i}>
+                          <Text>
+                            {l.inventoryLogType === "INCOMING" ? (
+                              <Text span c="green" mr="sm">
+                                +{l.quantity}
+                              </Text>
+                            ) : (
+                              <Text span c="red" mr="sm">
+                                -{l.quantity}
+                              </Text>
+                            )}
+                            {l.product
+                              ? getProductDisplayName(l.product)
+                              : null}
+                          </Text>
+                        </React.Fragment>
+                      ))}
                     </List>
                   </Table.Td>
                 </Table.Tr>

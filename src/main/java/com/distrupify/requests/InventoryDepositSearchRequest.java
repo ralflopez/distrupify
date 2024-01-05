@@ -1,12 +1,15 @@
 package com.distrupify.requests;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 import java.util.Date;
 
 @Builder
 public class InventoryDepositSearchRequest {
+    @NotNull
     public Date startDate;
+
     public Date endDate;
 
     public boolean hasStartAndEndDate() {

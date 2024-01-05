@@ -44,7 +44,7 @@ public class PurchaseOrderService {
         }
 
         transaction.get().setReceivedAt(new Date());
-        transaction.get().getInventoryTransaction().setStatus(InventoryTransactionEntity.Status.VALID);
+        transaction.get().getInventoryTransaction().setStatus(InventoryTransactionEntity.InventoryTransactionStatus.VALID);
         em.merge(transaction.get());
     }
 }

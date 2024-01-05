@@ -1,7 +1,7 @@
 import { Box, Card, Flex, Grid, Tabs, Text, Title, rem } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconClock, IconPlusMinus } from "@tabler/icons-react";
-import { InventoryAdjustmentCreateRequestDomainItem } from "../../types/requests";
+import { InventoryAdjustmentCreateRequestItemWithProduct } from "../../types/api-alias";
 import { InventoryAdjustmentProductsTable } from "./InventoryAdjustmentProductsTable";
 import { ItemsSection } from "./ItemsSection";
 import { TransactionLogsTable } from "./TransactionLogsTable";
@@ -11,7 +11,7 @@ export const InventoryAdjustment = () => {
 
   const form = useForm({
     initialValues: {
-      items: [] as InventoryAdjustmentCreateRequestDomainItem[],
+      items: [] as InventoryAdjustmentCreateRequestItemWithProduct[],
     },
   });
 
@@ -47,12 +47,12 @@ export const InventoryAdjustment = () => {
             <Grid.Col
               span={{
                 base: 12,
-                xl: 8,
+                xl: 6,
               }}
             >
               <InventoryAdjustmentProductsTable form={form} />
             </Grid.Col>
-            <Grid.Col span={{ lg: 4 }} display={{ base: "none", xl: "block" }}>
+            <Grid.Col span={{ lg: 6 }} display={{ base: "none", xl: "block" }}>
               <Card
                 pos="sticky"
                 mt="sm"

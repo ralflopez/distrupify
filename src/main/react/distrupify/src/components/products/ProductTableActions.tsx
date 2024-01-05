@@ -19,11 +19,10 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 import {
-  ProductEditRequest,
   useProductDeleteRequest,
   useProductEditRequest,
 } from "../../hooks/server/products";
-import { ProductDTO } from "../../types/dto";
+import { ProductDTO, ProductEditRequest } from "../../types/api-alias";
 import { getProductDisplayName } from "../../utils/display";
 import { token } from "../../utils/token";
 

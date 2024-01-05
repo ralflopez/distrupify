@@ -16,18 +16,22 @@ public class PurchaseOrderCreateRequest {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Item {
+    public static class PurchaseOrderCreateRequestItem {
+        @NotNull
         public Long productId;
 
         @Min(value = 1)
+        @NotNull
         public Integer quantity;
 
         @Min(value = 0)
+        @NotNull
         public Double unitPrice;
     }
 
     @Valid
-    public List<Item> items;
+    @NotNull
+    public List<PurchaseOrderCreateRequestItem> items;
 
     @NotNull
     public Long supplierId;

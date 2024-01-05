@@ -1,0 +1,838 @@
+---
+openapi: 3.0.3
+info:
+  title: distrupify API
+  version: 1.0.0-SNAPSHOT
+paths:
+  /api/v1/auth/login:
+    post:
+      tags:
+      - Auth Resource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        "200":
+          description: OK
+  /api/v1/auth/signup:
+    post:
+      tags:
+      - Auth Resource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignupRequest'
+      responses:
+        "200":
+          description: OK
+  /api/v1/auth/user:
+    get:
+      tags:
+      - Auth Resource
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Not Allowed
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme: []
+  /api/v1/inventory/adjustments:
+    get:
+      tags:
+      - Inventory Adjustment Resource
+      parameters:
+      - name: page
+        in: query
+        schema:
+          format: int32
+          type: integer
+      - name: page_size
+        in: query
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryAdjustmentResponse'
+        "403":
+          description: Not Allowed
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme: []
+    post:
+      tags:
+      - Inventory Adjustment Resource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InventoryAdjustmentCreateRequest'
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Not Allowed
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme: []
+  /api/v1/inventory/transactions:
+    get:
+      tags:
+      - Inventory Transaction Resource
+      parameters:
+      - name: page
+        in: query
+        schema:
+          format: int32
+          type: integer
+      - name: per_page
+        in: query
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryTransactionResponse'
+        "403":
+          description: Not Allowed
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme: []
+  /api/v1/inventory/transactions/search:
+    get:
+      tags:
+      - Inventory Transaction Resource
+      parameters:
+      - name: asc
+        in: query
+        schema:
+          type: boolean
+      - name: page
+        in: query
+        schema:
+          format: int32
+          type: integer
+      - name: per_page
+        in: query
+        schema:
+          format: int32
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InventoryTransactionSearchRequest'
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Not Allowed
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme: []
+  /api/v1/inventory/transactions/{id}:
+    delete:
+      tags:
+      - Inventory Transaction Resource
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Not Allowed
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme: []
+  /api/v1/products:
+    get:
+      tags:
+      - Product Resource
+      parameters:
+      - name: filter_by
+        in: query
+        schema:
+          $ref: '#/components/schemas/ProductSearchFilterBy'
+      - name: page
+        in: query
+        schema:
+          format: int32
+          type: integer
+      - name: page_size
+        in: query
+        schema:
+          format: int32
+          type: integer
+      - name: search
+        in: query
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductsResponse'
+        "403":
+          description: Not Allowed
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme: []
+    post:
+      tags:
+      - Product Resource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductCreateRequest'
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Not Allowed
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme: []
+  /api/v1/products/{id}:
+    put:
+      tags:
+      - Product Resource
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductEditRequest'
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Not Allowed
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme: []
+    delete:
+      tags:
+      - Product Resource
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Not Allowed
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme: []
+  /api/v1/purchase-orders:
+    post:
+      tags:
+      - Purchase Order Resource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PurchaseOrderCreateRequest'
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Not Allowed
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme: []
+  /api/v1/purchase-orders/{id}/receive:
+    post:
+      tags:
+      - Purchase Order Resource
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Not Allowed
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme: []
+  /api/v1/sales:
+    get:
+      tags:
+      - Sales Resource
+      parameters:
+      - name: page
+        in: query
+        schema:
+          format: int32
+          type: integer
+      - name: page_size
+        in: query
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SalesResponse'
+        "403":
+          description: Not Allowed
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme: []
+    post:
+      tags:
+      - Sales Resource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SalesCreateRequest'
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Not Allowed
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme: []
+  /api/v1/sales/{id}:
+    delete:
+      tags:
+      - Sales Resource
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Not Allowed
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme: []
+  /api/v1/suppliers:
+    get:
+      tags:
+      - Supplier Resource
+      parameters:
+      - name: page
+        in: query
+        schema:
+          format: int32
+          type: integer
+      - name: page_size
+        in: query
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Not Allowed
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme: []
+    post:
+      tags:
+      - Supplier Resource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupplierCreateRequest'
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Not Allowed
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme: []
+  /api/v1/suppliers/{id}:
+    put:
+      tags:
+      - Supplier Resource
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupplierEditRequest'
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Not Allowed
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme: []
+    delete:
+      tags:
+      - Supplier Resource
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Not Allowed
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme: []
+components:
+  schemas:
+    Date:
+      format: date
+      type: string
+      example: 2022-03-10
+    InventoryAdjustmentCreateRequest:
+      required:
+      - items
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/InventoryAdjustmentCreateRequestItem'
+    InventoryAdjustmentCreateRequestItem:
+      required:
+      - productId
+      - quantity
+      - inventoryLogType
+      type: object
+      properties:
+        productId:
+          format: int64
+          type: integer
+        quantity:
+          format: int32
+          minimum: 1
+          type: integer
+        inventoryLogType:
+          $ref: '#/components/schemas/InventoryLogType'
+    InventoryAdjustmentDTO:
+      required:
+      - id
+      - createdAt
+      - inventoryTransaction
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        createdAt:
+          type: string
+        inventoryTransaction:
+          $ref: '#/components/schemas/InventoryTransactionDTO'
+    InventoryAdjustmentResponse:
+      required:
+      - inventoryAdjustments
+      - pageCount
+      type: object
+      properties:
+        inventoryAdjustments:
+          type: array
+          items:
+            $ref: '#/components/schemas/InventoryAdjustmentDTO'
+        pageCount:
+          format: int32
+          type: integer
+    InventoryLogType:
+      enum:
+      - INCOMING
+      - OUTGOING
+      type: string
+    InventoryTransactionDTO:
+      required:
+      - id
+      - inventoryTransactionType
+      - timestamp
+      - items
+      - status
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        inventoryTransactionType:
+          type: string
+        timestamp:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionItemDTO'
+        status:
+          $ref: '#/components/schemas/InventoryTransactionStatus'
+    InventoryTransactionResponse:
+      required:
+      - transactions
+      - pageCount
+      type: object
+      properties:
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/InventoryTransactionDTO'
+        pageCount:
+          format: int32
+          type: integer
+    InventoryTransactionSearchRequest:
+      required:
+      - startDate
+      type: object
+      properties:
+        startDate:
+          type: string
+        endDate:
+          type: string
+    InventoryTransactionStatus:
+      enum:
+      - PENDING
+      - DELETED
+      - VALID
+      type: string
+    LoginRequest:
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          minLength: 8
+          type: string
+    ProductCreateRequest:
+      required:
+      - sku
+      - brand
+      - name
+      - description
+      - unitPrice
+      type: object
+      properties:
+        sku:
+          minLength: 1
+          type: string
+        brand:
+          minLength: 1
+          type: string
+        name:
+          minLength: 1
+          type: string
+        description:
+          type: string
+        unitPrice:
+          format: float
+          minimum: 0
+          type: number
+    ProductDTO:
+      required:
+      - id
+      - sku
+      - brand
+      - name
+      - description
+      - unitPrice
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        sku:
+          type: string
+        brand:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        unitPrice:
+          format: double
+          type: number
+        quantity:
+          format: int32
+          type: integer
+    ProductEditRequest:
+      required:
+      - sku
+      - brand
+      - name
+      - description
+      - unitPrice
+      type: object
+      properties:
+        sku:
+          minLength: 1
+          type: string
+        brand:
+          minLength: 1
+          type: string
+        name:
+          minLength: 1
+          type: string
+        description:
+          type: string
+        unitPrice:
+          format: float
+          minimum: 0
+          type: number
+    ProductSearchFilterBy:
+      enum:
+      - NAME
+      - SKU
+      type: string
+    ProductsResponse:
+      required:
+      - products
+      - pageCount
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductDTO'
+        pageCount:
+          format: int32
+          type: integer
+    PurchaseOrderCreateRequest:
+      required:
+      - items
+      - supplierId
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/PurchaseOrderCreateRequestItem'
+        supplierId:
+          format: int64
+          type: integer
+    PurchaseOrderCreateRequestItem:
+      required:
+      - productId
+      - quantity
+      - unitPrice
+      type: object
+      properties:
+        productId:
+          format: int64
+          type: integer
+        quantity:
+          format: int32
+          minimum: 1
+          type: integer
+        unitPrice:
+          format: double
+          minimum: 0
+          type: number
+    SalesCreateRequest:
+      required:
+      - items
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/SalesCreateRequestItem'
+        customerId:
+          format: int64
+          type: integer
+    SalesCreateRequestItem:
+      required:
+      - productId
+      - quantity
+      - unitPrice
+      type: object
+      properties:
+        productId:
+          format: int64
+          type: integer
+        quantity:
+          format: int32
+          minimum: 1
+          type: integer
+        unitPrice:
+          format: double
+          minimum: 0
+          type: number
+    SalesDTO:
+      required:
+      - id
+      - createdAt
+      - inventoryTransactionId
+      - customerId
+      - totalPrice
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        createdAt:
+          $ref: '#/components/schemas/Date'
+        inventoryTransactionId:
+          format: int64
+          type: integer
+        customerId:
+          format: int64
+          type: integer
+          nullable: true
+        totalPrice:
+          format: double
+          type: number
+    SalesResponse:
+      required:
+      - sales
+      - pageCount
+      type: object
+      properties:
+        sales:
+          type: array
+          items:
+            $ref: '#/components/schemas/SalesDTO'
+        pageCount:
+          format: int32
+          type: integer
+    SignupRequest:
+      required:
+      - name
+      - email
+      - password
+      - organizationId
+      type: object
+      properties:
+        name:
+          minLength: 4
+          type: string
+        email:
+          type: string
+        password:
+          minLength: 8
+          type: string
+        organizationId:
+          format: int64
+          type: integer
+    SupplierCreateRequest:
+      required:
+      - name
+      - address
+      - contactNumber
+      type: object
+      properties:
+        name:
+          type: string
+        address:
+          type: string
+        contactNumber:
+          type: string
+    SupplierEditRequest:
+      required:
+      - name
+      - address
+      - contactNumber
+      type: object
+      properties:
+        name:
+          type: string
+        address:
+          type: string
+        contactNumber:
+          type: string
+    TransactionItemDTO:
+      required:
+      - quantity
+      - price
+      - inventoryLogType
+      - product
+      type: object
+      properties:
+        quantity:
+          format: int32
+          type: integer
+        price:
+          format: double
+          type: number
+        inventoryLogType:
+          $ref: '#/components/schemas/InventoryLogType'
+        product:
+          $ref: '#/components/schemas/ProductDTO'
+  securitySchemes:
+    SecurityScheme:
+      type: http
+      description: Authentication
+      scheme: bearer
+      bearerFormat: JWT

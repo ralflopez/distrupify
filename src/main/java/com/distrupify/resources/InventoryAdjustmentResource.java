@@ -4,6 +4,7 @@ import com.distrupify.auth.services.TokenService;
 import com.distrupify.dto.InventoryAdjustmentDTO;
 import com.distrupify.requests.InventoryAdjustmentCreateRequest;
 import com.distrupify.response.InventoryAdjustmentResponse;
+import com.distrupify.response.ProductsResponse;
 import com.distrupify.services.InventoryAdjustmentService;
 import com.distrupify.utils.Pageable;
 import io.quarkus.security.Authenticated;
@@ -14,6 +15,9 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.jwt.JsonWebToken;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.jboss.logging.Logger;
 
 @Path("/api/v1/inventory/adjustments")
@@ -46,6 +50,10 @@ public class InventoryAdjustmentResource {
 
     // TODO: write test
     @SuppressWarnings("unused")
+    @APIResponse(responseCode = "200",
+            description = "Successful operation",
+            content = @Content(mediaType = MediaType.APPLICATION_JSON,
+                    schema = @Schema(implementation = InventoryAdjustmentResponse.class)))
     @GET
     @Authenticated
     @Produces(MediaType.APPLICATION_JSON)

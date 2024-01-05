@@ -24,7 +24,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.distrupify.entities.InventoryLogEntity.Type.INCOMING;
+import static com.distrupify.entities.InventoryLogEntity.InventoryLogType.INCOMING;
 import static com.speedment.jpastreamer.streamconfiguration.StreamConfiguration.of;
 import static jakarta.persistence.criteria.JoinType.LEFT;
 import static jakarta.persistence.criteria.JoinType.RIGHT;

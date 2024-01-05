@@ -1,10 +1,10 @@
 package com.distrupify.dto;
 
-import lombok.Builder;
+import jakarta.annotation.Nonnull;
+import jakarta.validation.constraints.NotNull;
 
-// TODO: convert response into records
-@Builder
-public class OrganizationDTO {
-    public long id;
-    public String displayName;
+public record OrganizationDTO(
+        @Nonnull @NotNull Long id,
+        @Nonnull @NotNull String displayName
+) {
 }

@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.distrupify.entities.InventoryTransactionEntity.Type.SALES;
+import static com.distrupify.entities.InventoryTransactionEntity.InventoryTransactionType.SALES;
 
 @EqualsAndHashCode(callSuper = true)
 @Builder
@@ -20,7 +20,7 @@ import static com.distrupify.entities.InventoryTransactionEntity.Type.SALES;
 @Entity
 @Table(name = "sales")
 public class SalesEntity extends PanacheEntityBase {
-    private static InventoryTransactionEntity.Type INVENTORY_TRANSACTION_TYPE = SALES;
+    private static InventoryTransactionEntity.InventoryTransactionType INVENTORY_TRANSACTION_TYPE = SALES;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -72,7 +72,7 @@ public class SalesEntity extends PanacheEntityBase {
                 .inventoryTransactionType(INVENTORY_TRANSACTION_TYPE)
                 .inventoryLogs(new ArrayList<>())
                 .organizationId(organizationId)
-                .status(pending ? InventoryTransactionEntity.Status.PENDING : InventoryTransactionEntity.Status.VALID)
+                .status(pending ? InventoryTransactionEntity.InventoryTransactionStatus.PENDING : InventoryTransactionEntity.InventoryTransactionStatus.VALID)
                 .build();
 
         this.customerId = customerId;
@@ -81,7 +81,7 @@ public class SalesEntity extends PanacheEntityBase {
 
     public void addLog(long productId, int quantity, double unitPrice) {
         final var log = InventoryLogEntity.builder()
-                .inventoryLogType(InventoryLogEntity.Type.OUTGOING)
+                .inventoryLogType(InventoryLogEntity.InventoryLogType.OUTGOING)
                 .unitPrice(BigDecimal.valueOf(unitPrice))
                 .organizationId(organizationId)
                 .productId(productId)

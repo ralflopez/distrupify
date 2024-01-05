@@ -11,7 +11,7 @@ import {
 import { IconList } from "@tabler/icons-react";
 import { getProductDisplayName } from "../../utils/display";
 import { ProductsTable } from "../common/ProductsTable";
-import { ProductCreateButton } from "./ProductCreateButton";
+import { ProductCreateModal } from "./ProductCreateModal";
 import { ProductTableActions } from "./ProductTableActions";
 
 export const Products = () => {
@@ -45,7 +45,7 @@ export const Products = () => {
           pb={{ base: 50, md: 0 }}
         >
           <ProductsTable
-            action={() => <ProductCreateButton />}
+            action={() => <ProductCreateModal />}
             thead={() => (
               <>
                 <Table.Th miw={150}>SKU</Table.Th>
