@@ -106,8 +106,8 @@ class InventoryWithdrawalResourceTest {
     @Transactional
     public void _shouldUpdateTheProductQuantityData() {
         final var t1 = new InventoryAdjustmentEntity(organizationId);
-        t1.addLog(InventoryLogEntity.InventoryLogType.INCOMING, s22Ultra.getId(), 186);
-        t1.addLog(InventoryLogEntity.InventoryLogType.INCOMING, galaxyBuds2.getId(), 250);
+        t1.addLog(InventoryLogEntity.InventoryLogType.INCOMING, s22Ultra.getId(), 186, 0);
+        t1.addLog(InventoryLogEntity.InventoryLogType.INCOMING, galaxyBuds2.getId(), 250, 0);
         t1.persist();
     }
 

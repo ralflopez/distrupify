@@ -65,10 +65,11 @@ public class InventoryAdjustmentEntity extends PanacheEntityBase {
         this.organizationId = organizationId;
     }
 
-    public void addLog(InventoryLogEntity.InventoryLogType inventoryLogType, long productId, int quantity) {
+    public void addLog(InventoryLogEntity.InventoryLogType inventoryLogType, long productId,
+                       int quantity, double unitPrice) {
         final var log = InventoryLogEntity.builder()
                 .inventoryLogType(inventoryLogType)
-                .unitPrice(BigDecimal.valueOf(0))
+                .unitPrice(BigDecimal.valueOf(unitPrice))
                 .organizationId(organizationId)
                 .productId(productId)
                 .quantity(quantity)

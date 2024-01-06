@@ -3,6 +3,7 @@
  * Do not make direct changes to the file.
  */
 
+
 export interface paths {
   "/api/v1/auth/login": {
     post: {
@@ -103,8 +104,13 @@ export interface paths {
     get: {
       parameters: {
         query?: {
+          asc?: boolean;
+          end?: string;
           page?: number;
           per_page?: number;
+          start?: string;
+          status?: components["schemas"]["InventoryTransactionStatus"][];
+          type?: components["schemas"]["InventoryTransactionType"][];
         };
       };
       responses: {
@@ -125,24 +131,20 @@ export interface paths {
       };
     };
   };
-  "/api/v1/inventory/transactions/search": {
+  "/api/v1/inventory/transactions/all": {
     get: {
       parameters: {
         query?: {
-          asc?: boolean;
           page?: number;
           per_page?: number;
         };
       };
-      requestBody?: {
-        content: {
-          "application/json": components["schemas"]["InventoryTransactionSearchRequest"];
-        };
-      };
       responses: {
-        /** @description OK */
+        /** @description Successful operation */
         200: {
-          content: never;
+          content: {
+            "application/json": components["schemas"]["InventoryTransactionResponse"];
+          };
         };
         /** @description Not Authorized */
         401: {
@@ -523,22 +525,22 @@ export interface components {
     InventoryTransactionDTO: {
       /** Format: int64 */
       id: number;
-      inventoryTransactionType: string;
+      inventoryTransactionType: components["schemas"]["InventoryTransactionType"];
       timestamp: string;
       items: components["schemas"]["TransactionItemDTO"][];
       status: components["schemas"]["InventoryTransactionStatus"];
+      /** Format: double */
+      value: number;
     };
     InventoryTransactionResponse: {
       transactions: components["schemas"]["InventoryTransactionDTO"][];
       /** Format: int32 */
       pageCount: number;
     };
-    InventoryTransactionSearchRequest: {
-      startDate: string;
-      endDate?: string;
-    };
     /** @enum {string} */
     InventoryTransactionStatus: "PENDING" | "DELETED" | "VALID";
+    /** @enum {string} */
+    InventoryTransactionType: "PURCHASE_ORDER" | "SALES" | "ADJUSTMENT";
     LoginRequest: {
       email: string;
       password: string;

@@ -3,6 +3,7 @@ package com.distrupify.repository;
 import com.distrupify.entities.InventoryAdjustmentEntity;
 import com.distrupify.entities.InventoryAdjustmentEntity$;
 import com.distrupify.entities.InventoryLogEntity;
+import com.distrupify.entities.InventoryLogEntity.InventoryLogType;
 import com.distrupify.entities.InventoryTransactionEntity;
 import com.distrupify.exceptions.WebException;
 import com.distrupify.models.ProductModel;
@@ -15,9 +16,13 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.hibernate.Hibernate;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.distrupify.entities.InventoryLogEntity.InventoryLogType.INCOMING;
 
 @ApplicationScoped
 public class InventoryAdjustmentRepository {
@@ -39,10 +44,17 @@ public class InventoryAdjustmentRepository {
             throw new WebException.BadRequest("There should be at least 1 item");
         }
 
-        final var productIdQuantityMap = productRepository.findAll(organizationId)
+        final var productsMap = productRepository.findAll(organizationId,
+                request.items
+                        .stream()
+                        .map(i -> i.productId)
+                        .toList())
                 .stream()
-                .filter(p -> p.id().isPresent())
-                .collect(Collectors.toMap(p -> p.id().get(), ProductModel::quantity));
+                .filter(product -> product.id().isPresent())
+                .collect(Collectors.toMap(e -> e.id().get(), e -> e));
+
+        final var productIdQuantityMap = productsMap.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().quantity()));
 
         final var invalidProductLog = request.items
                 .stream()
@@ -55,7 +67,7 @@ public class InventoryAdjustmentRepository {
 
         final var invalidProductQuantityOutgoingLog = request.items
                 .stream()
-                .filter(l -> l.inventoryLogType.equals(InventoryLogEntity.InventoryLogType.OUTGOING))
+                .filter(l -> l.inventoryLogType.equals(InventoryLogType.OUTGOING))
                 .filter(l -> productIdQuantityMap.get(l.productId) < l.quantity)
                 .findAny();
 
@@ -65,7 +77,11 @@ public class InventoryAdjustmentRepository {
         }
 
         final var inventoryAdjustment = new InventoryAdjustmentEntity(organizationId);
-        request.items.forEach(i -> inventoryAdjustment.addLog(i.inventoryLogType, i.productId, i.quantity));
+        request.items.forEach(i -> {
+            final var price = productsMap.get(i.productId).unitPrice();
+            final var priceWithSign = i.inventoryLogType.equals(INCOMING) ? price : -price;
+            inventoryAdjustment.addLog(i.inventoryLogType, i.productId, i.quantity, priceWithSign);
+        });
         inventoryAdjustment.persist();
     }
 

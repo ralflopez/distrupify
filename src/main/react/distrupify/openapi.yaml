@@ -91,6 +91,58 @@ paths:
       tags:
       - Inventory Transaction Resource
       parameters:
+      - name: asc
+        in: query
+        schema:
+          type: boolean
+      - name: end
+        in: query
+        schema:
+          type: string
+      - name: page
+        in: query
+        schema:
+          format: int32
+          type: integer
+      - name: per_page
+        in: query
+        schema:
+          format: int32
+          type: integer
+      - name: start
+        in: query
+        schema:
+          type: string
+      - name: status
+        in: query
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/InventoryTransactionStatus'
+      - name: type
+        in: query
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/InventoryTransactionType'
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InventoryTransactionResponse'
+        "403":
+          description: Not Allowed
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme: []
+  /api/v1/inventory/transactions/all:
+    get:
+      tags:
+      - Inventory Transaction Resource
+      parameters:
       - name: page
         in: query
         schema:
@@ -108,39 +160,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InventoryTransactionResponse'
-        "403":
-          description: Not Allowed
-        "401":
-          description: Not Authorized
-      security:
-      - SecurityScheme: []
-  /api/v1/inventory/transactions/search:
-    get:
-      tags:
-      - Inventory Transaction Resource
-      parameters:
-      - name: asc
-        in: query
-        schema:
-          type: boolean
-      - name: page
-        in: query
-        schema:
-          format: int32
-          type: integer
-      - name: per_page
-        in: query
-        schema:
-          format: int32
-          type: integer
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/InventoryTransactionSearchRequest'
-      responses:
-        "200":
-          description: OK
         "403":
           description: Not Allowed
         "401":
@@ -522,13 +541,14 @@ components:
       - timestamp
       - items
       - status
+      - value
       type: object
       properties:
         id:
           format: int64
           type: integer
         inventoryTransactionType:
-          type: string
+          $ref: '#/components/schemas/InventoryTransactionType'
         timestamp:
           type: string
         items:
@@ -537,6 +557,9 @@ components:
             $ref: '#/components/schemas/TransactionItemDTO'
         status:
           $ref: '#/components/schemas/InventoryTransactionStatus'
+        value:
+          format: double
+          type: number
     InventoryTransactionResponse:
       required:
       - transactions
@@ -550,20 +573,17 @@ components:
         pageCount:
           format: int32
           type: integer
-    InventoryTransactionSearchRequest:
-      required:
-      - startDate
-      type: object
-      properties:
-        startDate:
-          type: string
-        endDate:
-          type: string
     InventoryTransactionStatus:
       enum:
       - PENDING
       - DELETED
       - VALID
+      type: string
+    InventoryTransactionType:
+      enum:
+      - PURCHASE_ORDER
+      - SALES
+      - ADJUSTMENT
       type: string
     LoginRequest:
       required:

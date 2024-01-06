@@ -5,6 +5,7 @@ import { Link, RouterProvider, createBrowserRouter } from "react-router-dom";
 import { InventoryAdjustment } from "./components/inventory-adjustment/InventoryAdjustment";
 import { Products } from "./components/products/Products";
 import { Sales } from "./components/sales/Sales";
+import { Transactions } from "./components/transactions/Transactions";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,14 @@ const router = createBrowserRouter([
     element: (
       <Layout>
         <InventoryAdjustment />
+      </Layout>
+    ),
+  },
+  {
+    path: "/transactions",
+    element: (
+      <Layout>
+        <Transactions />
       </Layout>
     ),
   },
@@ -54,7 +63,7 @@ function Layout({ children }: { children: ReactNode }) {
       }}
       padding="md"
     >
-      <AppShell.Header>
+      <AppShell.Header display="flex" style={{ alignItems: "center" }}>
         <Burger opened={opened} onClick={toggle} hiddenFrom="md" size="sm" />
       </AppShell.Header>
 
@@ -62,6 +71,7 @@ function Layout({ children }: { children: ReactNode }) {
         <Link to="/inventories/adjustments">Stock Adjustment</Link>
         <Link to="/products">Products</Link>
         <Link to="/sales">Sales</Link>
+        <Link to="/transactions">Transactions</Link>
       </AppShell.Navbar>
 
       <AppShell.Main bg="gray.0" pos="relative">

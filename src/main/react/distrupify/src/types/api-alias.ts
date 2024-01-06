@@ -26,3 +26,12 @@ export type SalesCreateRequestItemWithProduct = Omit<
   SalesCreateRequestItem,
   "productId"
 > & { product: ProductDTO };
+
+export type InventoryTransactionDTO =
+  components["schemas"]["InventoryTransactionDTO"];
+export type InventoryTransactionResponse =
+  components["schemas"]["InventoryTransactionResponse"];
+export type InventoryTransactionType =
+  components["schemas"]["InventoryTransactionType"];
+export type InventoryTransactionStatus =
+  components["schemas"]["InventoryTransactionStatus"];

@@ -119,8 +119,8 @@ class InventoryTransactionResourceTest {
     @Transactional
     public void _shouldGetAllTransactionTypesData() {
         final var t1 = new InventoryAdjustmentEntity(organizationId);
-        t1.addLog(InventoryLogEntity.InventoryLogType.INCOMING, s22Ultra.getId(), 100);
-        t1.addLog(InventoryLogEntity.InventoryLogType.INCOMING, galaxyBuds2.getId(), 100);
+        t1.addLog(InventoryLogEntity.InventoryLogType.INCOMING, s22Ultra.getId(), 100, 0);
+        t1.addLog(InventoryLogEntity.InventoryLogType.INCOMING, galaxyBuds2.getId(), 100, 0);
         t1.persist();
 
         final var t2 = new SalesEntity(organizationId, customer.getId());
@@ -134,8 +134,8 @@ class InventoryTransactionResourceTest {
         t3.persist();
 
         final var t4 = new InventoryAdjustmentEntity(organizationId);
-        t4.addLog(InventoryLogEntity.InventoryLogType.OUTGOING, s22Ultra.getId(), 30);
-        t4.addLog(InventoryLogEntity.InventoryLogType.OUTGOING, galaxyBuds2.getId(), 10);
+        t4.addLog(InventoryLogEntity.InventoryLogType.OUTGOING, s22Ultra.getId(), 30, 0);
+        t4.addLog(InventoryLogEntity.InventoryLogType.OUTGOING, galaxyBuds2.getId(), 10, 0);
         t4.persist();
     }
 

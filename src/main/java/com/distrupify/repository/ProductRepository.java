@@ -89,6 +89,13 @@ public class ProductRepository {
         }
     }
 
+    public List<ProductModel> findAll(@Nonnull Long organizationId, @Nonnull List<Long> productIds) {
+        return buildProductWithQuantity(organizationId,
+                getProductStream(organizationId)
+                        .filter(ProductEntity$.id.in(productIds)),
+                Pageable.all());
+    }
+
     public List<ProductModel> findAll(@Nonnull Long organizationId, @Nonnull Pageable pageable) {
         return buildProductWithQuantity(organizationId, getProductStream(organizationId), pageable);
     }

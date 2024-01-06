@@ -2,9 +2,13 @@ package com.distrupify.resources;
 
 import com.distrupify.auth.services.TokenService;
 import com.distrupify.dto.InventoryTransactionDTO;
+import com.distrupify.entities.InventoryTransactionEntity.InventoryTransactionStatus;
+import com.distrupify.entities.InventoryTransactionEntity.InventoryTransactionType;
+import com.distrupify.exceptions.WebException;
 import com.distrupify.requests.InventoryTransactionSearchRequest;
 import com.distrupify.response.InventoryTransactionResponse;
 import com.distrupify.services.InventoryTransactionService;
+import com.distrupify.utils.DateUtil;
 import com.distrupify.utils.Pageable;
 import io.quarkus.security.Authenticated;
 import jakarta.enterprise.context.RequestScoped;
@@ -16,13 +20,18 @@ import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.jboss.logging.Logger;
 
 import java.text.ParseException;
+import java.util.List;
 import java.util.Map;
 
 @Path("/api/v1/inventory/transactions")
 @RequestScoped
 public class InventoryTransactionResource {
+
+    private static final Logger LOGGER = Logger.getLogger(InventoryTransactionResource.class);
+
     @Inject
     JsonWebToken jwt;
 
@@ -37,6 +46,7 @@ public class InventoryTransactionResource {
             content = @Content(mediaType = MediaType.APPLICATION_JSON,
                     schema = @Schema(implementation = InventoryTransactionResponse.class)))
     @GET
+    @Path("/all")
     @Authenticated
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll(@QueryParam("page") int page, @QueryParam("per_page") int perPage) {
@@ -49,26 +59,30 @@ public class InventoryTransactionResource {
         return Response.ok(response).build();
     }
 
+    @APIResponse(responseCode = "200",
+            description = "Successful operation",
+            content = @Content(mediaType = MediaType.APPLICATION_JSON,
+                    schema = @Schema(implementation = InventoryTransactionResponse.class)))
     @GET
-    @Path("/search")
     @Authenticated
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response search(InventoryTransactionSearchRequest request,
-                           @QueryParam("page") int page,
-                           @QueryParam("per_page") int perPage,
-                           @QueryParam("asc") boolean asc) {
+    public Response findTransactions(@QueryParam("start") String start,
+                                     @QueryParam("end") String end,
+                                     @QueryParam("type") List<InventoryTransactionType> type,
+                                     @QueryParam("status") List<InventoryTransactionStatus> status,
+                                     @QueryParam("page") int page,
+                                     @QueryParam("per_page") int perPage,
+                                     @QueryParam("asc") boolean asc) {
         final var organizationId = tokenService.getOrganizationId(jwt);
         final var pageable = Pageable.of(page, perPage);
         try {
-            final var transactions = inventoryTransactionService.searchAll(organizationId, request, pageable, asc);
-            return Response.ok(Map.of("transactions",
-                            transactions.stream()
-                                    .map(InventoryTransactionDTO::fromEntity)
-                                    .toList()))
-                    .build();
+            final var request = new InventoryTransactionSearchRequest(start, end, type, status);
+            final var transactions = inventoryTransactionService.find(organizationId, request, pageable, asc);
+            final var response = new InventoryTransactionResponse(transactions, 0);
+            return Response.ok(response).build();
         } catch (ParseException pe) {
-            throw new InternalServerErrorException("Failed to parse date");
+            throw new WebException.InternalServerError("Failed to get the date. Make sure the format is " + DateUtil.DEFAULT_DATE_FORMAT);
         }
     }
 

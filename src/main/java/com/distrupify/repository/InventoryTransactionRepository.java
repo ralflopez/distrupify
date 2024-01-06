@@ -1,5 +1,7 @@
 package com.distrupify.repository;
 
+import com.distrupify.dto.InventoryTransactionDTO;
+import com.distrupify.entities.InventoryLogEntity;
 import com.distrupify.entities.InventoryTransactionEntity;
 import com.distrupify.entities.InventoryTransactionEntity$;
 import com.distrupify.exceptions.WebException;
@@ -12,6 +14,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Comparator;
 import java.util.List;
@@ -42,11 +45,21 @@ public class InventoryTransactionRepository {
     }
 
     @Transactional
-    public List<InventoryTransactionEntity> searchAll(Long organizationId,
-                                                      InventoryTransactionSearchRequest request,
-                                                      Pageable pageable,
-                                                      boolean asc) throws ParseException {
+    public List<InventoryTransactionDTO> find(Long organizationId,
+                                              InventoryTransactionSearchRequest request,
+                                              Pageable pageable,
+                                              boolean asc) throws ParseException {
         var stream = getInventoryTransactionStream(organizationId);
+
+        // Type
+        if (!request.type.isEmpty()) {
+            stream = stream.filter(InventoryTransactionEntity$.inventoryTransactionType.in(request.type));
+        }
+
+        // Status
+        if (!request.status.isEmpty()) {
+            stream = stream.filter(InventoryTransactionEntity$.status.in(request.status));
+        }
 
         // Date
         if (request.hasStartAndEndDate()) {
@@ -66,10 +79,31 @@ public class InventoryTransactionRepository {
             stream = stream.sorted(Comparator.comparing(InventoryTransactionEntity::getTimestamp).reversed());
         }
 
-        return stream.skip(pageable.offset())
-                .limit(pageable.limit())
-                .toList();
+        // Pagination
+        stream = stream.skip(pageable.offset())
+                .limit(pageable.limit());
+
+        // Value
+        var dtoStream = stream.map(transaction -> {
+            final var value = transaction.getInventoryLogs()
+                    .stream()
+                    .map(t -> t.getUnitPrice().multiply(BigDecimal.valueOf(t.getQuantity())))
+                    .reduce(BigDecimal.ZERO, (BigDecimal::add))
+                    .doubleValue();
+
+            return InventoryTransactionDTO.fromEntity(transaction, value);
+        });
+
+        return dtoStream.toList();
     }
+
+//    public double getTransactionValues(@Nonnull Long organizationId, @Nonnull List<Long> transactionId) {
+//        return getInventoryTransactionStream(organizationId)
+//                .filter(InventoryTransactionEntity$.id.in(transactionId))
+//                .collect(Collectors.groupingBy(InventoryTransactionEntity::getId))
+//                .entrySet()
+//                .stream()
+//    }
 
     @Transactional
     public void softDelete(@Nonnull Long organizationId, @Nonnull Long transactionId) {
@@ -88,6 +122,6 @@ public class InventoryTransactionRepository {
     private Stream<InventoryTransactionEntity> getInventoryTransactionStream(@Nonnull Long organizationId) {
         return jpaStreamer.stream(of(InventoryTransactionEntity.class)
                         .joining(InventoryTransactionEntity$.inventoryLogs))
-                .filter(t -> t.getOrganizationId().equals(organizationId));
+                .filter(InventoryTransactionEntity$.organizationId.equal(organizationId));
     }
 }
