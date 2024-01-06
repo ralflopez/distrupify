@@ -2,9 +2,9 @@ package com.distrupify.services;
 
 import com.distrupify.models.ProductModel;
 import com.distrupify.repository.ProductRepository;
-import com.distrupify.requests.ProductCreateRequest;
-import com.distrupify.requests.ProductEditRequest;
-import com.distrupify.requests.ProductSearchFilterBy;
+import com.distrupify.resources.requests.ProductCreateRequest;
+import com.distrupify.resources.requests.ProductEditRequest;
+import com.distrupify.resources.requests.ProductSearchFilterBy;
 import com.distrupify.utils.Pageable;
 import jakarta.annotation.Nonnull;
 import jakarta.enterprise.context.ApplicationScoped;

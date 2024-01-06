@@ -2,7 +2,7 @@ package com.distrupify.services;
 
 import com.distrupify.entities.SalesEntity;
 import com.distrupify.repository.SalesRepository;
-import com.distrupify.requests.SalesCreateRequest;
+import com.distrupify.resources.requests.SalesCreateRequest;
 import com.distrupify.utils.Pageable;
 import jakarta.annotation.Nonnull;
 import jakarta.enterprise.context.ApplicationScoped;

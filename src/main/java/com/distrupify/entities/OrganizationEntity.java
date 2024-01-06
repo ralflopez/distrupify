@@ -1,6 +1,6 @@
 package com.distrupify.entities;
 
-import com.distrupify.dto.OrganizationDTO;
+import com.distrupify.resources.dto.OrganizationDTO;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import lombok.*;

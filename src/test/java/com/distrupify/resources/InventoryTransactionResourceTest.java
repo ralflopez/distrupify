@@ -5,7 +5,7 @@ import com.distrupify.auth.entities.UserEntity;
 import com.distrupify.auth.requests.SignupRequest;
 import com.distrupify.auth.services.AuthService;
 import com.distrupify.entities.*;
-import com.distrupify.requests.InventoryTransactionSearchRequest;
+import com.distrupify.resources.requests.InventoryTransactionSearchRequest;
 import com.distrupify.utils.DateUtil;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.common.http.TestHTTPEndpoint;

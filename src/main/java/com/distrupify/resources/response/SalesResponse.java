@@ -1,6 +1,6 @@
-package com.distrupify.response;
+package com.distrupify.resources.response;
 
-import com.distrupify.dto.SalesDTO;
+import com.distrupify.resources.dto.SalesDTO;
 import jakarta.annotation.Nonnull;
 import jakarta.validation.constraints.NotNull;
 

@@ -1,4 +1,4 @@
-package com.distrupify.dto;
+package com.distrupify.resources.dto;
 
 import jakarta.annotation.Nonnull;
 import jakarta.validation.constraints.NotNull;

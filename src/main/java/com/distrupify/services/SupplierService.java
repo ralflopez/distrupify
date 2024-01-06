@@ -2,8 +2,8 @@ package com.distrupify.services;
 
 import com.distrupify.entities.SupplierEntity;
 import com.distrupify.repository.SupplierRepository;
-import com.distrupify.requests.SupplierCreateRequest;
-import com.distrupify.requests.SupplierEditRequest;
+import com.distrupify.resources.requests.SupplierCreateRequest;
+import com.distrupify.resources.requests.SupplierEditRequest;
 import com.distrupify.utils.Pageable;
 import jakarta.annotation.Nonnull;
 import jakarta.enterprise.context.ApplicationScoped;

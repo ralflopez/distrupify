@@ -1,15 +1,12 @@
-package com.distrupify.requests;
+package com.distrupify.resources.requests;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-public class SupplierCreateRequest {
+public class SupplierEditRequest {
     @NotNull
     public String name;
 

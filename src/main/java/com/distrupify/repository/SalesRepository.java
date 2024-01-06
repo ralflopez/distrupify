@@ -5,7 +5,7 @@ import com.distrupify.entities.SalesEntity;
 import com.distrupify.entities.SalesEntity$;
 import com.distrupify.exceptions.WebException;
 import com.distrupify.models.ProductModel;
-import com.distrupify.requests.SalesCreateRequest;
+import com.distrupify.resources.requests.SalesCreateRequest;
 import com.distrupify.utils.Pageable;
 import com.speedment.jpastreamer.application.JPAStreamer;
 import jakarta.annotation.Nonnull;

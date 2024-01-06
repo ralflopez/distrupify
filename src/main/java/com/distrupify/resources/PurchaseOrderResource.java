@@ -1,7 +1,7 @@
 package com.distrupify.resources;
 
 import com.distrupify.auth.services.TokenService;
-import com.distrupify.requests.PurchaseOrderCreateRequest;
+import com.distrupify.resources.requests.PurchaseOrderCreateRequest;
 import com.distrupify.services.PurchaseOrderService;
 import io.quarkus.security.Authenticated;
 import jakarta.enterprise.context.RequestScoped;

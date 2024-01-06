@@ -1,5 +1,6 @@
-package com.distrupify.requests;
+package com.distrupify.resources.requests;
 
+import com.distrupify.validations.ExistingProductId;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -12,11 +13,10 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PurchaseOrderCreateRequest {
+public class InventoryDepositCreateRequest {
     @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class PurchaseOrderCreateRequestItem {
+    public static class InventoryDepositCreateRequestItem {
+        @ExistingProductId(token = true)
         @NotNull
         public Long productId;
 
@@ -26,13 +26,10 @@ public class PurchaseOrderCreateRequest {
 
         @Min(value = 0)
         @NotNull
-        public Double unitPrice;
+        public Double price;
     }
 
     @Valid
     @NotNull
-    public List<PurchaseOrderCreateRequestItem> items;
-
-    @NotNull
-    public Long supplierId;
+    public List<InventoryDepositCreateRequestItem> items;
 }

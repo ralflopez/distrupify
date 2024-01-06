@@ -1,9 +1,9 @@
 package com.distrupify.services;
 
-import com.distrupify.dto.InventoryTransactionDTO;
+import com.distrupify.resources.dto.InventoryTransactionDTO;
 import com.distrupify.entities.InventoryTransactionEntity;
 import com.distrupify.repository.InventoryTransactionRepository;
-import com.distrupify.requests.InventoryTransactionSearchRequest;
+import com.distrupify.resources.requests.InventoryTransactionSearchRequest;
 import com.distrupify.utils.Pageable;
 import jakarta.annotation.Nonnull;
 import jakarta.enterprise.context.ApplicationScoped;

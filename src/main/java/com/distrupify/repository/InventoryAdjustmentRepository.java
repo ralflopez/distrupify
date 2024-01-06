@@ -2,12 +2,10 @@ package com.distrupify.repository;
 
 import com.distrupify.entities.InventoryAdjustmentEntity;
 import com.distrupify.entities.InventoryAdjustmentEntity$;
-import com.distrupify.entities.InventoryLogEntity;
 import com.distrupify.entities.InventoryLogEntity.InventoryLogType;
 import com.distrupify.entities.InventoryTransactionEntity;
 import com.distrupify.exceptions.WebException;
-import com.distrupify.models.ProductModel;
-import com.distrupify.requests.InventoryAdjustmentCreateRequest;
+import com.distrupify.resources.requests.InventoryAdjustmentCreateRequest;
 import com.distrupify.utils.Pageable;
 import com.speedment.jpastreamer.application.JPAStreamer;
 import jakarta.annotation.Nonnull;
@@ -16,7 +14,6 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.hibernate.Hibernate;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;

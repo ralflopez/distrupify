@@ -1,9 +1,9 @@
 package com.distrupify.resources;
 
 import com.distrupify.auth.services.TokenService;
-import com.distrupify.dto.SalesDTO;
-import com.distrupify.requests.SalesCreateRequest;
-import com.distrupify.response.SalesResponse;
+import com.distrupify.resources.dto.SalesDTO;
+import com.distrupify.resources.requests.SalesCreateRequest;
+import com.distrupify.resources.response.SalesResponse;
 import com.distrupify.services.SalesService;
 import com.distrupify.utils.Pageable;
 import io.quarkus.security.Authenticated;

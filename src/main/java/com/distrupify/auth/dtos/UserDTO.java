@@ -1,6 +1,6 @@
 package com.distrupify.auth.dtos;
 
-import com.distrupify.dto.OrganizationDTO;
+import com.distrupify.resources.dto.OrganizationDTO;
 import lombok.Builder;
 
 @Builder

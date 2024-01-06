@@ -1,4 +1,4 @@
-package com.distrupify.requests;
+package com.distrupify.resources.requests;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -12,11 +12,11 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SalesCreateRequest {
+public class PurchaseOrderCreateRequest {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class SalesCreateRequestItem {
+    public static class PurchaseOrderCreateRequestItem {
         @NotNull
         public Long productId;
 
@@ -31,7 +31,8 @@ public class SalesCreateRequest {
 
     @Valid
     @NotNull
-    public List<SalesCreateRequestItem> items;
+    public List<PurchaseOrderCreateRequestItem> items;
 
-    public Long customerId;
+    @NotNull
+    public Long supplierId;
 }

@@ -1,9 +1,8 @@
-package com.distrupify.dto;
+package com.distrupify.resources.dto;
 
 import com.distrupify.entities.InventoryAdjustmentEntity;
 import jakarta.annotation.Nonnull;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 
 public record InventoryAdjustmentDTO(
     @Nonnull @NotNull Long id,

@@ -1,11 +1,10 @@
 package com.distrupify.repository;
 
-import com.distrupify.dto.InventoryTransactionDTO;
-import com.distrupify.entities.InventoryLogEntity;
+import com.distrupify.resources.dto.InventoryTransactionDTO;
 import com.distrupify.entities.InventoryTransactionEntity;
 import com.distrupify.entities.InventoryTransactionEntity$;
 import com.distrupify.exceptions.WebException;
-import com.distrupify.requests.InventoryTransactionSearchRequest;
+import com.distrupify.resources.requests.InventoryTransactionSearchRequest;
 import com.distrupify.utils.DateUtil;
 import com.distrupify.utils.Pageable;
 import com.speedment.jpastreamer.application.JPAStreamer;

@@ -1,9 +1,8 @@
-package com.distrupify.dto;
+package com.distrupify.resources.dto;
 
 import com.distrupify.entities.InventoryLogEntity;
 import jakarta.annotation.Nonnull;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 
 public record InventoryLogDTO (
         @Nonnull @NotNull Long id,

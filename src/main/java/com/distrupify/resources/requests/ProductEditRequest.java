@@ -1,10 +1,10 @@
-package com.distrupify.requests;
+package com.distrupify.resources.requests;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
-public class ProductCreateRequest {
+public class ProductEditRequest {
     @NotNull
     @NotEmpty
     public String sku;

@@ -1,4 +1,4 @@
-package com.distrupify.requests;
+package com.distrupify.resources.requests;
 
 import com.distrupify.entities.InventoryTransactionEntity;
 import com.distrupify.entities.InventoryTransactionEntity.InventoryTransactionStatus;

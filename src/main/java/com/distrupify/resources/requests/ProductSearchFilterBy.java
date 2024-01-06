@@ -1,6 +1,5 @@
-package com.distrupify.requests;
+package com.distrupify.resources.requests;
 
-import com.distrupify.resources.ProductResource;
 import jakarta.annotation.Nullable;
 
 public enum ProductSearchFilterBy {

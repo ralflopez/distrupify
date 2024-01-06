@@ -1,10 +1,9 @@
 import { Box, Card, Flex, Grid, Tabs, Text, Title, rem } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { IconClock, IconPlusMinus } from "@tabler/icons-react";
+import { IconPlusMinus } from "@tabler/icons-react";
 import { InventoryAdjustmentCreateRequestItemWithProduct } from "../../types/api-alias";
 import { InventoryAdjustmentProductsTable } from "./InventoryAdjustmentProductsTable";
 import { ItemsSection } from "./ItemsSection";
-import { TransactionLogsTable } from "./TransactionLogsTable";
 
 export const InventoryAdjustment = () => {
   const iconStyle = { width: rem(12), height: rem(12) };
@@ -37,9 +36,6 @@ export const InventoryAdjustment = () => {
           >
             Adjustment
           </Tabs.Tab>
-          <Tabs.Tab value="logs" leftSection={<IconClock style={iconStyle} />}>
-            History
-          </Tabs.Tab>
         </Tabs.List>
 
         <Tabs.Panel value="adjustment" pos="relative" pb={{ base: 65, md: 0 }}>
@@ -66,10 +62,6 @@ export const InventoryAdjustment = () => {
               </Card>
             </Grid.Col>
           </Grid>
-        </Tabs.Panel>
-
-        <Tabs.Panel value="logs">
-          <TransactionLogsTable />
         </Tabs.Panel>
       </Tabs>
     </Flex>

@@ -1,10 +1,10 @@
 package com.distrupify.resources;
 
 import com.distrupify.auth.services.TokenService;
-import com.distrupify.dto.SupplierDTO;
-import com.distrupify.requests.SupplierCreateRequest;
-import com.distrupify.requests.SupplierEditRequest;
-import com.distrupify.response.SuppliersResponse;
+import com.distrupify.resources.dto.SupplierDTO;
+import com.distrupify.resources.requests.SupplierCreateRequest;
+import com.distrupify.resources.requests.SupplierEditRequest;
+import com.distrupify.resources.response.SuppliersResponse;
 import com.distrupify.services.SupplierService;
 import com.distrupify.utils.Pageable;
 import io.quarkus.security.Authenticated;

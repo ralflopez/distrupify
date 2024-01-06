@@ -5,7 +5,7 @@ import com.distrupify.auth.entities.UserEntity;
 import com.distrupify.auth.requests.SignupRequest;
 import com.distrupify.auth.services.AuthService;
 import com.distrupify.entities.*;
-import com.distrupify.requests.SalesCreateRequest;
+import com.distrupify.resources.requests.SalesCreateRequest;
 import com.distrupify.services.ProductService;
 import com.distrupify.utils.DependsOn;
 import io.quarkus.test.common.QuarkusTestResource;

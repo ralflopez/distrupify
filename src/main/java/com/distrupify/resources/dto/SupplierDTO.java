@@ -1,4 +1,4 @@
-package com.distrupify.dto;
+package com.distrupify.resources.dto;
 
 import com.distrupify.entities.SupplierEntity;
 import jakarta.annotation.Nonnull;

@@ -3,7 +3,7 @@ package com.distrupify.services;
 import com.distrupify.entities.InventoryTransactionEntity;
 import com.distrupify.entities.PurchaseOrderEntity;
 import com.distrupify.entities.PurchaseOrderEntity$;
-import com.distrupify.requests.PurchaseOrderCreateRequest;
+import com.distrupify.resources.requests.PurchaseOrderCreateRequest;
 import com.speedment.jpastreamer.application.JPAStreamer;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

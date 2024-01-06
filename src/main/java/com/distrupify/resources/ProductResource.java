@@ -1,12 +1,12 @@
 package com.distrupify.resources;
 
 import com.distrupify.auth.services.TokenService;
-import com.distrupify.dto.ProductDTO;
+import com.distrupify.resources.dto.ProductDTO;
 import com.distrupify.models.ProductModel;
-import com.distrupify.requests.ProductCreateRequest;
-import com.distrupify.requests.ProductEditRequest;
-import com.distrupify.requests.ProductSearchFilterBy;
-import com.distrupify.response.ProductsResponse;
+import com.distrupify.resources.requests.ProductCreateRequest;
+import com.distrupify.resources.requests.ProductEditRequest;
+import com.distrupify.resources.requests.ProductSearchFilterBy;
+import com.distrupify.resources.response.ProductsResponse;
 import com.distrupify.services.ProductService;
 import com.distrupify.utils.Pageable;
 import io.quarkus.security.Authenticated;

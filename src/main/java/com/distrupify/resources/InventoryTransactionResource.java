@@ -1,12 +1,12 @@
 package com.distrupify.resources;
 
 import com.distrupify.auth.services.TokenService;
-import com.distrupify.dto.InventoryTransactionDTO;
+import com.distrupify.resources.dto.InventoryTransactionDTO;
 import com.distrupify.entities.InventoryTransactionEntity.InventoryTransactionStatus;
 import com.distrupify.entities.InventoryTransactionEntity.InventoryTransactionType;
 import com.distrupify.exceptions.WebException;
-import com.distrupify.requests.InventoryTransactionSearchRequest;
-import com.distrupify.response.InventoryTransactionResponse;
+import com.distrupify.resources.requests.InventoryTransactionSearchRequest;
+import com.distrupify.resources.response.InventoryTransactionResponse;
 import com.distrupify.services.InventoryTransactionService;
 import com.distrupify.utils.DateUtil;
 import com.distrupify.utils.Pageable;
@@ -24,7 +24,6 @@ import org.jboss.logging.Logger;
 
 import java.text.ParseException;
 import java.util.List;
-import java.util.Map;
 
 @Path("/api/v1/inventory/transactions")
 @RequestScoped

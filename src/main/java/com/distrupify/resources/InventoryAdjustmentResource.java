@@ -1,10 +1,9 @@
 package com.distrupify.resources;
 
 import com.distrupify.auth.services.TokenService;
-import com.distrupify.dto.InventoryAdjustmentDTO;
-import com.distrupify.requests.InventoryAdjustmentCreateRequest;
-import com.distrupify.response.InventoryAdjustmentResponse;
-import com.distrupify.response.ProductsResponse;
+import com.distrupify.resources.dto.InventoryAdjustmentDTO;
+import com.distrupify.resources.requests.InventoryAdjustmentCreateRequest;
+import com.distrupify.resources.response.InventoryAdjustmentResponse;
 import com.distrupify.services.InventoryAdjustmentService;
 import com.distrupify.utils.Pageable;
 import io.quarkus.security.Authenticated;

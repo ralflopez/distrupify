@@ -1,7 +1,7 @@
 package com.distrupify.services;
 
 import com.distrupify.entities.InventoryDepositEntity;
-import com.distrupify.requests.InventoryDepositSearchRequest;
+import com.distrupify.resources.requests.InventoryDepositSearchRequest;
 import com.distrupify.utils.Pageable;
 import com.speedment.jpastreamer.application.JPAStreamer;
 import io.quarkus.panache.common.Page;

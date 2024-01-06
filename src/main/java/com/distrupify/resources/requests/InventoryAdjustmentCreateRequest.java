@@ -1,22 +1,26 @@
-package com.distrupify.requests;
+package com.distrupify.resources.requests;
 
-import com.distrupify.validations.ExistingProductId;
+import com.distrupify.entities.InventoryLogEntity;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class InventoryDepositCreateRequest {
+@ToString
+public class InventoryAdjustmentCreateRequest {
     @Builder
-    public static class InventoryDepositCreateRequestItem {
-        @ExistingProductId(token = true)
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @ToString
+    public static class InventoryAdjustmentCreateRequestItem {
         @NotNull
         public Long productId;
 
@@ -24,12 +28,11 @@ public class InventoryDepositCreateRequest {
         @NotNull
         public Integer quantity;
 
-        @Min(value = 0)
         @NotNull
-        public Double price;
+        public InventoryLogEntity.InventoryLogType inventoryLogType;
     }
 
     @Valid
     @NotNull
-    public List<InventoryDepositCreateRequestItem> items;
+    public List<InventoryAdjustmentCreateRequestItem> items;
 }

@@ -2,7 +2,7 @@ package com.distrupify.services;
 
 import com.distrupify.entities.InventoryAdjustmentEntity;
 import com.distrupify.repository.InventoryAdjustmentRepository;
-import com.distrupify.requests.InventoryAdjustmentCreateRequest;
+import com.distrupify.resources.requests.InventoryAdjustmentCreateRequest;
 import com.distrupify.utils.Pageable;
 import jakarta.annotation.Nonnull;
 import jakarta.enterprise.context.ApplicationScoped;
