@@ -140,7 +140,7 @@ export const Transactions = () => {
                       </Table.Tr>
                     ) : null}
                     {data?.transactions.map((transaction, index) => (
-                      <Table.Tr>
+                      <Table.Tr key={transaction.id}>
                         {trow(transaction, index, page, pageSize)}
                       </Table.Tr>
                     ))}

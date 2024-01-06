@@ -56,8 +56,8 @@ export const TransactionTableActions = ({ transaction }: Props) => {
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>
-            {transaction.items.map((item) => (
-              <Table.Tr>
+            {transaction.items.map((item, index) => (
+              <Table.Tr key={index}>
                 <Table.Td>{item.product.sku}</Table.Td>
                 <Table.Td>{getProductDisplayName(item.product)}</Table.Td>
                 <Table.Td>
