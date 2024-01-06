@@ -71,14 +71,15 @@ public class InventoryTransactionResource {
                                      @QueryParam("type") List<InventoryTransactionType> type,
                                      @QueryParam("status") List<InventoryTransactionStatus> status,
                                      @QueryParam("page") int page,
-                                     @QueryParam("per_page") int perPage,
+                                     @QueryParam("page_size") int pageSize,
                                      @QueryParam("asc") boolean asc) {
         final var organizationId = tokenService.getOrganizationId(jwt);
-        final var pageable = Pageable.of(page, perPage);
+        final var pageable = Pageable.of(page, pageSize);
         try {
             final var request = new InventoryTransactionSearchRequest(start, end, type, status);
             final var transactions = inventoryTransactionService.find(organizationId, request, pageable, asc);
-            final var response = new InventoryTransactionResponse(transactions, 0);
+            final var pageCount = inventoryTransactionService.getPageCount(organizationId, request, asc, pageable.limit());
+            final var response = new InventoryTransactionResponse(transactions, pageCount);
             return Response.ok(response).build();
         } catch (ParseException pe) {
             throw new WebException.InternalServerError("Failed to get the date. Make sure the format is " + DateUtil.DEFAULT_DATE_FORMAT);

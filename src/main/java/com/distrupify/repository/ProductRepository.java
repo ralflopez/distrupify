@@ -35,9 +35,7 @@ public class ProductRepository {
     @Inject
     JPAStreamer jpaStreamer;
 
-    public long getCount(@Nonnull Long organizationId) {
-        return getProductStream(organizationId).count();
-    }
+
 
     @Transactional
     public void create(@Nonnull Long organizationId, @Nonnull ProductCreateRequest request) {
@@ -100,6 +98,10 @@ public class ProductRepository {
         return buildProductWithQuantity(organizationId, getProductStream(organizationId), pageable);
     }
 
+    public long getCount(@Nonnull Long organizationId) {
+        return getProductStream(organizationId).count();
+    }
+
     public List<ProductModel> findAll(@Nonnull Long organizationId) {
         return buildProductWithQuantity(organizationId, getProductStream(organizationId), Pageable.all());
     }
@@ -114,6 +116,17 @@ public class ProductRepository {
         };
 
         return buildProductWithQuantity(organizationId, productStream, pageable);
+    }
+
+    public long getCount(@Nonnull Long organizationId, @Nonnull String searchString, ProductSearchFilterBy filterBy) {
+        final var productStream = switch (filterBy) {
+            case SKU -> getProductStream(organizationId)
+                    .filter(ProductEntity$.sku.containsIgnoreCase(searchString));
+            case NAME -> getProductStream(organizationId)
+                    .filter(ProductEntity$.displayName.containsIgnoreCase(searchString));
+        };
+
+        return productStream.count();
     }
 
     private Stream<ProductEntity> getProductStream(@Nonnull Long organizationId) {

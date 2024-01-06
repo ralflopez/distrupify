@@ -25,13 +25,19 @@ public class ProductService {
         return productRepository.findAll(organizationId, pageable);
     }
 
+    public int getPageCount(@Nonnull Long organizationId, int pageSize) {
+        final var productCount = productRepository.getCount(organizationId);
+        return (int) Math.ceilDiv(productCount, pageSize);
+    }
+
     public List<ProductModel> findAll(@Nonnull Long organizationId, @Nonnull Pageable pageable,
                                       @Nonnull String searchString, @Nonnull ProductSearchFilterBy filterBy) {
         return productRepository.findAll(organizationId, pageable, searchString, filterBy);
     }
 
-    public int getPageCount(@Nonnull Long organizationId, int pageSize) {
-        final var productCount = productRepository.getCount(organizationId);
+    public int getPageCount(@Nonnull Long organizationId, @Nonnull String searchString,
+                            @Nonnull ProductSearchFilterBy filterBy, int pageSize) {
+        final var productCount = productRepository.getCount(organizationId, searchString, filterBy);
         return (int) Math.ceilDiv(productCount, pageSize);
     }
 

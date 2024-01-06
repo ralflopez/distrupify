@@ -27,10 +27,10 @@ public class InventoryTransactionRepository {
     @Inject
     JPAStreamer jpaStreamer;
 
-    @Transactional
-    public long getCount(@Nonnull Long organizationId) {
-        return getInventoryTransactionStream(organizationId).count();
-    }
+//    @Transactional
+//    public long getCount(@Nonnull Long organizationId) {
+//        return getInventoryTransactionStream(organizationId).count();
+//    }
 
     @Transactional
     public List<InventoryTransactionEntity> findAll(@Nonnull Long organizationId, @Nonnull Pageable pageable) {
@@ -44,10 +44,52 @@ public class InventoryTransactionRepository {
     }
 
     @Transactional
-    public List<InventoryTransactionDTO> find(Long organizationId,
-                                              InventoryTransactionSearchRequest request,
-                                              Pageable pageable,
+    public List<InventoryTransactionDTO> find(@Nonnull Long organizationId,
+                                              @Nonnull InventoryTransactionSearchRequest request,
+                                              @Nonnull Pageable pageable,
                                               boolean asc) throws ParseException {
+        return getFilteredInventoryTransactionDTOSTream(organizationId, request, pageable, asc).toList();
+    }
+
+    @Transactional
+    public long getCount(@Nonnull Long organizationId,
+                         @Nonnull InventoryTransactionSearchRequest request,
+                         boolean asc) throws ParseException {
+        return getFilteredInventoryTransactionDTOSTream(organizationId, request, Pageable.all(), asc).count();
+    }
+
+//    public double getTransactionValues(@Nonnull Long organizationId, @Nonnull List<Long> transactionId) {
+//        return getInventoryTransactionStream(organizationId)
+//                .filter(InventoryTransactionEntity$.id.in(transactionId))
+//                .collect(Collectors.groupingBy(InventoryTransactionEntity::getId))
+//                .entrySet()
+//                .stream()
+//    }
+
+    @Transactional
+    public void softDelete(@Nonnull Long organizationId, @Nonnull Long transactionId) {
+        final var transaction = getInventoryTransactionStream(organizationId)
+                .filter(InventoryTransactionEntity$.id.equal(transactionId))
+                .peek(t -> {
+                    t.setStatus(InventoryTransactionEntity.InventoryTransactionStatus.DELETED);
+                })
+                .findAny();
+
+        if (transaction.isEmpty()) {
+            throw new WebException.BadRequest("Transaction not found");
+        }
+    }
+
+    private Stream<InventoryTransactionEntity> getInventoryTransactionStream(@Nonnull Long organizationId) {
+        return jpaStreamer.stream(of(InventoryTransactionEntity.class)
+                        .joining(InventoryTransactionEntity$.inventoryLogs))
+                .filter(InventoryTransactionEntity$.organizationId.equal(organizationId));
+    }
+
+    private Stream<InventoryTransactionDTO> getFilteredInventoryTransactionDTOSTream(@Nonnull Long organizationId,
+                                                                                     @Nonnull InventoryTransactionSearchRequest request,
+                                                                                     @Nonnull Pageable pageable,
+                                                                                     boolean asc) throws ParseException {
         var stream = getInventoryTransactionStream(organizationId);
 
         // Type
@@ -79,11 +121,13 @@ public class InventoryTransactionRepository {
         }
 
         // Pagination
-        stream = stream.skip(pageable.offset())
-                .limit(pageable.limit());
+        if (!pageable.isAll()) {
+            stream = stream.skip(pageable.offset())
+                    .limit(pageable.limit());
+        }
 
         // Value
-        var dtoStream = stream.map(transaction -> {
+        return stream.map(transaction -> {
             final var value = transaction.getInventoryLogs()
                     .stream()
                     .map(t -> t.getUnitPrice().multiply(BigDecimal.valueOf(t.getQuantity())))
@@ -92,35 +136,5 @@ public class InventoryTransactionRepository {
 
             return InventoryTransactionDTO.fromEntity(transaction, value);
         });
-
-        return dtoStream.toList();
-    }
-
-//    public double getTransactionValues(@Nonnull Long organizationId, @Nonnull List<Long> transactionId) {
-//        return getInventoryTransactionStream(organizationId)
-//                .filter(InventoryTransactionEntity$.id.in(transactionId))
-//                .collect(Collectors.groupingBy(InventoryTransactionEntity::getId))
-//                .entrySet()
-//                .stream()
-//    }
-
-    @Transactional
-    public void softDelete(@Nonnull Long organizationId, @Nonnull Long transactionId) {
-        final var transaction = getInventoryTransactionStream(organizationId)
-                .filter(InventoryTransactionEntity$.id.equal(transactionId))
-                .peek(t -> {
-                    t.setStatus(InventoryTransactionEntity.InventoryTransactionStatus.DELETED);
-                })
-                .findAny();
-
-        if (transaction.isEmpty()) {
-            throw new WebException.BadRequest("Transaction not found");
-        }
-    }
-
-    private Stream<InventoryTransactionEntity> getInventoryTransactionStream(@Nonnull Long organizationId) {
-        return jpaStreamer.stream(of(InventoryTransactionEntity.class)
-                        .joining(InventoryTransactionEntity$.inventoryLogs))
-                .filter(InventoryTransactionEntity$.organizationId.equal(organizationId));
     }
 }

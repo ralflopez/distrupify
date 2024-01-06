@@ -1,8 +1,8 @@
 package com.distrupify.resources;
 
 import com.distrupify.auth.services.TokenService;
-import com.distrupify.resources.dto.ProductDTO;
 import com.distrupify.models.ProductModel;
+import com.distrupify.resources.dto.ProductDTO;
 import com.distrupify.resources.requests.ProductCreateRequest;
 import com.distrupify.resources.requests.ProductEditRequest;
 import com.distrupify.resources.requests.ProductSearchFilterBy;
@@ -101,12 +101,14 @@ public class ProductResource {
                 pageable.getPage(),
                 pageable.getPageSize());
 
-        List<ProductModel> products = switch (searchString) {
-            case "" -> productService.findAll(organizationId, pageable);
-            default -> productService.findAll(organizationId, pageable, searchString, filterBy);
-        };
+        List<ProductModel> products = searchString.equals("")
+                ? productService.findAll(organizationId, pageable)
+                : productService.findAll(organizationId, pageable, searchString, filterBy);
 
-        final var pageCount = productService.getPageCount(organizationId, pageable.limit());
+        final var pageCount = searchString.equals("")
+                ? productService.getPageCount(organizationId, pageable.limit())
+                : productService.getPageCount(organizationId, searchString, filterBy, pageable.limit());
+        
         final var response = new ProductsResponse(products.stream()
                 .map(ProductDTO::fromModel)
                 .toList(),
