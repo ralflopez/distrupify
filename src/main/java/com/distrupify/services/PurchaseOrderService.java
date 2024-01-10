@@ -3,6 +3,7 @@ package com.distrupify.services;
 import com.distrupify.entities.InventoryTransactionEntity;
 import com.distrupify.entities.PurchaseOrderEntity;
 import com.distrupify.entities.PurchaseOrderEntity$;
+import com.distrupify.exceptions.WebException;
 import com.distrupify.resources.requests.PurchaseOrderCreateRequest;
 import com.speedment.jpastreamer.application.JPAStreamer;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -35,12 +36,12 @@ public class PurchaseOrderService {
     public void receive(Long organizationId, Long id) {
         final var transaction = jpaStreamer.stream(of(PurchaseOrderEntity.class)
                         .joining(PurchaseOrderEntity$.inventoryTransaction))
-                .filter(p -> p.getOrganizationId().equals(organizationId))
-                .filter(p -> p.getId().equals(id))
+                .filter(PurchaseOrderEntity$.organizationId.equal(organizationId))
+                .filter(PurchaseOrderEntity$.inventoryTransactionId.equal(id))
                 .findFirst();
 
         if (transaction.isEmpty()) {
-            throw new BadRequestException("Purchase order not found");
+            throw new WebException.BadRequest("Transaction not found");
         }
 
         transaction.get().setReceivedAt(new Date());

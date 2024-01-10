@@ -36,3 +36,35 @@ export const usePurchaseOrderCreateRequest = (
     }
   );
 };
+
+export const usePurchaseOrderReceiveRequest = (
+  token: string,
+  cleanUp: () => void = () => {}
+) => {
+  return useMutation(
+    async (transactionId: number) => {
+      const response = await fetch(
+        `http://localhost:8080/api/v1/purchase-orders/${transactionId}/receive`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          method: "POST",
+        }
+      );
+      return handleResponse(response);
+    },
+    {
+      onError: (e: Error) => {
+        apiNotification.fail(e.message);
+      },
+      onSuccess: () => {
+        apiNotification.success("Successfully received purchase order");
+        queryClient.invalidateQueries(["products"]);
+        queryClient.invalidateQueries(["transactions"]);
+        cleanUp();
+      },
+    }
+  );
+};

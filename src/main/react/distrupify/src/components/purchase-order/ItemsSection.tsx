@@ -91,6 +91,7 @@ export const ItemsSection = ({ form }: Props) => {
           value={supplierId}
           onChange={setSupplierId}
           searchable
+          comboboxProps={{ shadow: "md" }}
         />
         <Box style={{ flex: 1, overflow: "auto" }}>
           <Table>

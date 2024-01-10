@@ -1,12 +1,10 @@
 import {
-  Badge,
   Box,
   Card,
   Center,
   Flex,
   Group,
   Loader,
-  NumberFormatter,
   Pagination,
   ScrollArea,
   Table,
@@ -19,13 +17,10 @@ import { IconList } from "@tabler/icons-react";
 import { useState } from "react";
 import { useInventoryTransactionsResponse } from "../../hooks/server/transactions";
 import { InventoryTransactionDTO } from "../../types/api-alias";
-import { getItemNumber } from "../../utils/display";
 import { token } from "../../utils/token";
-import { TransactionTableActions } from "./TransactionTableActions";
-import {
-  inventoryTransactionStatusBadges,
-  inventoryTransactionTypeBadges,
-} from "./badgesConfig";
+import { InventoryAdjustmentRow } from "./rows/InventoryAdjustmentRow";
+import { PurchaseOrderRow } from "./rows/PurchaseOrderRow";
+import { SalesRow } from "./rows/SalesRow";
 
 const trow = (
   transaction: InventoryTransactionDTO,
@@ -33,40 +28,35 @@ const trow = (
   page: number,
   pageSize: number
 ) => {
-  const typeBadge =
-    inventoryTransactionTypeBadges[transaction.inventoryTransactionType];
-  const statusBadge = inventoryTransactionStatusBadges[transaction.status];
-
-  return (
-    <>
-      <Table.Td>{getItemNumber(index, page, pageSize)}</Table.Td>
-      <Table.Td>{transaction.timestamp}</Table.Td>
-      <Table.Td>
-        <Badge variant="light" color={typeBadge.color}>
-          {typeBadge.name}
-        </Badge>
-      </Table.Td>
-      <Table.Td>
-        <Badge variant="light" color={statusBadge.color}>
-          {statusBadge.name}
-        </Badge>
-      </Table.Td>
-      <Table.Td ta="right">
-        <Text c={transaction.value < 0 ? "red" : "green"}>
-          <NumberFormatter
-            prefix="₱ "
-            value={transaction.value}
-            thousandSeparator
-            decimalScale={2}
-            fixedDecimalScale
-          />
-        </Text>
-      </Table.Td>
-      <Table.Td ta="center">
-        <TransactionTableActions transaction={transaction} />
-      </Table.Td>
-    </>
-  );
+  switch (transaction.inventoryTransactionType) {
+    case "ADJUSTMENT":
+      return (
+        <InventoryAdjustmentRow
+          index={index}
+          page={page}
+          pageSize={pageSize}
+          transaction={transaction}
+        />
+      );
+    case "PURCHASE_ORDER":
+      return (
+        <PurchaseOrderRow
+          index={index}
+          page={page}
+          pageSize={pageSize}
+          transaction={transaction}
+        />
+      );
+    case "SALES":
+      return (
+        <SalesRow
+          index={index}
+          page={page}
+          pageSize={pageSize}
+          transaction={transaction}
+        />
+      );
+  }
 };
 
 export const Transactions = () => {
