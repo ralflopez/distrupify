@@ -38,7 +38,7 @@ export const ItemsSection = ({ form }: Props) => {
   const suppliersAllRequest = useSupplierAllRequest(token);
   const inventoryAdjustmentCreate = usePurchaseOrderCreateRequest(token, () => {
     form.setValues({
-      supplierId: 0,
+      supplierId: undefined,
       items: [],
     });
   });
@@ -146,7 +146,7 @@ export const ItemsSection = ({ form }: Props) => {
           <Button
             loading={inventoryAdjustmentCreate.isLoading}
             type="submit"
-            disabled={form.values.items.length < 1}
+            disabled={form.values.items.length < 1 || !supplierId}
             fullWidth
           >
             Submit

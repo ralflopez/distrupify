@@ -54,16 +54,16 @@ public class SupplierRepository {
 
     @Transactional
     public void edit(@Nonnull Long organizationId, @Nonnull Long productId, @Nonnull SupplierEditRequest request) {
-        final var product = getSupplierStream(organizationId)
+        final var supplier = getSupplierStream(organizationId)
                 .filter(SupplierEntity$.id.equal(productId))
                 .peek(sup -> {
                     sup.setAddress(request.address.trim());
-                    sup.setName(request.address.trim());
+                    sup.setName(request.name.trim());
                     sup.setContactNumber(request.contactNumber.trim());
                 })
                 .findAny();
 
-        if (product.isEmpty()) {
+        if (supplier.isEmpty()) {
             throw new WebException.BadRequest("Product not found");
         }
     }

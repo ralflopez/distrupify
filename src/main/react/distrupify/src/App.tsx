@@ -6,6 +6,7 @@ import { InventoryAdjustment } from "./components/inventory-adjustment/Inventory
 import { Products } from "./components/products/Products";
 import { PurchaseOrder } from "./components/purchase-order/PurchaseOrder";
 import { Sales } from "./components/sales/Sales";
+import { Suppliers } from "./components/suppliers/Suppliers";
 import { Transactions } from "./components/transactions/Transactions";
 
 const router = createBrowserRouter([
@@ -58,6 +59,14 @@ const router = createBrowserRouter([
       </Layout>
     ),
   },
+  {
+    path: "/suppliers",
+    element: (
+      <Layout>
+        <Suppliers />
+      </Layout>
+    ),
+  },
 ]);
 
 function Layout({ children }: { children: ReactNode }) {
@@ -82,6 +91,7 @@ function Layout({ children }: { children: ReactNode }) {
         <Link to="/purchase-orders">Purchase Order</Link>
         <Link to="/sales">Sales</Link>
         <Link to="/transactions">Transactions</Link>
+        <Link to="/suppliers">Suppliers</Link>
       </AppShell.Navbar>
 
       <AppShell.Main bg="gray.0" pos="relative">

@@ -1,10 +1,10 @@
 package com.distrupify.resources;
 
 import com.distrupify.auth.services.TokenService;
+import com.distrupify.exceptions.WebException;
 import com.distrupify.resources.dto.SupplierDTO;
 import com.distrupify.resources.requests.SupplierCreateRequest;
 import com.distrupify.resources.requests.SupplierEditRequest;
-import com.distrupify.resources.response.SalesResponse;
 import com.distrupify.resources.response.SuppliersResponse;
 import com.distrupify.services.SupplierService;
 import com.distrupify.utils.Pageable;
@@ -63,7 +63,7 @@ public class SupplierResource {
     @Path("/{id}")
     @Authenticated
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response editProduct(@PathParam("id") Long id, @Valid SupplierEditRequest request) {
+    public Response editSupplier(@PathParam("id") Long id, @Valid SupplierEditRequest request) {
         final var organizationId = tokenService.getOrganizationId(jwt);
         LOGGER.infof("Editing supplier for organization %d { productId=%d }", organizationId, id);
 

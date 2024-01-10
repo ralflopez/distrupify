@@ -45,4 +45,8 @@ export type PurchaeOrderCreateRequestItemWithProduct = Omit<
   "productId"
 > & { product: ProductDTO };
 
+export type SupplierDTO = components["schemas"]["SupplierDTO"];
 export type SuppliersResponse = components["schemas"]["SuppliersResponse"];
+export type SupplierCreateRequest =
+  components["schemas"]["SupplierCreateRequest"];
+export type SupplierEditRequest = components["schemas"]["SupplierEditRequest"];

@@ -18,10 +18,6 @@ export const ProductCreateModal = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const iconStyle = { width: rem(12), height: rem(12) };
 
-  const productCreateRequest = useProductCreateRequest(token, () => {
-    close();
-  });
-
   const form = useForm({
     initialValues: {
       sku: "",
@@ -30,6 +26,11 @@ export const ProductCreateModal = () => {
       name: "",
       unitPrice: 0,
     } as ProductCreateRequest,
+  });
+
+  const productCreateRequest = useProductCreateRequest(token, () => {
+    close();
+    form.reset();
   });
 
   const onSumbit = () => {
