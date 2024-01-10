@@ -4,6 +4,7 @@ import com.distrupify.auth.requests.SignupRequest;
 import com.distrupify.auth.services.AuthService;
 import com.distrupify.entities.OrganizationEntity;
 import com.distrupify.entities.ProductEntity;
+import com.distrupify.entities.SupplierEntity;
 import com.distrupify.services.InventoryDepositService;
 import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -33,6 +34,9 @@ public class AppLifecycleBean {
                 .displayName("Test Organization")
                 .build();
         testOrganization.persist();
+
+        final var supplier = new SupplierEntity(null, "sup1", "add", "09", testOrganization.getId(), null, false);
+        supplier.persist();
 
         final var galaxyBuds2 = ProductEntity.builder()
                 .organizationId(testOrganization.getId())

@@ -19,8 +19,8 @@ public class InventoryTransactionService {
     @Inject
     InventoryTransactionRepository inventoryTransactionRepository;
 
-    public List<InventoryTransactionEntity> findAll(@Nonnull Long organizationId, @Nonnull Pageable pageable) {
-        return inventoryTransactionRepository.findAll(organizationId, pageable);
+    public List<InventoryTransactionEntity> findAll(@Nonnull Long organizationId) {
+        return inventoryTransactionRepository.findAll(organizationId);
     }
 
     public List<InventoryTransactionDTO> find(@Nonnull Long organizationId,
@@ -33,9 +33,12 @@ public class InventoryTransactionService {
     public int getPageCount(@Nonnull Long organizationId,
                             @Nonnull InventoryTransactionSearchRequest request,
                             boolean asc,
-                            int pageSize) throws ParseException {
+                            Pageable pageable) throws ParseException {
+        if (pageable.isAll()) {
+            return 1;
+        }
         final var productCount = inventoryTransactionRepository.getCount(organizationId, request, asc);
-        return (int) Math.ceilDiv(productCount, pageSize);
+        return (int) Math.ceilDiv(productCount, pageable.limit());
     }
 
     public void softDelete(@Nonnull Long organizationId, @Nonnull Long transactionId) {

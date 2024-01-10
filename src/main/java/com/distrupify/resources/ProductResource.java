@@ -86,8 +86,8 @@ public class ProductResource {
     @Authenticated
     public Response findProducts(@QueryParam("search") String searchStringParam,
                                  @QueryParam("filter_by") ProductSearchFilterBy filterByParam,
-                                 @QueryParam("page") int page,
-                                 @QueryParam("page_size") int pageSize) {
+                                 @QueryParam("page") Integer page,
+                                 @QueryParam("page_size") Integer pageSize) {
         final var organizationId = tokenService.getOrganizationId(jwt);
         final var filterBy = ProductSearchFilterBy.getOrDefault(filterByParam);
         final var searchString = searchStringParam != null ? searchStringParam.trim() : "";
@@ -106,8 +106,8 @@ public class ProductResource {
                 : productService.findAll(organizationId, pageable, searchString, filterBy);
 
         final var pageCount = searchString.equals("")
-                ? productService.getPageCount(organizationId, pageable.limit())
-                : productService.getPageCount(organizationId, searchString, filterBy, pageable.limit());
+                ? productService.getPageCount(organizationId, pageable)
+                : productService.getPageCount(organizationId, searchString, filterBy, pageable);
         
         final var response = new ProductsResponse(products.stream()
                 .map(ProductDTO::fromModel)

@@ -89,15 +89,20 @@ public class InventoryAdjustmentRepository {
      */
     @Transactional
     public List<InventoryAdjustmentEntity> findAll(@Nonnull Long organizationId, @Nonnull Pageable pageable) {
-        return getInventoryAdjustmentStream(organizationId)
+        var stream = getInventoryAdjustmentStream(organizationId)
                 .peek(a -> {
                     Hibernate.initialize(a.getInventoryTransaction());
                     Hibernate.initialize(a.getInventoryTransaction().getInventoryLogs());
                 })
-                .sorted(InventoryAdjustmentEntity$.createdAt.reversed())
-                .skip(pageable.offset())
-                .limit(pageable.limit())
-                .toList();
+                .sorted(InventoryAdjustmentEntity$.createdAt.reversed());
+
+        if (!pageable.isAll()) {
+            stream = stream.skip(pageable.offset())
+                    .limit(pageable.limit());
+        }
+
+        return stream.toList();
+
     }
 
     private Stream<InventoryAdjustmentEntity> getInventoryAdjustmentStream(Long organizationId) {

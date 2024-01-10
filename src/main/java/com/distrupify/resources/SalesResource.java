@@ -38,7 +38,7 @@ public class SalesResource {
             description = "Successful operation",
             content = @Content(mediaType = MediaType.APPLICATION_JSON,
                     schema = @Schema(implementation = SalesResponse.class)))
-    public Response findSales(@QueryParam("page") int page, @QueryParam("page_size") int pageSize) {
+    public Response findSales(@QueryParam("page") Integer page, @QueryParam("page_size") Integer pageSize) {
         final var organizationId = tokenService.getOrganizationId(jwt);
         final var pageable = Pageable.of(page, pageSize);
         final var sales = salesService.findAll(organizationId, pageable);

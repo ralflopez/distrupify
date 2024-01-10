@@ -4,6 +4,7 @@ import com.distrupify.auth.services.TokenService;
 import com.distrupify.resources.dto.SupplierDTO;
 import com.distrupify.resources.requests.SupplierCreateRequest;
 import com.distrupify.resources.requests.SupplierEditRequest;
+import com.distrupify.resources.response.SalesResponse;
 import com.distrupify.resources.response.SuppliersResponse;
 import com.distrupify.services.SupplierService;
 import com.distrupify.utils.Pageable;
@@ -15,6 +16,9 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.jwt.JsonWebToken;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.jboss.logging.Logger;
 
 @Path("/api/v1/suppliers")
@@ -68,21 +72,20 @@ public class SupplierResource {
     }
 
     // TODO: write test
+    @APIResponse(responseCode = "200",
+            description = "Successful operation",
+            content = @Content(mediaType = MediaType.APPLICATION_JSON,
+                    schema = @Schema(implementation = SuppliersResponse.class)))
     @GET
     @Authenticated
-    public Response findSuppliers(@QueryParam("page") int page,
-                                  @QueryParam("page_size") int pageSize) {
+    public Response findSuppliers(@QueryParam("page") Integer page,
+                                  @QueryParam("page_size") Integer pageSize) {
         final var organizationId = tokenService.getOrganizationId(jwt);
         final var pageable = Pageable.of(page, pageSize);
 
-        LOGGER.infof("Searching suppliers for organization %d { page=%d, pageSize=%s }",
-                organizationId,
-                pageable.getPage(),
-                pageable.getPageSize());
-
         final var suppliers = supplierService.findAll(organizationId, pageable);
+        final var pageCount = supplierService.getPageCount(organizationId, pageable);
 
-        final var pageCount = supplierService.getPageCount(organizationId, pageable.limit());
         final var response = new SuppliersResponse(suppliers.stream()
                 .map(SupplierDTO::fromEntity)
                 .toList(),

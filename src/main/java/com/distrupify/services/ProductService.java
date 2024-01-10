@@ -25,9 +25,13 @@ public class ProductService {
         return productRepository.findAll(organizationId, pageable);
     }
 
-    public int getPageCount(@Nonnull Long organizationId, int pageSize) {
+    public int getPageCount(@Nonnull Long organizationId, Pageable pageable) {
+        if (pageable.isAll()) {
+            return 1;
+        }
+
         final var productCount = productRepository.getCount(organizationId);
-        return (int) Math.ceilDiv(productCount, pageSize);
+        return (int) Math.ceilDiv(productCount, pageable.limit());
     }
 
     public List<ProductModel> findAll(@Nonnull Long organizationId, @Nonnull Pageable pageable,
@@ -36,9 +40,13 @@ public class ProductService {
     }
 
     public int getPageCount(@Nonnull Long organizationId, @Nonnull String searchString,
-                            @Nonnull ProductSearchFilterBy filterBy, int pageSize) {
+                            @Nonnull ProductSearchFilterBy filterBy, Pageable pageable) {
+        if (pageable.isAll()) {
+            return 1;
+        }
+
         final var productCount = productRepository.getCount(organizationId, searchString, filterBy);
-        return (int) Math.ceilDiv(productCount, pageSize);
+        return (int) Math.ceilDiv(productCount, pageable.limit());
     }
 
     public void create(@Nonnull Long organizationId, @Nonnull ProductCreateRequest request) {

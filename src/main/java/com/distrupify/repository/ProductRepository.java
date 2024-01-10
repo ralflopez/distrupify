@@ -151,7 +151,7 @@ public class ProductRepository {
                 .stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().reduce(0, Integer::sum)));
 
-        final var stream = products.map(p -> {
+        var stream = products.map(p -> {
             final var qty = nonZeroProductIdQuantityMap.get(p.getId());
             return new ProductModel(Optional.of(p.getId()),
                     p.getSku(),
@@ -162,13 +162,12 @@ public class ProductRepository {
                     qty == null ? 0 : qty);
         });
 
-        if (pageable.isAll()) {
-            return stream.toList();
+        if (!pageable.isAll()) {
+            stream = stream.skip(pageable.offset())
+                    .limit(pageable.limit());
         }
 
-        return stream.skip(pageable.offset())
-                .limit(pageable.limit())
-                .toList();
+        return stream.toList();
     }
 
     private int getQuantityFromLog(InventoryLogEntity log) {

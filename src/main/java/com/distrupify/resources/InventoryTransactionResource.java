@@ -48,10 +48,9 @@ public class InventoryTransactionResource {
     @Path("/all")
     @Authenticated
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findAll(@QueryParam("page") int page, @QueryParam("per_page") int perPage) {
+    public Response findAll() {
         final var organizationId = tokenService.getOrganizationId(jwt);
-        final var pageable = Pageable.of(page, perPage);
-        final var transactions = inventoryTransactionService.findAll(organizationId, pageable);
+        final var transactions = inventoryTransactionService.findAll(organizationId);
         final var response = new InventoryTransactionResponse(transactions.stream()
                 .map(InventoryTransactionDTO::fromEntity)
                 .toList(), 0);
@@ -70,15 +69,15 @@ public class InventoryTransactionResource {
                                      @QueryParam("end") String end,
                                      @QueryParam("type") List<InventoryTransactionType> type,
                                      @QueryParam("status") List<InventoryTransactionStatus> status,
-                                     @QueryParam("page") int page,
-                                     @QueryParam("page_size") int pageSize,
+                                     @QueryParam("page") Integer page,
+                                     @QueryParam("page_size") Integer pageSize,
                                      @QueryParam("asc") boolean asc) {
         final var organizationId = tokenService.getOrganizationId(jwt);
         final var pageable = Pageable.of(page, pageSize);
         try {
             final var request = new InventoryTransactionSearchRequest(start, end, type, status);
             final var transactions = inventoryTransactionService.find(organizationId, request, pageable, asc);
-            final var pageCount = inventoryTransactionService.getPageCount(organizationId, request, asc, pageable.limit());
+            final var pageCount = inventoryTransactionService.getPageCount(organizationId, request, asc, pageable);
             final var response = new InventoryTransactionResponse(transactions, pageCount);
             return Response.ok(response).build();
         } catch (ParseException pe) {

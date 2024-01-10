@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 import { Link, RouterProvider, createBrowserRouter } from "react-router-dom";
 import { InventoryAdjustment } from "./components/inventory-adjustment/InventoryAdjustment";
 import { Products } from "./components/products/Products";
+import { PurchaseOrder } from "./components/purchase-order/PurchaseOrder";
 import { Sales } from "./components/sales/Sales";
 import { Transactions } from "./components/transactions/Transactions";
 
@@ -42,6 +43,14 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: "/purchase-orders",
+    element: (
+      <Layout>
+        <PurchaseOrder />
+      </Layout>
+    ),
+  },
+  {
     path: "/sales",
     element: (
       <Layout>
@@ -70,6 +79,7 @@ function Layout({ children }: { children: ReactNode }) {
       <AppShell.Navbar p="md">
         <Link to="/inventories/adjustments">Stock Adjustment</Link>
         <Link to="/products">Products</Link>
+        <Link to="/purchase-orders">Purchase Order</Link>
         <Link to="/sales">Sales</Link>
         <Link to="/transactions">Transactions</Link>
       </AppShell.Navbar>

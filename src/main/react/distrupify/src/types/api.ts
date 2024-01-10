@@ -107,7 +107,7 @@ export interface paths {
           asc?: boolean;
           end?: string;
           page?: number;
-          per_page?: number;
+          page_size?: number;
           start?: string;
           status?: components["schemas"]["InventoryTransactionStatus"][];
           type?: components["schemas"]["InventoryTransactionType"][];
@@ -133,12 +133,6 @@ export interface paths {
   };
   "/api/v1/inventory/transactions/all": {
     get: {
-      parameters: {
-        query?: {
-          page?: number;
-          per_page?: number;
-        };
-      };
       responses: {
         /** @description Successful operation */
         200: {
@@ -403,9 +397,11 @@ export interface paths {
         };
       };
       responses: {
-        /** @description OK */
+        /** @description Successful operation */
         200: {
-          content: never;
+          content: {
+            "application/json": components["schemas"]["SuppliersResponse"];
+          };
         };
         /** @description Not Authorized */
         401: {
@@ -634,10 +630,22 @@ export interface components {
       address: string;
       contactNumber: string;
     };
+    SupplierDTO: {
+      /** Format: int64 */
+      id: number;
+      name: string;
+      address: string;
+      contactNumber: string;
+    };
     SupplierEditRequest: {
       name: string;
       address: string;
       contactNumber: string;
+    };
+    SuppliersResponse: {
+      suppliers: components["schemas"]["SupplierDTO"][];
+      /** Format: int32 */
+      pageCount: number;
     };
     TransactionItemDTO: {
       /** Format: int32 */

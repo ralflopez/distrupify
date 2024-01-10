@@ -35,10 +35,10 @@ paths:
       responses:
         "200":
           description: OK
-        "403":
-          description: Not Allowed
         "401":
           description: Not Authorized
+        "403":
+          description: Not Allowed
       security:
       - SecurityScheme: []
   /api/v1/inventory/adjustments:
@@ -63,10 +63,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InventoryAdjustmentResponse'
-        "403":
-          description: Not Allowed
         "401":
           description: Not Authorized
+        "403":
+          description: Not Allowed
       security:
       - SecurityScheme: []
     post:
@@ -80,10 +80,10 @@ paths:
       responses:
         "200":
           description: OK
-        "403":
-          description: Not Allowed
         "401":
           description: Not Authorized
+        "403":
+          description: Not Allowed
       security:
       - SecurityScheme: []
   /api/v1/inventory/transactions:
@@ -104,7 +104,7 @@ paths:
         schema:
           format: int32
           type: integer
-      - name: per_page
+      - name: page_size
         in: query
         schema:
           format: int32
@@ -132,27 +132,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InventoryTransactionResponse'
-        "403":
-          description: Not Allowed
         "401":
           description: Not Authorized
+        "403":
+          description: Not Allowed
       security:
       - SecurityScheme: []
   /api/v1/inventory/transactions/all:
     get:
       tags:
       - Inventory Transaction Resource
-      parameters:
-      - name: page
-        in: query
-        schema:
-          format: int32
-          type: integer
-      - name: per_page
-        in: query
-        schema:
-          format: int32
-          type: integer
       responses:
         "200":
           description: Successful operation
@@ -160,10 +149,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InventoryTransactionResponse'
-        "403":
-          description: Not Allowed
         "401":
           description: Not Authorized
+        "403":
+          description: Not Allowed
       security:
       - SecurityScheme: []
   /api/v1/inventory/transactions/{id}:
@@ -180,10 +169,10 @@ paths:
       responses:
         "200":
           description: OK
-        "403":
-          description: Not Allowed
         "401":
           description: Not Authorized
+        "403":
+          description: Not Allowed
       security:
       - SecurityScheme: []
   /api/v1/products:
@@ -216,10 +205,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProductsResponse'
-        "403":
-          description: Not Allowed
         "401":
           description: Not Authorized
+        "403":
+          description: Not Allowed
       security:
       - SecurityScheme: []
     post:
@@ -233,10 +222,10 @@ paths:
       responses:
         "200":
           description: OK
-        "403":
-          description: Not Allowed
         "401":
           description: Not Authorized
+        "403":
+          description: Not Allowed
       security:
       - SecurityScheme: []
   /api/v1/products/{id}:
@@ -258,10 +247,10 @@ paths:
       responses:
         "200":
           description: OK
-        "403":
-          description: Not Allowed
         "401":
           description: Not Authorized
+        "403":
+          description: Not Allowed
       security:
       - SecurityScheme: []
     delete:
@@ -277,10 +266,10 @@ paths:
       responses:
         "200":
           description: OK
-        "403":
-          description: Not Allowed
         "401":
           description: Not Authorized
+        "403":
+          description: Not Allowed
       security:
       - SecurityScheme: []
   /api/v1/purchase-orders:
@@ -295,10 +284,10 @@ paths:
       responses:
         "200":
           description: OK
-        "403":
-          description: Not Allowed
         "401":
           description: Not Authorized
+        "403":
+          description: Not Allowed
       security:
       - SecurityScheme: []
   /api/v1/purchase-orders/{id}/receive:
@@ -315,10 +304,10 @@ paths:
       responses:
         "200":
           description: OK
-        "403":
-          description: Not Allowed
         "401":
           description: Not Authorized
+        "403":
+          description: Not Allowed
       security:
       - SecurityScheme: []
   /api/v1/sales:
@@ -343,10 +332,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SalesResponse'
-        "403":
-          description: Not Allowed
         "401":
           description: Not Authorized
+        "403":
+          description: Not Allowed
       security:
       - SecurityScheme: []
     post:
@@ -360,10 +349,10 @@ paths:
       responses:
         "200":
           description: OK
-        "403":
-          description: Not Allowed
         "401":
           description: Not Authorized
+        "403":
+          description: Not Allowed
       security:
       - SecurityScheme: []
   /api/v1/sales/{id}:
@@ -380,10 +369,10 @@ paths:
       responses:
         "200":
           description: OK
-        "403":
-          description: Not Allowed
         "401":
           description: Not Authorized
+        "403":
+          description: Not Allowed
       security:
       - SecurityScheme: []
   /api/v1/suppliers:
@@ -403,11 +392,15 @@ paths:
           type: integer
       responses:
         "200":
-          description: OK
-        "403":
-          description: Not Allowed
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuppliersResponse'
         "401":
           description: Not Authorized
+        "403":
+          description: Not Allowed
       security:
       - SecurityScheme: []
     post:
@@ -421,10 +414,10 @@ paths:
       responses:
         "200":
           description: OK
-        "403":
-          description: Not Allowed
         "401":
           description: Not Authorized
+        "403":
+          description: Not Allowed
       security:
       - SecurityScheme: []
   /api/v1/suppliers/{id}:
@@ -446,10 +439,10 @@ paths:
       responses:
         "200":
           description: OK
-        "403":
-          description: Not Allowed
         "401":
           description: Not Authorized
+        "403":
+          description: Not Allowed
       security:
       - SecurityScheme: []
     delete:
@@ -465,10 +458,10 @@ paths:
       responses:
         "200":
           description: OK
-        "403":
-          description: Not Allowed
         "401":
           description: Not Authorized
+        "403":
+          description: Not Allowed
       security:
       - SecurityScheme: []
 components:
@@ -819,6 +812,23 @@ components:
           type: string
         contactNumber:
           type: string
+    SupplierDTO:
+      required:
+      - id
+      - name
+      - address
+      - contactNumber
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        name:
+          type: string
+        address:
+          type: string
+        contactNumber:
+          type: string
     SupplierEditRequest:
       required:
       - name
@@ -832,6 +842,19 @@ components:
           type: string
         contactNumber:
           type: string
+    SuppliersResponse:
+      required:
+      - suppliers
+      - pageCount
+      type: object
+      properties:
+        suppliers:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupplierDTO'
+        pageCount:
+          format: int32
+          type: integer
     TransactionItemDTO:
       required:
       - quantity

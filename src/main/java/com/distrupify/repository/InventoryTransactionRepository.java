@@ -33,13 +33,11 @@ public class InventoryTransactionRepository {
 //    }
 
     @Transactional
-    public List<InventoryTransactionEntity> findAll(@Nonnull Long organizationId, @Nonnull Pageable pageable) {
+    public List<InventoryTransactionEntity> findAll(@Nonnull Long organizationId) {
         return jpaStreamer.stream(of(InventoryTransactionEntity.class)
                         .joining(InventoryTransactionEntity$.inventoryLogs))
                 .filter(t -> t.getOrganizationId().equals(organizationId))
                 .sorted(Comparator.comparing(InventoryTransactionEntity::getTimestamp).reversed())
-                .skip(pageable.offset())
-                .limit(pageable.limit())
                 .toList();
     }
 

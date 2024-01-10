@@ -20,9 +20,13 @@ public class SupplierService {
         return supplierRepository.findAll(organizationId, pageable);
     }
 
-    public int getPageCount(@Nonnull Long organizationId, int pageSize) {
+    public int getPageCount(@Nonnull Long organizationId, Pageable pageable) {
+        if (pageable.isAll()) {
+            return 1;
+        }
+
         final var productCount = supplierRepository.getCount(organizationId);
-        return (int) Math.ceilDiv(productCount, pageSize);
+        return (int) Math.ceilDiv(productCount, pageable.limit());
     }
 
     public void create(@Nonnull Long organizationId, @Nonnull SupplierCreateRequest request) {

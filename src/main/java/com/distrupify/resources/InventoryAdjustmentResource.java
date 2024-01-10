@@ -56,7 +56,7 @@ public class InventoryAdjustmentResource {
     @GET
     @Authenticated
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findInventoryAdjustments(@QueryParam("page") int page, @QueryParam("page_size") int pageSize) {
+    public Response findInventoryAdjustments(@QueryParam("page") Integer page, @QueryParam("page_size") Integer pageSize) {
         final var organizationId = tokenService.getOrganizationId(jwt);
         final var pageable = Pageable.of(page, pageSize);
 

@@ -35,3 +35,14 @@ export type InventoryTransactionType =
   components["schemas"]["InventoryTransactionType"];
 export type InventoryTransactionStatus =
   components["schemas"]["InventoryTransactionStatus"];
+
+export type PurchaseOrderCreateRequest =
+  components["schemas"]["PurchaseOrderCreateRequest"];
+export type PurchaseOrderCreateRequestItem =
+  components["schemas"]["PurchaseOrderCreateRequestItem"];
+export type PurchaeOrderCreateRequestItemWithProduct = Omit<
+  PurchaseOrderCreateRequestItem,
+  "productId"
+> & { product: ProductDTO };
+
+export type SuppliersResponse = components["schemas"]["SuppliersResponse"];
