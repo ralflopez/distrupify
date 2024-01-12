@@ -5,7 +5,7 @@ import { ApiNotification, handleResponse } from "./common";
 
 const apiNotification = new ApiNotification("Transaction");
 
-export const useInventoryTransactionsResponse = (
+export const useInventoryTransactionsRequest = (
   token: string,
   page: number,
   pageSize: number

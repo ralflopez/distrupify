@@ -23,7 +23,7 @@ export const InventoryAdjustment = () => {
         style={{ flexDirection: "column" }}
       >
         <Box mb="lg">
-          <Title order={1}>Stock Adjustment</Title>
+          <Title order={2}>Stock Adjustment</Title>
           <Text size="sm" c="dimmed">
             Manually add or subtract items from the inventory
           </Text>

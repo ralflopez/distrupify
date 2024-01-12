@@ -24,7 +24,7 @@ export const PurchaseOrder = () => {
         style={{ flexDirection: "column" }}
       >
         <Box mb="lg">
-          <Title order={1}>Purchase Order</Title>
+          <Title order={2}>Purchase Order</Title>
           <Text size="sm" c="dimmed">
             Create orders from suppliers
           </Text>

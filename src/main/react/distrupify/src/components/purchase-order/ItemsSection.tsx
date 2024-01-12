@@ -15,7 +15,7 @@ import { UseFormReturnType } from "@mantine/form";
 import { IconX } from "@tabler/icons-react";
 import { useState } from "react";
 import { usePurchaseOrderCreateRequest } from "../../hooks/server/purchase-order";
-import { useSupplierAllRequest } from "../../hooks/server/supplier";
+import { useSuppliersRequest } from "../../hooks/server/supplier";
 import {
   PurchaeOrderCreateRequestItemWithProduct,
   PurchaseOrderCreateRequest,
@@ -35,7 +35,7 @@ export const ItemsSection = ({ form }: Props) => {
   const [supplierId, setSupplierId] = useState<string | null>("");
   const iconStyle = { width: rem(15), height: rem(15) };
 
-  const suppliersAllRequest = useSupplierAllRequest(token);
+  const suppliersAllRequest = useSuppliersRequest(token);
   const inventoryAdjustmentCreate = usePurchaseOrderCreateRequest(token, () => {
     form.setValues({
       supplierId: undefined,

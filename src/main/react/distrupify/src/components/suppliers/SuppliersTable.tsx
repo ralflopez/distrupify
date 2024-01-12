@@ -13,7 +13,7 @@ import {
 } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
 import { useState } from "react";
-import { useSupplierAllRequest } from "../../hooks/server/supplier";
+import { useSuppliersRequest } from "../../hooks/server/supplier";
 import { getItemNumber } from "../../utils/display";
 import { token } from "../../utils/token";
 import { SupplierCreateModal } from "./SupplierCreateModal";
@@ -63,7 +63,7 @@ export const SuppliersTable = () => {
   const [page, setPage] = useState(1);
   const [pageSize] = useState(100);
 
-  const { isLoading, data } = useSupplierAllRequest(token);
+  const { isLoading, data } = useSuppliersRequest(token);
 
   return (
     <Box>

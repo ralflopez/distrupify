@@ -15,7 +15,7 @@ import {
 } from "@mantine/core";
 import { IconList } from "@tabler/icons-react";
 import { useState } from "react";
-import { useInventoryTransactionsResponse } from "../../hooks/server/transactions";
+import { useInventoryTransactionsRequest } from "../../hooks/server/transactions";
 import { InventoryTransactionDTO } from "../../types/api-alias";
 import { token } from "../../utils/token";
 import { InventoryAdjustmentRow } from "./rows/InventoryAdjustmentRow";
@@ -63,7 +63,7 @@ export const Transactions = () => {
   const iconStyle = { width: rem(12), height: rem(12) };
   const [page, setPage] = useState(1);
   const [pageSize] = useState(100);
-  const { data, isLoading } = useInventoryTransactionsResponse(
+  const { data, isLoading } = useInventoryTransactionsRequest(
     token,
     page,
     pageSize
@@ -78,7 +78,7 @@ export const Transactions = () => {
         style={{ flexDirection: "column" }}
       >
         <Box mb="lg">
-          <Title order={1}>Transactions</Title>
+          <Title order={2}>Transactions</Title>
           <Text size="sm" c="dimmed">
             View all actions for adding and removing items from the inventory
           </Text>

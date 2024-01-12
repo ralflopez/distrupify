@@ -23,7 +23,7 @@ export const Sales = () => {
         style={{ flexDirection: "column" }}
       >
         <Box mb="lg">
-          <Title order={1}>Sales</Title>
+          <Title order={2}>Sales</Title>
           <Text size="sm" c="dimmed">
             Record sales information
           </Text>

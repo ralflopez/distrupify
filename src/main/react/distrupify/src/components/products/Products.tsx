@@ -26,7 +26,7 @@ export const Products = () => {
         style={{ flexDirection: "column" }}
       >
         <Box mb="lg">
-          <Title order={1}>Products</Title>
+          <Title order={2}>Products</Title>
           <Text size="sm" c="dimmed">
             Manage product information
           </Text>

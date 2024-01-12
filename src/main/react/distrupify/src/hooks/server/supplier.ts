@@ -9,16 +9,25 @@ import { ApiNotification, handleResponse } from "./common";
 
 const apiNotification = new ApiNotification("Suppliers");
 
-export const useSupplierAllRequest = (token: string) => {
+export const useSuppliersRequest = (
+  token: string,
+  page?: number,
+  pageSize?: number
+) => {
   return useQuery<SuppliersResponse, Error>(
     ["suppliers"],
     async () => {
-      const response = await fetch(`http://localhost:8080/api/v1/suppliers`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `http://localhost:8080/api/v1/suppliers${page ? `&page=${page}` : ""}${
+          pageSize ? `&page_size=${pageSize}` : ""
+        }`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       return handleResponse(response);
     },
