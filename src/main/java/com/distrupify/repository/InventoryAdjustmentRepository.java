@@ -16,6 +16,7 @@ import org.hibernate.Hibernate;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -103,6 +104,13 @@ public class InventoryAdjustmentRepository {
 
         return stream.toList();
 
+    }
+
+    @Transactional
+    public Optional<InventoryAdjustmentEntity> findByTransactionId(@Nonnull Long organizationId, @Nonnull Long transactionId) {
+        return getInventoryAdjustmentStream(organizationId)
+                .filter(InventoryAdjustmentEntity$.inventoryTransactionId.equal(transactionId))
+                .findAny();
     }
 
     private Stream<InventoryAdjustmentEntity> getInventoryAdjustmentStream(Long organizationId) {

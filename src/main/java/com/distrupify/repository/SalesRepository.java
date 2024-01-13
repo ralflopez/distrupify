@@ -1,8 +1,6 @@
 package com.distrupify.repository;
 
-import com.distrupify.entities.InventoryTransactionEntity;
-import com.distrupify.entities.SalesEntity;
-import com.distrupify.entities.SalesEntity$;
+import com.distrupify.entities.*;
 import com.distrupify.exceptions.WebException;
 import com.distrupify.models.ProductModel;
 import com.distrupify.resources.requests.SalesCreateRequest;
@@ -15,6 +13,7 @@ import jakarta.transaction.Transactional;
 import org.hibernate.Hibernate;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -101,6 +100,14 @@ public class SalesRepository {
         final var sales = new SalesEntity(organizationId, request.customerId);
         request.items.forEach(i -> sales.addLog(i.productId, i.quantity, i.unitPrice));
         sales.persist();
+    }
+
+    @Transactional
+    public Optional<SalesEntity> findByTransactionId(@Nonnull Long organizationId, @Nonnull Long transactionId) {
+        return jpaStreamer.stream(of(SalesEntity.class).joining(SalesEntity$.customer))
+                .filter(SalesEntity$.organizationId.equal(organizationId))
+                .filter(SalesEntity$.inventoryTransactionId.equal(transactionId))
+                .findAny();
     }
 
     private Stream<SalesEntity> getSalesStream(@Nonnull Long organizationId) {

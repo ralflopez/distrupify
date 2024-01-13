@@ -1,14 +1,36 @@
-import { Badge, Divider, Modal, NumberFormatter, Table } from "@mantine/core";
+import {
+  Badge,
+  Divider,
+  Modal,
+  NumberFormatter,
+  Table,
+  Text,
+} from "@mantine/core";
+import { ReactNode } from "react";
 import { InventoryTransactionDTO } from "../../../../types/api-alias";
 import { getProductDisplayName } from "../../../../utils/display";
 import { StatusBadge } from "./StatusBadge";
+
+const getTransactionTitle = (transaction: InventoryTransactionDTO) => {
+  switch (transaction.inventoryTransactionType) {
+    case "ADJUSTMENT":
+      return "Adjustment Information";
+    case "PURCHASE_ORDER":
+      return "Purchase Order Information";
+    case "SALES":
+      return "Sales Information";
+  }
+};
 
 interface Props {
   opened: boolean;
   close: () => void;
   transaction: InventoryTransactionDTO;
+  before?: ReactNode;
 }
+
 export const TransactionInformationModal = ({
+  before,
   close,
   opened,
   transaction,
@@ -18,9 +40,14 @@ export const TransactionInformationModal = ({
       opened={opened}
       onClose={close}
       size="xl"
-      title="Transaction Information"
+      title={getTransactionTitle(transaction)}
       centered
     >
+      {before}
+      {before && <Divider mt="md" mb="md" />}
+      <Text size="sm" mb="sm">
+        Transaction Information
+      </Text>
       <Table stickyHeader striped>
         <Table.Thead>
           <Table.Tr>
@@ -62,6 +89,9 @@ export const TransactionInformationModal = ({
         </Table.Tbody>
       </Table>
       <Divider mt="md" mb="md" />
+      <Text size="sm" mb="sm">
+        Items
+      </Text>
       <Table stickyHeader striped>
         <Table.Thead>
           <Table.Tr>

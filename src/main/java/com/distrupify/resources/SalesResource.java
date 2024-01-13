@@ -1,6 +1,8 @@
 package com.distrupify.resources;
 
 import com.distrupify.auth.services.TokenService;
+import com.distrupify.exceptions.WebExceptionResponse;
+import com.distrupify.resources.dto.PurchaseOrderDTO;
 import com.distrupify.resources.dto.SalesDTO;
 import com.distrupify.resources.requests.SalesCreateRequest;
 import com.distrupify.resources.response.SalesResponse;
@@ -17,6 +19,8 @@ import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+
+import static jakarta.ws.rs.core.Response.Status.NOT_FOUND;
 
 @Path("/api/v1/sales")
 @RequestScoped
@@ -69,5 +73,27 @@ public class SalesResource {
         final var organizationId = tokenService.getOrganizationId(jwt);
         salesService.create(organizationId, request);
         return Response.accepted().build();
+    }
+
+    @APIResponse(responseCode = "200",
+            description = "Successful operation",
+            content = @Content(mediaType = MediaType.APPLICATION_JSON,
+                    schema = @Schema(implementation = SalesDTO.class)))
+    @GET
+    @Path("transactions/{transactionId}")
+    @Authenticated
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findByTransactionId(@PathParam("transactionId") Long transactionId) {
+        final var organizationId = tokenService.getOrganizationId(jwt);
+        final var sales = salesService.findByTransactionId(organizationId, transactionId);
+
+        if (sales.isEmpty()) {
+            return Response.status(NOT_FOUND).entity(new WebExceptionResponse(
+                            NOT_FOUND,
+                            "Details not found"))
+                    .build();
+        }
+
+        return Response.ok(SalesDTO.fromEntity(sales.get())).build();
     }
 }

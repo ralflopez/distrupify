@@ -14,7 +14,10 @@ import {
   IconDots,
   IconInfoCircle,
 } from "@tabler/icons-react";
-import { usePurchaseOrderReceiveRequest } from "../../../hooks/server/purchase-order";
+import {
+  usePurchaseOrderByTransactionIdRequest,
+  usePurchaseOrderReceiveRequest,
+} from "../../../hooks/server/purchase-order";
 import { InventoryTransactionDTO } from "../../../types/api-alias";
 import { getItemNumber } from "../../../utils/display";
 import { token } from "../../../utils/token";
@@ -38,6 +41,8 @@ export const PurchaseOrderRow = ({
   const [infoModalOpened, { open: openInfoModal, close: closeInfoModal }] =
     useDisclosure(false);
   const purchseOrderReceiveRequest = usePurchaseOrderReceiveRequest(token);
+  const purchaseOrderByTransactionIdRequest =
+    usePurchaseOrderByTransactionIdRequest(token, transaction.id);
 
   const receiveModal = () =>
     modals.openConfirmModal({
@@ -58,6 +63,38 @@ export const PurchaseOrderRow = ({
   return (
     <>
       <TransactionInformationModal
+        before={
+          purchaseOrderByTransactionIdRequest.data ? (
+            <Table striped>
+              <Table.Thead>
+                <Table.Tr>
+                  <Table.Th c="dimmed">Property</Table.Th>
+                  <Table.Th c="dimmed">Value</Table.Th>
+                </Table.Tr>
+              </Table.Thead>
+              <Table.Tbody>
+                <Table.Tr>
+                  <Table.Td>Created At</Table.Td>
+                  <Table.Td>
+                    {purchaseOrderByTransactionIdRequest.data.createdAt}
+                  </Table.Td>
+                </Table.Tr>
+                <Table.Tr>
+                  <Table.Td>Received At</Table.Td>
+                  <Table.Td>
+                    {purchaseOrderByTransactionIdRequest.data.receivedAt || ""}
+                  </Table.Td>
+                </Table.Tr>
+                <Table.Tr>
+                  <Table.Td>Supplier</Table.Td>
+                  <Table.Td>
+                    {purchaseOrderByTransactionIdRequest.data.supplier.name}
+                  </Table.Td>
+                </Table.Tr>
+              </Table.Tbody>
+            </Table>
+          ) : null
+        }
         opened={infoModalOpened}
         close={closeInfoModal}
         transaction={transaction}

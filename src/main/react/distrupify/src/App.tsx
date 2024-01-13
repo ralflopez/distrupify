@@ -19,7 +19,7 @@ import {
   IconReceipt2,
   IconUserShare,
 } from "@tabler/icons-react";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import {
   RouterProvider,
   createBrowserRouter,
@@ -152,10 +152,11 @@ function Layout({ children }: { children: ReactNode }) {
       <AppShell.Navbar p="md">
         <ScrollArea scrollbarSize={2}>
           {links_data.map((link, index) => (
-            <>
+            <React.Fragment key={link.label}>
               <Text mb="xs">{link.label}</Text>
               {link.links.map((subLink) => (
                 <Button
+                  key={subLink.path}
                   c={`${
                     location.pathname.includes(subLink.path) ? "" : "dark"
                   }`}
@@ -174,7 +175,7 @@ function Layout({ children }: { children: ReactNode }) {
                 </Button>
               ))}
               {index < links_data.length - 1 && <Divider mb="xs" />}
-            </>
+            </React.Fragment>
           ))}
         </ScrollArea>
       </AppShell.Navbar>

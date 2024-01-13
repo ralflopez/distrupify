@@ -1,6 +1,9 @@
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { queryClient } from "../../main";
-import { PurchaseOrderCreateRequest } from "../../types/api-alias";
+import {
+  PurchaseOrderCreateRequest,
+  PurchaseOrderDTo,
+} from "../../types/api-alias";
 import { ApiNotification, handleResponse } from "./common";
 
 const apiNotification = new ApiNotification("Purchase Order");
@@ -63,8 +66,35 @@ export const usePurchaseOrderReceiveRequest = (
         apiNotification.success("Successfully received purchase order");
         queryClient.invalidateQueries(["products"]);
         queryClient.invalidateQueries(["transactions"]);
+        queryClient.invalidateQueries(["purchase-orders"]);
         cleanUp();
       },
+    }
+  );
+};
+
+export const usePurchaseOrderByTransactionIdRequest = (
+  token: string,
+  transactionId: number
+) => {
+  return useQuery<PurchaseOrderDTo, Error>(
+    ["purchase-orders", "transactions", transactionId],
+    async () => {
+      const response = await fetch(
+        `http://localhost:8080/api/v1/purchase-orders/transactions/${transactionId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return handleResponse(response);
+    },
+    {
+      onError: apiNotification.onError,
+      keepPreviousData: true,
     }
   );
 };

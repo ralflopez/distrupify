@@ -35,10 +35,10 @@ paths:
       responses:
         "200":
           description: OK
-        "401":
-          description: Not Authorized
         "403":
           description: Not Allowed
+        "401":
+          description: Not Authorized
       security:
       - SecurityScheme: []
   /api/v1/inventory/adjustments:
@@ -63,10 +63,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InventoryAdjustmentResponse'
-        "401":
-          description: Not Authorized
         "403":
           description: Not Allowed
+        "401":
+          description: Not Authorized
       security:
       - SecurityScheme: []
     post:
@@ -80,10 +80,23 @@ paths:
       responses:
         "200":
           description: OK
-        "401":
-          description: Not Authorized
         "403":
           description: Not Allowed
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme: []
+  /api/v1/inventory/adjustments/transactions/{transactionId}:
+    get:
+      tags:
+      - Inventory Adjustment Resource
+      responses:
+        "200":
+          description: OK
+        "403":
+          description: Not Allowed
+        "401":
+          description: Not Authorized
       security:
       - SecurityScheme: []
   /api/v1/inventory/transactions:
@@ -132,10 +145,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InventoryTransactionResponse'
-        "401":
-          description: Not Authorized
         "403":
           description: Not Allowed
+        "401":
+          description: Not Authorized
       security:
       - SecurityScheme: []
   /api/v1/inventory/transactions/all:
@@ -149,10 +162,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InventoryTransactionResponse'
-        "401":
-          description: Not Authorized
         "403":
           description: Not Allowed
+        "401":
+          description: Not Authorized
       security:
       - SecurityScheme: []
   /api/v1/inventory/transactions/{id}:
@@ -169,10 +182,10 @@ paths:
       responses:
         "200":
           description: OK
-        "401":
-          description: Not Authorized
         "403":
           description: Not Allowed
+        "401":
+          description: Not Authorized
       security:
       - SecurityScheme: []
   /api/v1/products:
@@ -205,10 +218,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProductsResponse'
-        "401":
-          description: Not Authorized
         "403":
           description: Not Allowed
+        "401":
+          description: Not Authorized
       security:
       - SecurityScheme: []
     post:
@@ -222,10 +235,10 @@ paths:
       responses:
         "200":
           description: OK
-        "401":
-          description: Not Authorized
         "403":
           description: Not Allowed
+        "401":
+          description: Not Authorized
       security:
       - SecurityScheme: []
   /api/v1/products/{id}:
@@ -247,10 +260,10 @@ paths:
       responses:
         "200":
           description: OK
-        "401":
-          description: Not Authorized
         "403":
           description: Not Allowed
+        "401":
+          description: Not Authorized
       security:
       - SecurityScheme: []
     delete:
@@ -266,10 +279,10 @@ paths:
       responses:
         "200":
           description: OK
-        "401":
-          description: Not Authorized
         "403":
           description: Not Allowed
+        "401":
+          description: Not Authorized
       security:
       - SecurityScheme: []
   /api/v1/purchase-orders:
@@ -284,10 +297,34 @@ paths:
       responses:
         "200":
           description: OK
-        "401":
-          description: Not Authorized
         "403":
           description: Not Allowed
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme: []
+  /api/v1/purchase-orders/transactions/{transactionId}:
+    get:
+      tags:
+      - Purchase Order Resource
+      parameters:
+      - name: transactionId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PurchaseOrderDTO'
+        "403":
+          description: Not Allowed
+        "401":
+          description: Not Authorized
       security:
       - SecurityScheme: []
   /api/v1/purchase-orders/{id}/receive:
@@ -304,10 +341,10 @@ paths:
       responses:
         "200":
           description: OK
-        "401":
-          description: Not Authorized
         "403":
           description: Not Allowed
+        "401":
+          description: Not Authorized
       security:
       - SecurityScheme: []
   /api/v1/sales:
@@ -332,10 +369,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SalesResponse'
-        "401":
-          description: Not Authorized
         "403":
           description: Not Allowed
+        "401":
+          description: Not Authorized
       security:
       - SecurityScheme: []
     post:
@@ -349,10 +386,34 @@ paths:
       responses:
         "200":
           description: OK
-        "401":
-          description: Not Authorized
         "403":
           description: Not Allowed
+        "401":
+          description: Not Authorized
+      security:
+      - SecurityScheme: []
+  /api/v1/sales/transactions/{transactionId}:
+    get:
+      tags:
+      - Sales Resource
+      parameters:
+      - name: transactionId
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SalesDTO'
+        "403":
+          description: Not Allowed
+        "401":
+          description: Not Authorized
       security:
       - SecurityScheme: []
   /api/v1/sales/{id}:
@@ -369,10 +430,10 @@ paths:
       responses:
         "200":
           description: OK
-        "401":
-          description: Not Authorized
         "403":
           description: Not Allowed
+        "401":
+          description: Not Authorized
       security:
       - SecurityScheme: []
   /api/v1/suppliers:
@@ -397,10 +458,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SuppliersResponse'
-        "401":
-          description: Not Authorized
         "403":
           description: Not Allowed
+        "401":
+          description: Not Authorized
       security:
       - SecurityScheme: []
     post:
@@ -414,10 +475,10 @@ paths:
       responses:
         "200":
           description: OK
-        "401":
-          description: Not Authorized
         "403":
           description: Not Allowed
+        "401":
+          description: Not Authorized
       security:
       - SecurityScheme: []
   /api/v1/suppliers/{id}:
@@ -439,10 +500,10 @@ paths:
       responses:
         "200":
           description: OK
-        "401":
-          description: Not Authorized
         "403":
           description: Not Allowed
+        "401":
+          description: Not Authorized
       security:
       - SecurityScheme: []
     delete:
@@ -458,10 +519,10 @@ paths:
       responses:
         "200":
           description: OK
-        "401":
-          description: Not Authorized
         "403":
           description: Not Allowed
+        "401":
+          description: Not Authorized
       security:
       - SecurityScheme: []
 components:
@@ -713,6 +774,22 @@ components:
           format: double
           minimum: 0
           type: number
+    PurchaseOrderDTO:
+      required:
+      - id
+      - createdAt
+      - supplier
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        createdAt:
+          $ref: '#/components/schemas/Date'
+        receivedAt:
+          $ref: '#/components/schemas/Date'
+        supplier:
+          $ref: '#/components/schemas/SupplierDTO'
     SalesCreateRequest:
       required:
       - items

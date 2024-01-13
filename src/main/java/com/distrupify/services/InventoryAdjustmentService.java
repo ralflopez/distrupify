@@ -10,6 +10,7 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @ApplicationScoped
 public class InventoryAdjustmentService {
@@ -30,6 +31,10 @@ public class InventoryAdjustmentService {
     public int getPageCount(@Nonnull Long organizationId, int pageSize) {
         final var productCount = inventoryAdjustmentRepository.getCount(organizationId);
         return (int) Math.ceilDiv(productCount, pageSize);
+    }
+
+    public Optional<InventoryAdjustmentEntity> findByTransactionId(@Nonnull Long organizationId, @Nonnull Long transactionId) {
+        return inventoryAdjustmentRepository.findByTransactionId(organizationId, transactionId);
     }
 
     @Transactional

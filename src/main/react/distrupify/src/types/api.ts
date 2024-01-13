@@ -100,6 +100,24 @@ export interface paths {
       };
     };
   };
+  "/api/v1/inventory/adjustments/transactions/{transactionId}": {
+    get: {
+      responses: {
+        /** @description OK */
+        200: {
+          content: never;
+        };
+        /** @description Not Authorized */
+        401: {
+          content: never;
+        };
+        /** @description Not Allowed */
+        403: {
+          content: never;
+        };
+      };
+    };
+  };
   "/api/v1/inventory/transactions": {
     get: {
       parameters: {
@@ -295,6 +313,31 @@ export interface paths {
       };
     };
   };
+  "/api/v1/purchase-orders/transactions/{transactionId}": {
+    get: {
+      parameters: {
+        path: {
+          transactionId: number;
+        };
+      };
+      responses: {
+        /** @description Successful operation */
+        200: {
+          content: {
+            "application/json": components["schemas"]["PurchaseOrderDTO"];
+          };
+        };
+        /** @description Not Authorized */
+        401: {
+          content: never;
+        };
+        /** @description Not Allowed */
+        403: {
+          content: never;
+        };
+      };
+    };
+  };
   "/api/v1/purchase-orders/{id}/receive": {
     post: {
       parameters: {
@@ -353,6 +396,31 @@ export interface paths {
         /** @description OK */
         200: {
           content: never;
+        };
+        /** @description Not Authorized */
+        401: {
+          content: never;
+        };
+        /** @description Not Allowed */
+        403: {
+          content: never;
+        };
+      };
+    };
+  };
+  "/api/v1/sales/transactions/{transactionId}": {
+    get: {
+      parameters: {
+        path: {
+          transactionId: number;
+        };
+      };
+      responses: {
+        /** @description Successful operation */
+        200: {
+          content: {
+            "application/json": components["schemas"]["SalesDTO"];
+          };
         };
         /** @description Not Authorized */
         401: {
@@ -588,6 +656,13 @@ export interface components {
       quantity: number;
       /** Format: double */
       unitPrice: number;
+    };
+    PurchaseOrderDTO: {
+      /** Format: int64 */
+      id: number;
+      createdAt: components["schemas"]["Date"];
+      receivedAt?: components["schemas"]["Date"];
+      supplier: components["schemas"]["SupplierDTO"];
     };
     SalesCreateRequest: {
       items: components["schemas"]["SalesCreateRequestItem"][];

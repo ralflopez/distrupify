@@ -45,7 +45,7 @@ export const useInventoryAdjustments = (
   pageSize: number
 ) => {
   return useQuery<InventoryAdjustmentResponse, Error>(
-    ["inventoryAdjustments", page],
+    ["inventoryAdjustments", page, pageSize],
     async () => {
       const response = await fetch(
         `http://localhost:8080/api/v1/inventory/adjustments?page=${page}&pageSize=${pageSize}`,

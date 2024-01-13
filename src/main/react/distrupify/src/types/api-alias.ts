@@ -8,6 +8,8 @@ export type ProductsResponse = components["schemas"]["ProductsResponse"];
 
 export type InventoryLogType = components["schemas"]["InventoryLogType"];
 
+export type InventoryAdjustmentDTO =
+  components["schemas"]["InventoryAdjustmentDTO"];
 export type InventoryAdjustmentResponse =
   components["schemas"]["InventoryAdjustmentResponse"];
 export type InventoryAdjustmentCreateRequest =
@@ -19,6 +21,7 @@ export type InventoryAdjustmentCreateRequestItemWithProduct = Omit<
   "productId"
 > & { product: ProductDTO };
 
+export type SalesDTO = components["schemas"]["SalesDTO"];
 export type SalesCreateRequest = components["schemas"]["SalesCreateRequest"];
 export type SalesCreateRequestItem =
   components["schemas"]["SalesCreateRequestItem"];
@@ -36,6 +39,7 @@ export type InventoryTransactionType =
 export type InventoryTransactionStatus =
   components["schemas"]["InventoryTransactionStatus"];
 
+export type PurchaseOrderDTo = components["schemas"]["PurchaseOrderDTO"];
 export type PurchaseOrderCreateRequest =
   components["schemas"]["PurchaseOrderCreateRequest"];
 export type PurchaseOrderCreateRequestItem =

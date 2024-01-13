@@ -1,5 +1,6 @@
 package com.distrupify.services;
 
+import com.distrupify.entities.PurchaseOrderEntity;
 import com.distrupify.entities.SalesEntity;
 import com.distrupify.repository.SalesRepository;
 import com.distrupify.resources.requests.SalesCreateRequest;
@@ -11,6 +12,7 @@ import jakarta.transaction.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @ApplicationScoped
 public class SalesService {
@@ -43,5 +45,9 @@ public class SalesService {
             final var qty = BigDecimal.valueOf(log.getQuantity());
             return price.multiply(qty);
         }).reduce(BigDecimal.valueOf(0), BigDecimal::add);
+    }
+
+    public Optional<SalesEntity> findByTransactionId(@Nonnull Long organizationId, @Nonnull Long transactionId) {
+        return salesRepository.findByTransactionId(organizationId, transactionId);
     }
 }

@@ -1,6 +1,7 @@
 package com.distrupify.resources;
 
 import com.distrupify.auth.services.TokenService;
+import com.distrupify.exceptions.WebExceptionResponse;
 import com.distrupify.resources.dto.InventoryAdjustmentDTO;
 import com.distrupify.resources.requests.InventoryAdjustmentCreateRequest;
 import com.distrupify.resources.response.InventoryAdjustmentResponse;
@@ -73,5 +74,23 @@ public class InventoryAdjustmentResource {
                         .map(InventoryAdjustmentDTO::fromEntity)
                         .toList(), pageCount))
                 .build();
+    }
+
+    @GET
+    @Path("transactions/{transactionId}")
+    @Authenticated
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findByTransactionId(@PathParam("id") Long transactionId) {
+        final var organizationId = tokenService.getOrganizationId(jwt);
+        final var inventoryAdjustment = inventoryAdjustmentService.findByTransactionId(organizationId, transactionId);
+
+        if (inventoryAdjustment.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND).entity(new WebExceptionResponse(
+                    Response.Status.NOT_FOUND,
+                    "Details not found"))
+                    .build();
+        }
+
+        return Response.ok(InventoryAdjustmentDTO.fromEntity(inventoryAdjustment.get())).build();
     }
 }
